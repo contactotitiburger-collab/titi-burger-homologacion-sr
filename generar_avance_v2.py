@@ -477,7 +477,7 @@ function mostrarToast(id) {{
   toast.querySelector('span').textContent = info.descripcion;
   toast.classList.add('show');
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 4500);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 9000);
 }}
 document.getElementById('toast').addEventListener('click', () => document.getElementById('toast').classList.remove('show'));
 </script>

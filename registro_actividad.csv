@@ -26,3 +26,4 @@ fecha,hora_inicio,hora_fin,duracion,tarea,resultado
 2026-11-25,09:58,10:22,24min,Auditoria de seguridad (agente) y arreglar los 5 hallazgos reales,OK - IP real detras de cloudflare, permisos de archivos, comparacion segura, timeout, scripts viejos borrados
 2026-11-25,10:22,10:28,6min,Hacer clickeables las fases con aviso tipo toast que aparece y se desvanece,OK - 4 tarjetas + 4 circulos probados con Playwright
 2026-11-25,10:28,10:32,4min,Reescribir los textos de los avisos sin jerga de negocio para que Don Titi entienda,OK - narrativa de que se hizo en vez de terminos del contrato
+2026-11-25,10:32,10:33,1min,Alargar el tiempo que dura visible el aviso de 4.5 a 9 segundos,OK
