@@ -1,0 +1,32 @@
+[
+  {
+    "fecha": "2026-11-23",
+    "titulo": "Arranca el proyecto",
+    "cambios": [
+      {"tipo": "agregado", "texto": "Rafael regresa al proyecto y contrata a Félix para terminarlo"},
+      {"tipo": "agregado", "texto": "Se adopta el plan: ordenar Soft Restaurant + Tito Operador (217 horas)"}
+    ]
+  },
+  {
+    "fecha": "2026-11-24",
+    "titulo": "Nace el Tito Lector",
+    "cambios": [
+      {"tipo": "agregado", "texto": "Acceso de solo lectura a las 5 sucursales conectadas"},
+      {"tipo": "agregado", "texto": "Los 4 revisores (menú, inventario, ventas, configuración) + la revisión cruzada"},
+      {"tipo": "agregado", "texto": "Mapa de la información y comparación entre las 5 sucursales"},
+      {"tipo": "cambiado", "texto": "Se apagan todos los avisos automáticos viejos — arranca borrón y cuenta nueva"}
+    ]
+  },
+  {
+    "fecha": "2026-11-25",
+    "titulo": "Página de avance y seguridad",
+    "cambios": [
+      {"tipo": "agregado", "texto": "Página de avance visual para Félix y Rafael"},
+      {"tipo": "agregado", "texto": "Comparación contra el plan contratado (fechas y horas reales)"},
+      {"tipo": "cambiado", "texto": "Rediseño completo de la página — más clara, sin tecnicismos"},
+      {"tipo": "arreglado", "texto": "\"Revisar sucursales\" ya no dice 100% si falta una sucursal por conectar"},
+      {"tipo": "seguridad", "texto": "Usuario y clave por persona (Tito, Rafael, Félix) + bloqueo por intentos fallidos"},
+      {"tipo": "seguridad", "texto": "El código se sube a GitHub (privado) sin ninguna contraseña adentro"}
+    ]
+  }
+]

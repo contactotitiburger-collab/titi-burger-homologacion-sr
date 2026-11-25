@@ -447,7 +447,8 @@ html = f"""<!doctype html>
       {detalle_html}
       <div class="detalle-total">
         Horas totales del proyecto: <b>{horas_total_txt}</b><br>
-        <a href="../Analisis_Incongruencias_Tito_Lector.pdf" target="_blank">Ver PDF de diferencias encontradas</a>
+        <a href="../Analisis_Incongruencias_Tito_Lector.pdf" target="_blank">Ver PDF de diferencias encontradas</a><br>
+        <a href="bitacora.html">Ver bitácora completa del proyecto</a>
       </div>
     </details>
   </div>
