@@ -1,0 +1,10 @@
+[
+  {"parte": 1, "titulo": "Se creó el plan y se armó el equipo del Tito Lector", "detalle": "Entender la misión (5 lectores + verificador, solo lectura) y descubrir qué sucursales responden de verdad", "minutos": 30},
+  {"parte": 2, "titulo": "Se eligió y probó el acceso de solo lectura (MCP)", "detalle": "Se probaron 2 opciones; la primera no conectó con los SQL Server viejos de las sucursales, se cambió a la segunda", "minutos": 7},
+  {"parte": 3, "titulo": "Se crearon los 4 agentes lectores + el verificador", "detalle": "Menú y precios, inventario y recetas, ventas y cortes, configuración — y el verificador que cruza todo contra la realidad", "minutos": 64},
+  {"parte": 4, "titulo": "Se armó el mapa de la base de datos", "detalle": "Qué tabla guarda qué y cómo se relacionan, para que el Editor lo use de guía", "minutos": 5},
+  {"parte": 5, "titulo": "Desarrollo real: scripts, página de avance y primeras pruebas", "detalle": "Programación de las conexiones, construcción de la página de avance con las barras de progreso", "minutos": 180},
+  {"parte": 6, "titulo": "PDF con las incongruencias encontradas", "detalle": "Documento con las 5 incongruencias, su impacto y la prioridad sugerida", "minutos": 5},
+  {"parte": 7, "titulo": "Instalación de claude-office (piso de agentes)", "detalle": "Python 3.13 sin sudo, backend y frontend, 3 pisos: Lectores, Finanzas, Editores", "minutos": 5},
+  {"parte": 8, "titulo": "Link público + agentes de diseño", "detalle": "Túnel público para que se vea desde cualquier lado, skills de diseño (Emil Kowalski, unslop) y pixel-art-studio", "minutos": 25}
+]

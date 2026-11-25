@@ -1,0 +1,48 @@
+[
+  {
+    "id": 1,
+    "nombre": "Plan",
+    "color": ["#4FC3F7", "#1E90F0"],
+    "items": [
+      {"nombre": "Plan de trabajo definido y aprobado", "hecho": true}
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "Revisar sucursales",
+    "color": ["#5EE6A8", "#22C58A"],
+    "items": [
+      {"nombre": "Ver qué sucursales están conectadas", "hecho": true},
+      {"nombre": "Entrar a ver la información sin tocar nada", "hecho": true},
+      {"nombre": "Mapa de qué información guarda cada sucursal", "hecho": true},
+      {"nombre": "Revisar menú y precios de cada sucursal", "hecho": true},
+      {"nombre": "Revisar inventario y recetas", "hecho": true},
+      {"nombre": "Revisar ventas y cortes de caja", "hecho": true},
+      {"nombre": "Revisar usuarios y configuración", "hecho": true},
+      {"nombre": "Comparar las 5 sucursales conectadas entre sí", "hecho": true},
+      {"nombre": "Revisar la sucursal Montecarlo (falta conectarla)", "hecho": false}
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "Corregir diferencias",
+    "color": ["#F48FB1", "#EC4F8A"],
+    "items": [
+      {"nombre": "Comparar cada sucursal contra la de Félix", "hecho": false},
+      {"nombre": "Aprobar qué se corrige y en qué orden", "hecho": false},
+      {"nombre": "Preparar la forma de corregir con respaldo", "hecho": false},
+      {"nombre": "Probar la corrección en una copia, no en vivo", "hecho": false},
+      {"nombre": "Corregir la primera sucursal (con tu aprobación)", "hecho": false},
+      {"nombre": "Corregir el resto, una por una (con tu aprobación)", "hecho": false}
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "Dejar todas iguales",
+    "color": ["#B39DFF", "#7C4DFF"],
+    "items": [
+      {"nombre": "Las 6 sucursales con la misma información", "hecho": false},
+      {"nombre": "Revisión final contigo y Don Titi", "hecho": false}
+    ]
+  }
+]

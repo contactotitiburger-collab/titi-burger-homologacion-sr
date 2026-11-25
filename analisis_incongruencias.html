@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="es"><head><meta charset="utf-8">
+<style>
+body { font-family: Helvetica, Arial, sans-serif; color:#1a1a1a; margin:0; padding:40px 50px; font-size:13px; line-height:1.5; }
+h1 { font-size:22px; margin-bottom:0; }
+h2 { font-size:15px; margin-top:28px; border-bottom:2px solid #ff7a45; padding-bottom:4px; }
+.sub { color:#666; margin-top:4px; margin-bottom:24px; }
+.hallazgo { background:#f7f7f7; border-left:4px solid #ff7a45; padding:10px 14px; margin:10px 0; border-radius:4px; }
+.hallazgo b { display:block; margin-bottom:4px; }
+table { width:100%; border-collapse:collapse; margin:10px 0; font-size:12px; }
+th, td { border:1px solid #ddd; padding:6px 8px; text-align:left; }
+th { background:#eee; }
+.tag { display:inline-block; font-size:10px; font-weight:bold; padding:2px 8px; border-radius:10px; color:#fff; margin-left:6px; }
+.tag.alto { background:#d64545; }
+.tag.medio { background:#e0a030; }
+.tag.bajo { background:#5a9e5a; }
+footer { margin-top:40px; color:#999; font-size:10px; text-align:center; }
+</style></head>
+<body>
+
+<h1>Análisis de incongruencias — Tito Lector</h1>
+<div class="sub">Proyecto: Homologación de Soft Restaurant — Titi Burger · Fase de solo lectura · 24-nov-2026</div>
+
+<p>El Tito Lector revisó, en modo solo-lectura, las 5 sucursales ya conectadas por Tailscale
+(Montejano, Hacienda del Río, San Marcos, Villas del Rey y Cine Curto) comparándolas entre sí.
+Todavía no se comparó contra la base de Félix (la referencia oficial) — eso es la siguiente fase.
+Este documento lista las incongruencias reales encontradas, con su impacto y una prioridad sugerida.</p>
+
+<h2>1. Precios en $0 de combos de delivery — Cine Curto <span class="tag alto">ALTO</span></h2>
+<div class="hallazgo">
+<b>Qué se encontró:</b> Varios combos pensados para apps de delivery (ej. "BONELESS + MEDIA ORDEN DE PAPAS RAPPI",
+"COMBO DOBLE QUESO + PAPAS + BEBIDA UBER", "EXTRA SALSA...") están capturados con precio <b>$0.00</b> en la base de Cine Curto,
+mientras que en las otras 4 sucursales tienen precio normal.
+</div>
+<p><b>Impacto:</b> Si alguien vende uno de estos productos en Cine Curto por error, se factura en $0 — pérdida directa de dinero.<br>
+<b>Riesgo de cambiarlo:</b> Bajo (es poner un precio, no afecta cortes históricos).<br>
+<b>Decisión sugerida:</b> REVISAR CON RAFAEL — probablemente intencional (Cine Curto no vende por apps), pero hay que confirmarlo antes de dejarlo así o corregirlo.</p>
+
+<h2>2. Mismo número de almacén, significado distinto <span class="tag alto">ALTO</span></h2>
+<div class="hallazgo">
+<b>Qué se encontró:</b> El almacén con ID <code>'10'</code> significa <b>"TRASPASO A OTRA SUCURSAL"</b> en Montejano, Hacienda del Río,
+San Marcos y Villas del Rey — pero en Cine Curto el mismo ID <code>'10'</code> significa <b>"MERMAS"</b>.
+</div>
+<table><tr><th>Sucursal</th><th>Almacén '10'</th></tr>
+<tr><td>Montejano / Hacienda / San Marcos / Villas</td><td>TRASPASO A OTRA SUCURSAL</td></tr>
+<tr><td><b>Cine Curto</b></td><td><b>MERMAS</b></td></tr></table>
+<p><b>Impacto:</b> Cualquier reporte que calcule mermas o traspasos usando el ID de almacén en vez del nombre va a mezclar conceptos distintos en Cine Curto sin darse cuenta.<br>
+<b>Riesgo de cambiarlo:</b> Medio (toca entender por qué quedó así antes de tocarlo — puede romper el historial de mermas de esa sucursal).<br>
+<b>Decisión sugerida:</b> REVISAR CON RAFAEL.</p>
+
+<h2>3. Usuario "MONTECARLO" dentro de la base de Montejano <span class="tag medio">MEDIO</span></h2>
+<div class="hallazgo">
+<b>Qué se encontró:</b> La base de datos de Montejano tiene un usuario de sistema llamado <code>MONTECARLO</code> — una sucursal
+que no es Montejano y que ni siquiera está conectada todavía.
+</div>
+<p><b>Impacto:</b> Posible residuo de una prueba o mala captura; no representa un riesgo de dinero, pero es una inconsistencia de configuración.<br>
+<b>Riesgo de cambiarlo:</b> Bajo.<br>
+<b>Decisión sugerida:</b> REVISAR CON RAFAEL — entender el origen antes de borrarlo.</p>
+
+<h2>4. Nomenclatura de usuarios/cajeros muy despareja <span class="tag medio">MEDIO</span></h2>
+<table><tr><th>Sucursal</th><th>Usuarios</th><th>Ejemplo de nomenclatura</th></tr>
+<tr><td>Montejano</td><td>8</td><td><code>CAJERO1</code> (sin espacio)</td></tr>
+<tr><td>Hacienda del Río</td><td>7</td><td><code>CAJERO 1</code> (con espacio)</td></tr>
+<tr><td>San Marcos</td><td>5</td><td><code>CAJERA</code> / <code>CAJERO 1</code></td></tr>
+<tr><td>Villas del Rey</td><td>4</td><td><code>CAJERO</code> (genérico, uno solo)</td></tr>
+<tr><td>Cine Curto</td><td>4</td><td><code>USUARIO 1</code> (genérico)</td></tr>
+</table>
+<p><b>Impacto:</b> Dificulta cualquier reporte que agrupe ventas por cajero entre sucursales — cada una nombra distinto.<br>
+<b>Riesgo de cambiarlo:</b> Bajo-medio (hay que avisar a cada sucursal antes de renombrar logins activos).<br>
+<b>Decisión sugerida:</b> HOMOLOGAR en la fase del Editor, usando como referencia la nomenclatura de la base de Félix.</p>
+
+<h2>5. Reportes de ventas: la nube no cuadra con la base SQL local (2 de 5 sucursales) <span class="tag alto">ALTO</span></h2>
+<div class="hallazgo">
+<b>Qué se encontró:</b> Al verificar el total de ventas del 23-nov-2026 (reporte nocturno vs. base SQL local de cada sucursal):
+</div>
+<table><tr><th>Sucursal</th><th>Tickets reporte</th><th>Tickets SQL</th><th>Total reporte</th><th>Total SQL</th><th>Veredicto</th></tr>
+<tr><td>Montejano</td><td>47</td><td>49</td><td>$16,162</td><td>$14,681</td><td><b>NO VERIFICADO</b></td></tr>
+<tr><td>Hacienda del Río</td><td>13</td><td>13</td><td>$4,977</td><td>$4,977</td><td>Verificado</td></tr>
+<tr><td>San Marcos</td><td>15</td><td>12</td><td>$4,639</td><td>$2,894</td><td><b>NO VERIFICADO</b></td></tr>
+<tr><td>Villas del Rey</td><td>13</td><td>13</td><td>$4,423</td><td>$4,423</td><td>Verificado</td></tr>
+<tr><td>Cine Curto</td><td>0</td><td>0</td><td>$0</td><td>$0</td><td>Verificado</td></tr>
+</table>
+<p><b>Impacto:</b> Esto NO es un tema de homologación de catálogo — es sobre qué tan confiables son los reportes de ventas que se mandan cada noche. Se descartó que fuera un filtro mal puesto (se revisó cancelado/pagado explícitamente).<br>
+<b>Riesgo:</b> Alto en términos de confianza en los números — hay que entender la causa (posible desfase de reloj/zona horaria del servidor local, o datos no sincronizados a la nube) antes de tomarlo como definitivo.<br>
+<b>Decisión sugerida:</b> REVISAR CON RAFAEL — prioridad alta, independiente del proyecto de homologación.</p>
+
+<h2>Resumen — sin incongruencias (para contexto)</h2>
+<p>Montejano, Hacienda del Río, San Marcos y Villas del Rey están <b>100% alineadas</b> entre sí en menú y precios
+(233 productos idénticos). Solo Cine Curto es distinta, y es por diseño (menú propio de cine).
+No hay nada que homologar entre esas 4 sucursales — ya están iguales.</p>
+
+<footer>Generado por Tito — Homologación Soft Restaurant, Titi Burger · 25-nov-2026</footer>
+</body></html>

@@ -1,0 +1,8 @@
+# Nunca subir el token secreto de la URL ni la pagina generada (el nombre de
+# carpeta DENTRO de avance/ es el token -- subirla expondria el link privado).
+.token_avance
+avance/
+
+# Python
+__pycache__/
+*.pyc

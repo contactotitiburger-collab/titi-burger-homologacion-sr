@@ -1,0 +1,2405 @@
+{
+  "conteo": {
+    "Montejano": {
+      "productos": 233,
+      "insumos": 113
+    },
+    "Hacienda del Río": {
+      "productos": 233,
+      "insumos": 113
+    },
+    "San Marcos": {
+      "productos": 233,
+      "insumos": 113
+    },
+    "Villas del Rey": {
+      "productos": 233,
+      "insumos": 113
+    },
+    "Cine Curto": {
+      "productos": 164,
+      "insumos": 101
+    }
+  },
+  "productos_union": 248,
+  "productos_comunes_a_las_5": 149,
+  "productos_faltantes": {
+    "01033": {
+      "descripcion": "TITI COMBO LOW CARB CARNE",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "03040": {
+      "descripcion": "BRAWNIE POSTRE",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "05015": {
+      "descripcion": "BONELES ORDEN NATURAL",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "03027": {
+      "descripcion": "EXTRA TOCINO DIDI",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "101011": {
+      "descripcion": "MERMA SURTIDO DE LA COCA COLA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01059": {
+      "descripcion": "BONELESS SIN PAPAS",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "01043": {
+      "descripcion": "TITI COMBO LOW CARB POLLO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101012": {
+      "descripcion": "MERMA AGUA DE JAMAICA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01010": {
+      "descripcion": "TITI COMBO DOBLE CARNE (UB)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01116": {
+      "descripcion": "COMBO CLASICA  + PAPAS + BEBIDA UBER",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "03008": {
+      "descripcion": "SERVICIO ADOMICILIO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01065": {
+      "descripcion": "D..PAPAS CON TOCINO",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "100036": {
+      "descripcion": "NATURALES",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01027": {
+      "descripcion": "TITI COMBO DOBLE QUESO (DI)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01117": {
+      "descripcion": "COMBO CLASICA  + PAPAS + BEBIDA RAPPI",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01046": {
+      "descripcion": "TITI COMBO HAWAIANA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01013": {
+      "descripcion": "TITI PACK WESTERN (UB)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01113": {
+      "descripcion": "COMBO TITI JR",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01126": {
+      "descripcion": "COMBO WESTER +  PAPAS + BEBIDA UBER",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01114": {
+      "descripcion": "TITI JR",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101002": {
+      "descripcion": "MERMA DE PAPAS A LA FRANCESA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "03003": {
+      "descripcion": "ADEREZO DE LA CASA 2 ONZ",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "101003": {
+      "descripcion": "MERMA DE AROS DE CEBOLLA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01048": {
+      "descripcion": "TITI COMBO  CLASICA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101014": {
+      "descripcion": "MERMA SODA ROOT BEER",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101009": {
+      "descripcion": "MERMA DE PECHUGA DE POLLO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01037": {
+      "descripcion": "TITI COMBO DOBLE CARNE",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101015": {
+      "descripcion": "MERMA SODA DR PEPPER",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01118": {
+      "descripcion": "COMBO DOBLE CARNE   + PAPAS + BEBIDA UBER",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01028": {
+      "descripcion": "TITI COMBO CALIFORNIA (DI)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01016": {
+      "descripcion": "TITI PACK TOCINO (UB)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101005": {
+      "descripcion": "MERMA DE CHILE CALIFORNIA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101004": {
+      "descripcion": "MERMA DE PIÑA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01015": {
+      "descripcion": "TITI COMBO LOW CARB POLLO  (UB)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01040": {
+      "descripcion": "TITI COMBO WESTERN",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01036": {
+      "descripcion": "TITI COMBO CALIFORNIA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01035": {
+      "descripcion": "TITI COMBO DOBLE QUESO (UB)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01018": {
+      "descripcion": "TITI COMBO DOBLE QUESO (RA)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "100009": {
+      "descripcion": "EXTRA PIÑA",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "03037": {
+      "descripcion": "CALIFORNIA EXTRA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01021": {
+      "descripcion": "TITI PACK WESTERN (RA)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "03043": {
+      "descripcion": "EXTRA CARNE  JR",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01063": {
+      "descripcion": "HAMBURGUSA SLIDE",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "01121": {
+      "descripcion": "COMBO HAWAIANA + PAPAS + BEBIDA UBER",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01025": {
+      "descripcion": "TITI PACK PECHUGA DE POLLO (RA)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101007": {
+      "descripcion": "MERMA DE BONELES 1 ORDEN",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01122": {
+      "descripcion": "COMBO HAWAIANA + PAPAS + BEBIDA DIDI",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "04017": {
+      "descripcion": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "100034": {
+      "descripcion": "SALSA BBQ",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01044": {
+      "descripcion": "TITI COMBO LOW CARB CARNE (RA)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "014018": {
+      "descripcion": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "100032": {
+      "descripcion": "SIN KECHUT",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "014017": {
+      "descripcion": "TIRAS DE POLO",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "100031": {
+      "descripcion": "PAN BROCHE PARA MERMA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "04024": {
+      "descripcion": "JUGO JUMEX",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01119": {
+      "descripcion": "COMBO DOBLE CARNE  + PAPAS + BEBIDA DIDI",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101010": {
+      "descripcion": "MERMA SURTIDO DE LA PEPSI",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101013": {
+      "descripcion": "MERMA TE DE LA CASA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "05011": {
+      "descripcion": "BONELESS MISTOS  BUF O BBQ",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "01039": {
+      "descripcion": "TITI COMBO TOCINO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01024": {
+      "descripcion": "TITI PACK PECHUGA DE POLLO (UB)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01047": {
+      "descripcion": "TITI COMBO DOBLE QUESO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01023": {
+      "descripcion": "TITI COMBO LOW CARB POLLO (RA)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01123": {
+      "descripcion": "COMBO HAWAIANA + PAPAS + BEBIDA RAPPI",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01020": {
+      "descripcion": "TITI COMBO HAWAIANA (RA)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01042": {
+      "descripcion": "TITI COMBO LOW CARB CARNE (UB)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "03025": {
+      "descripcion": "EXTRA  AROS DIDI",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "03006": {
+      "descripcion": "CHILE PREPARADO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01012": {
+      "descripcion": "TITI COMBO CALIFORNIA (UB)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01017": {
+      "descripcion": "TITI COMBO DOBLE CARNE (RA)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01041": {
+      "descripcion": "TITI COMBO LOW CARB POLLO (DI)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "100033": {
+      "descripcion": "SALSA MANGO ABANERO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01029": {
+      "descripcion": "TITI COMBO HAWAIANA (DI)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01022": {
+      "descripcion": "TITI PACK TOCINO (RA)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "100035": {
+      "descripcion": "SALSA BUFALO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "100037": {
+      "descripcion": "MIXTO DOS COMBINACIONES",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01032": {
+      "descripcion": "TITI PACK WESTERN (DI)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101006": {
+      "descripcion": "MERMA DE BONELES 1/2 ORDEN",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "05014": {
+      "descripcion": "BONELESS MISTO MANGO A. BBQ",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "01112": {
+      "descripcion": "MEDIA ORDEN PAPAS  JR",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01026": {
+      "descripcion": "TITI COMBO DOBLE CARNE (DI)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01019": {
+      "descripcion": "TITI COMBO CALIFORNIA (RA)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "05013": {
+      "descripcion": "BONELESS MISTO MANGO A. BUFALO",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "01062": {
+      "descripcion": "D..DEDOS DE QUESO",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "01014": {
+      "descripcion": "TITI COMBO HAWAIANA (UB)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101008": {
+      "descripcion": "MERMA DE QUESO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "03033": {
+      "descripcion": "..HAMBURGUESA JR CHICA",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "01030": {
+      "descripcion": "TITI COMBO TOCINO (DI)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01045": {
+      "descripcion": "TITI COMBO LOW CARB CARNE (DI)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101001": {
+      "descripcion": "MERMA DE PAN PARRILLERO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101016": {
+      "descripcion": "MERMA DE CARNE PARA HAMBURGUSA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "101017": {
+      "descripcion": "MERMA DE TOCINO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01038": {
+      "descripcion": "TITI COMBO PECHUGA DE POLLO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01120": {
+      "descripcion": "COMBO DOBLE CARNE + PAPAS + BEBIDA RAPPI",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01125": {
+      "descripcion": "COMBO WESTER +  PAPAS + BEBIDA RAPPI",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "05012": {
+      "descripcion": "BONELESS MANGO ABANERO",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "01124": {
+      "descripcion": "COMBO WESTER +  PAPAS + BEBIDA DIDI",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01031": {
+      "descripcion": "TITI PACK PECHUGA DE POLLO (DI)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "01115": {
+      "descripcion": "COMBO CLASICA  + PAPAS + BEBIDA DIDI",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    }
+  },
+  "precio_distinto": [
+    {
+      "idproducto": "01006",
+      "descripcion": "TITI TOCINO",
+      "precios": {
+        "Montejano": 175.0,
+        "Hacienda del Río": 175.0,
+        "San Marcos": 175.0,
+        "Villas del Rey": 175.0,
+        "Cine Curto": 250.0
+      }
+    },
+    {
+      "idproducto": "04014",
+      "descripcion": "COCA CERO",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 60.0
+      }
+    },
+    {
+      "idproducto": "03007",
+      "descripcion": "AROS DE CEBOLLA DIDI",
+      "precios": {
+        "Montejano": 91.0,
+        "Hacienda del Río": 91.0,
+        "San Marcos": 91.0,
+        "Villas del Rey": 91.0,
+        "Cine Curto": 130.0
+      }
+    },
+    {
+      "idproducto": "01008",
+      "descripcion": "TITI PECHUGA DE POLLO",
+      "precios": {
+        "Montejano": 160.0,
+        "Hacienda del Río": 160.0,
+        "San Marcos": 160.0,
+        "Villas del Rey": 160.0,
+        "Cine Curto": 230.0
+      }
+    },
+    {
+      "idproducto": "01005",
+      "descripcion": "TITI CALIFORNIA",
+      "precios": {
+        "Montejano": 170.0,
+        "Hacienda del Río": 170.0,
+        "San Marcos": 170.0,
+        "Villas del Rey": 170.0,
+        "Cine Curto": 240.0
+      }
+    },
+    {
+      "idproducto": "100004",
+      "descripcion": "EXTRA QUESO AMARILLO",
+      "precios": {
+        "Montejano": 12.0,
+        "Hacienda del Río": 12.0,
+        "San Marcos": 12.0,
+        "Villas del Rey": 12.0,
+        "Cine Curto": 25.0
+      }
+    },
+    {
+      "idproducto": "01003",
+      "descripcion": "TITI DOBLE QUESO",
+      "precios": {
+        "Montejano": 165.0,
+        "Hacienda del Río": 165.0,
+        "San Marcos": 165.0,
+        "Villas del Rey": 165.0,
+        "Cine Curto": 240.0
+      }
+    },
+    {
+      "idproducto": "03023",
+      "descripcion": "ROOTBEER (RAP)",
+      "precios": {
+        "Montejano": 52.0,
+        "Hacienda del Río": 52.0,
+        "San Marcos": 52.0,
+        "Villas del Rey": 52.0,
+        "Cine Curto": 30.0
+      }
+    },
+    {
+      "idproducto": "04008",
+      "descripcion": "MIRINDA",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 50.0
+      }
+    },
+    {
+      "idproducto": "04001",
+      "descripcion": "TE",
+      "precios": {
+        "Montejano": 35.0,
+        "Hacienda del Río": 35.0,
+        "San Marcos": 35.0,
+        "Villas del Rey": 35.0,
+        "Cine Curto": 50.0
+      }
+    },
+    {
+      "idproducto": "01101",
+      "descripcion": "COMBO PAREJA 2 TOCINO + 2 PAPAS + 2 BEBIDA",
+      "precios": {
+        "Montejano": 480.0,
+        "Hacienda del Río": 480.0,
+        "San Marcos": 480.0,
+        "Villas del Rey": 480.0,
+        "Cine Curto": 680.0
+      }
+    },
+    {
+      "idproducto": "01004",
+      "descripcion": "TITI HAWAIANA",
+      "precios": {
+        "Montejano": 170.0,
+        "Hacienda del Río": 170.0,
+        "San Marcos": 170.0,
+        "Villas del Rey": 170.0,
+        "Cine Curto": 240.0
+      }
+    },
+    {
+      "idproducto": "01034",
+      "descripcion": "TITI  LOW CARB DE POLLO",
+      "precios": {
+        "Montejano": 165.0,
+        "Hacienda del Río": 165.0,
+        "San Marcos": 165.0,
+        "Villas del Rey": 165.0,
+        "Cine Curto": 230.0
+      }
+    },
+    {
+      "idproducto": "03010",
+      "descripcion": "EXTRA AROS CEBOLLA (RAP)",
+      "precios": {
+        "Montejano": 45.0,
+        "Hacienda del Río": 45.0,
+        "San Marcos": 45.0,
+        "Villas del Rey": 45.0,
+        "Cine Curto": 91.0
+      }
+    },
+    {
+      "idproducto": "01097",
+      "descripcion": "PROMOCION  DUO UBER",
+      "precios": {
+        "Montejano": 364.0,
+        "Hacienda del Río": 364.0,
+        "San Marcos": 364.0,
+        "Villas del Rey": 364.0,
+        "Cine Curto": 160.0
+      }
+    },
+    {
+      "idproducto": "04011",
+      "descripcion": "DR PEPPER",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 50.0
+      }
+    },
+    {
+      "idproducto": "03001",
+      "descripcion": "PAPAS A LA FRANCESA",
+      "precios": {
+        "Montejano": 55.0,
+        "Hacienda del Río": 55.0,
+        "San Marcos": 55.0,
+        "Villas del Rey": 55.0,
+        "Cine Curto": 80.0
+      }
+    },
+    {
+      "idproducto": "04002",
+      "descripcion": "JAMAICA",
+      "precios": {
+        "Montejano": 35.0,
+        "Hacienda del Río": 35.0,
+        "San Marcos": 35.0,
+        "Villas del Rey": 35.0,
+        "Cine Curto": 50.0
+      }
+    },
+    {
+      "idproducto": "01103",
+      "descripcion": "COMBO PAREJA 2 TOCINO + 2 PAPAS + 2 BEBIDA",
+      "precios": {
+        "Montejano": 510.0,
+        "Hacienda del Río": 510.0,
+        "San Marcos": 510.0,
+        "Villas del Rey": 510.0,
+        "Cine Curto": 220.0
+      }
+    },
+    {
+      "idproducto": "01107",
+      "descripcion": "BONELESS + MEDIA ORDEN DE PAPAS  RAPPI",
+      "precios": {
+        "Montejano": 220.0,
+        "Hacienda del Río": 220.0,
+        "San Marcos": 220.0,
+        "Villas del Rey": 220.0,
+        "Cine Curto": 0.0
+      }
+    },
+    {
+      "idproducto": "01007",
+      "descripcion": "TITI WESTERN",
+      "precios": {
+        "Montejano": 185.0,
+        "Hacienda del Río": 185.0,
+        "San Marcos": 185.0,
+        "Villas del Rey": 185.0,
+        "Cine Curto": 270.0
+      }
+    },
+    {
+      "idproducto": "04004",
+      "descripcion": "COCA COLA LIGHT",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 60.0
+      }
+    },
+    {
+      "idproducto": "04003",
+      "descripcion": "COCA COLA",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 60.0
+      }
+    },
+    {
+      "idproducto": "01105",
+      "descripcion": "COMBO TOCINO  + PAPAS + BEBIDA UBER",
+      "precios": {
+        "Montejano": 305.0,
+        "Hacienda del Río": 305.0,
+        "San Marcos": 305.0,
+        "Villas del Rey": 305.0,
+        "Cine Curto": 0.0
+      }
+    },
+    {
+      "idproducto": "01109",
+      "descripcion": "COMBO DOBLE QUESO + PAPAS + BEBIDA DIDI",
+      "precios": {
+        "Montejano": 285.0,
+        "Hacienda del Río": 285.0,
+        "San Marcos": 285.0,
+        "Villas del Rey": 285.0,
+        "Cine Curto": 0.0
+      }
+    },
+    {
+      "idproducto": "01104",
+      "descripcion": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+      "precios": {
+        "Montejano": 1007.0,
+        "Hacienda del Río": 1007.0,
+        "San Marcos": 1007.0,
+        "Villas del Rey": 1007.0,
+        "Cine Curto": 0.0
+      }
+    },
+    {
+      "idproducto": "01111",
+      "descripcion": "COMBO DOBLE QUESO + PAPAS + BEBIDA UBER",
+      "precios": {
+        "Montejano": 285.0,
+        "Hacienda del Río": 285.0,
+        "San Marcos": 285.0,
+        "Villas del Rey": 285.0,
+        "Cine Curto": 0.0
+      }
+    },
+    {
+      "idproducto": "04006",
+      "descripcion": "MANZANITA SOL",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 50.0
+      }
+    },
+    {
+      "idproducto": "100010",
+      "descripcion": "EXTRA TOCINO",
+      "precios": {
+        "Montejano": 30.0,
+        "Hacienda del Río": 30.0,
+        "San Marcos": 30.0,
+        "Villas del Rey": 30.0,
+        "Cine Curto": 25.0
+      }
+    },
+    {
+      "idproducto": "01095",
+      "descripcion": "PROMOCION  DUO DIDI",
+      "precios": {
+        "Montejano": 364.0,
+        "Hacienda del Río": 364.0,
+        "San Marcos": 364.0,
+        "Villas del Rey": 364.0,
+        "Cine Curto": 400.0
+      }
+    },
+    {
+      "idproducto": "100012",
+      "descripcion": "EXTRA SALSA  BBQ / BUFALO / MAGO ABANERO O ADEREZO",
+      "precios": {
+        "Montejano": 25.0,
+        "Hacienda del Río": 25.0,
+        "San Marcos": 25.0,
+        "Villas del Rey": 25.0,
+        "Cine Curto": 0.0
+      }
+    },
+    {
+      "idproducto": "01091",
+      "descripcion": "PAPAS",
+      "precios": {
+        "Montejano": 0.0,
+        "Hacienda del Río": 0.0,
+        "San Marcos": 0.0,
+        "Villas del Rey": 0.0,
+        "Cine Curto": 80.0
+      }
+    },
+    {
+      "idproducto": "01002",
+      "descripcion": "TITI DOBLE CARNE",
+      "precios": {
+        "Montejano": 200.0,
+        "Hacienda del Río": 200.0,
+        "San Marcos": 200.0,
+        "Villas del Rey": 200.0,
+        "Cine Curto": 270.0
+      }
+    },
+    {
+      "idproducto": "01110",
+      "descripcion": "COMBO DOBLE QUESO + PAPAS + BEBIDA RAPPI",
+      "precios": {
+        "Montejano": 285.0,
+        "Hacienda del Río": 285.0,
+        "San Marcos": 285.0,
+        "Villas del Rey": 285.0,
+        "Cine Curto": 0.0
+      }
+    },
+    {
+      "idproducto": "01064",
+      "descripcion": "EXTRA CHILE ASADO DIDI",
+      "precios": {
+        "Montejano": 10.0,
+        "Hacienda del Río": 10.0,
+        "San Marcos": 10.0,
+        "Villas del Rey": 10.0,
+        "Cine Curto": 170.0
+      }
+    },
+    {
+      "idproducto": "05003",
+      "descripcion": "BONELESS RET HOT ORDEN",
+      "precios": {
+        "Montejano": 190.0,
+        "Hacienda del Río": 190.0,
+        "San Marcos": 190.0,
+        "Villas del Rey": 190.0,
+        "Cine Curto": 220.0
+      }
+    },
+    {
+      "idproducto": "01106",
+      "descripcion": "BONELESS + MEDIA ORDE PAPAS DIDI",
+      "precios": {
+        "Montejano": 220.0,
+        "Hacienda del Río": 220.0,
+        "San Marcos": 220.0,
+        "Villas del Rey": 220.0,
+        "Cine Curto": 90.0
+      }
+    },
+    {
+      "idproducto": "01009",
+      "descripcion": "TITI LOW CARB DE CARNE",
+      "precios": {
+        "Montejano": 165.0,
+        "Hacienda del Río": 165.0,
+        "San Marcos": 165.0,
+        "Villas del Rey": 165.0,
+        "Cine Curto": 230.0
+      }
+    },
+    {
+      "idproducto": "01099",
+      "descripcion": "COMBMO TITI NIGHT RAPPI",
+      "precios": {
+        "Montejano": 253.0,
+        "Hacienda del Río": 253.0,
+        "San Marcos": 253.0,
+        "Villas del Rey": 253.0,
+        "Cine Curto": 180.0
+      }
+    },
+    {
+      "idproducto": "01088",
+      "descripcion": "TITI JR PROMIOCION DIA DE LA HAMBURGUESA",
+      "precios": {
+        "Montejano": 1.0,
+        "Hacienda del Río": 1.0,
+        "San Marcos": 1.0,
+        "Villas del Rey": 1.0,
+        "Cine Curto": 0.0
+      }
+    },
+    {
+      "idproducto": "03011",
+      "descripcion": "EXTRA PAPAS A LA FRANCESA  (RAP)",
+      "precios": {
+        "Montejano": 45.0,
+        "Hacienda del Río": 45.0,
+        "San Marcos": 45.0,
+        "Villas del Rey": 45.0,
+        "Cine Curto": 50.0
+      }
+    },
+    {
+      "idproducto": "04010",
+      "descripcion": "ROOT BEER",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 50.0
+      }
+    },
+    {
+      "idproducto": "03002",
+      "descripcion": "TOCINO EXTRA",
+      "precios": {
+        "Montejano": 25.0,
+        "Hacienda del Río": 25.0,
+        "San Marcos": 25.0,
+        "Villas del Rey": 25.0,
+        "Cine Curto": 20.0
+      }
+    },
+    {
+      "idproducto": "04016",
+      "descripcion": "AROS DE CEBOLLA",
+      "precios": {
+        "Montejano": 70.0,
+        "Hacienda del Río": 70.0,
+        "San Marcos": 70.0,
+        "Villas del Rey": 70.0,
+        "Cine Curto": 130.0
+      }
+    },
+    {
+      "idproducto": "01093",
+      "descripcion": "COMBO TOCINO +PAPAS + BEBIDA  DIDI",
+      "precios": {
+        "Montejano": 305.0,
+        "Hacienda del Río": 305.0,
+        "San Marcos": 305.0,
+        "Villas del Rey": 305.0,
+        "Cine Curto": 200.0
+      }
+    },
+    {
+      "idproducto": "05002",
+      "descripcion": "BONELESS BBQ 1/2",
+      "precios": {
+        "Montejano": 100.0,
+        "Hacienda del Río": 100.0,
+        "San Marcos": 100.0,
+        "Villas del Rey": 100.0,
+        "Cine Curto": 80.0
+      }
+    },
+    {
+      "idproducto": "01098",
+      "descripcion": "COMBMO TITI NIGHT DIDI",
+      "precios": {
+        "Montejano": 253.0,
+        "Hacienda del Río": 253.0,
+        "San Marcos": 253.0,
+        "Villas del Rey": 253.0,
+        "Cine Curto": 190.0
+      }
+    },
+    {
+      "idproducto": "05008",
+      "descripcion": "BONELESS RET HOT ORDEN RAPI",
+      "precios": {
+        "Montejano": 209.0,
+        "Hacienda del Río": 209.0,
+        "San Marcos": 209.0,
+        "Villas del Rey": 209.0,
+        "Cine Curto": 247.0
+      }
+    },
+    {
+      "idproducto": "05001",
+      "descripcion": "BONELESS BBQ ORDEN",
+      "precios": {
+        "Montejano": 190.0,
+        "Hacienda del Río": 190.0,
+        "San Marcos": 190.0,
+        "Villas del Rey": 190.0,
+        "Cine Curto": 220.0
+      }
+    },
+    {
+      "idproducto": "04015",
+      "descripcion": "AGUA 600",
+      "precios": {
+        "Montejano": 15.0,
+        "Hacienda del Río": 15.0,
+        "San Marcos": 15.0,
+        "Villas del Rey": 15.0,
+        "Cine Curto": 30.0
+      }
+    },
+    {
+      "idproducto": "100022",
+      "descripcion": "EXTRA CALIFORNIA",
+      "precios": {
+        "Montejano": 30.0,
+        "Hacienda del Río": 30.0,
+        "San Marcos": 30.0,
+        "Villas del Rey": 30.0,
+        "Cine Curto": 15.0
+      }
+    },
+    {
+      "idproducto": "03026",
+      "descripcion": "PAPAS A LA FRANCESA (DIDI)",
+      "precios": {
+        "Montejano": 71.0,
+        "Hacienda del Río": 71.0,
+        "San Marcos": 71.0,
+        "Villas del Rey": 71.0,
+        "Cine Curto": 40.0
+      }
+    },
+    {
+      "idproducto": "100015",
+      "descripcion": "EXTRA CARNE",
+      "precios": {
+        "Montejano": 50.0,
+        "Hacienda del Río": 50.0,
+        "San Marcos": 50.0,
+        "Villas del Rey": 50.0,
+        "Cine Curto": 55.0
+      }
+    },
+    {
+      "idproducto": "04009",
+      "descripcion": "7 UP",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 50.0
+      }
+    },
+    {
+      "idproducto": "05010",
+      "descripcion": "BONELESS RET HOT ORDEN UBER",
+      "precios": {
+        "Montejano": 219.0,
+        "Hacienda del Río": 219.0,
+        "San Marcos": 219.0,
+        "Villas del Rey": 219.0,
+        "Cine Curto": 247.0
+      }
+    },
+    {
+      "idproducto": "01061",
+      "descripcion": "EXTRA TOCINO DIDI",
+      "precios": {
+        "Montejano": 25.0,
+        "Hacienda del Río": 25.0,
+        "San Marcos": 25.0,
+        "Villas del Rey": 25.0,
+        "Cine Curto": 20.0
+      }
+    },
+    {
+      "idproducto": "01067",
+      "descripcion": "TITI CALIFORNIA DIDI",
+      "precios": {
+        "Montejano": 208.0,
+        "Hacienda del Río": 208.0,
+        "San Marcos": 208.0,
+        "Villas del Rey": 208.0,
+        "Cine Curto": 160.0
+      }
+    },
+    {
+      "idproducto": "03017",
+      "descripcion": "EXTRA AGUA DE JAMAICA (RAP)",
+      "precios": {
+        "Montejano": 30.0,
+        "Hacienda del Río": 30.0,
+        "San Marcos": 30.0,
+        "Villas del Rey": 30.0,
+        "Cine Curto": 52.0
+      }
+    },
+    {
+      "idproducto": "100003",
+      "descripcion": "EXTRA QUESO BLANCO",
+      "precios": {
+        "Montejano": 12.0,
+        "Hacienda del Río": 12.0,
+        "San Marcos": 12.0,
+        "Villas del Rey": 12.0,
+        "Cine Curto": 25.0
+      }
+    },
+    {
+      "idproducto": "05004",
+      "descripcion": "BONELESS RET HOT 1/2",
+      "precios": {
+        "Montejano": 100.0,
+        "Hacienda del Río": 100.0,
+        "San Marcos": 100.0,
+        "Villas del Rey": 100.0,
+        "Cine Curto": 80.0
+      }
+    },
+    {
+      "idproducto": "03009",
+      "descripcion": "EXTRA TOCINO (PAP)",
+      "precios": {
+        "Montejano": 25.0,
+        "Hacienda del Río": 25.0,
+        "San Marcos": 25.0,
+        "Villas del Rey": 25.0,
+        "Cine Curto": 20.0
+      }
+    },
+    {
+      "idproducto": "03016",
+      "descripcion": "EXTRA PIÑA (RAP),UBER,DIDI",
+      "precios": {
+        "Montejano": 25.0,
+        "Hacienda del Río": 25.0,
+        "San Marcos": 25.0,
+        "Villas del Rey": 25.0,
+        "Cine Curto": 20.0
+      }
+    },
+    {
+      "idproducto": "03014",
+      "descripcion": "EXTRA CHILE CALIFORNIA (RAP),UBER,DIDI",
+      "precios": {
+        "Montejano": 25.0,
+        "Hacienda del Río": 25.0,
+        "San Marcos": 25.0,
+        "Villas del Rey": 25.0,
+        "Cine Curto": 20.0
+      }
+    },
+    {
+      "idproducto": "03034",
+      "descripcion": "EXTRA TE DIDI",
+      "precios": {
+        "Montejano": 30.0,
+        "Hacienda del Río": 30.0,
+        "San Marcos": 30.0,
+        "Villas del Rey": 30.0,
+        "Cine Curto": 52.0
+      }
+    },
+    {
+      "idproducto": "01001",
+      "descripcion": "TITI CLASICA",
+      "precios": {
+        "Montejano": 150.0,
+        "Hacienda del Río": 150.0,
+        "San Marcos": 150.0,
+        "Villas del Rey": 150.0,
+        "Cine Curto": 220.0
+      }
+    },
+    {
+      "idproducto": "01094",
+      "descripcion": "COMBO TOCINO +PAPAS + BEBIDA  RAPPI",
+      "precios": {
+        "Montejano": 305.0,
+        "Hacienda del Río": 305.0,
+        "San Marcos": 305.0,
+        "Villas del Rey": 305.0,
+        "Cine Curto": 520.0
+      }
+    },
+    {
+      "idproducto": "01102",
+      "descripcion": "COMBO PAREJA 2 TOCINO + 2 PAPAS + 2 BEBIDA",
+      "precios": {
+        "Montejano": 470.0,
+        "Hacienda del Río": 470.0,
+        "San Marcos": 470.0,
+        "Villas del Rey": 470.0,
+        "Cine Curto": 380.0
+      }
+    },
+    {
+      "idproducto": "01076",
+      "descripcion": "TITI CALIFORNIA UBER",
+      "precios": {
+        "Montejano": 208.0,
+        "Hacienda del Río": 208.0,
+        "San Marcos": 208.0,
+        "Villas del Rey": 208.0,
+        "Cine Curto": 197.0
+      }
+    },
+    {
+      "idproducto": "01100",
+      "descripcion": "COMBMO TITI NIGHT UBER",
+      "precios": {
+        "Montejano": 253.0,
+        "Hacienda del Río": 253.0,
+        "San Marcos": 253.0,
+        "Villas del Rey": 253.0,
+        "Cine Curto": 0.0
+      }
+    },
+    {
+      "idproducto": "04005",
+      "descripcion": "PEPSI",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 50.0
+      }
+    },
+    {
+      "idproducto": "01096",
+      "descripcion": "PROMOCION  DUO RAPPI",
+      "precios": {
+        "Montejano": 364.0,
+        "Hacienda del Río": 364.0,
+        "San Marcos": 364.0,
+        "Villas del Rey": 364.0,
+        "Cine Curto": 130.0
+      }
+    },
+    {
+      "idproducto": "03036",
+      "descripcion": "EXTRA PIÑA",
+      "precios": {
+        "Montejano": 30.0,
+        "Hacienda del Río": 30.0,
+        "San Marcos": 30.0,
+        "Villas del Rey": 30.0,
+        "Cine Curto": 25.0
+      }
+    },
+    {
+      "idproducto": "01108",
+      "descripcion": "BONELESS + MEDIA ORDEN DE PAPAS  UBER",
+      "precios": {
+        "Montejano": 220.0,
+        "Hacienda del Río": 220.0,
+        "San Marcos": 220.0,
+        "Villas del Rey": 220.0,
+        "Cine Curto": 0.0
+      }
+    },
+    {
+      "idproducto": "03032",
+      "descripcion": "EXTRA QUESO",
+      "precios": {
+        "Montejano": 30.0,
+        "Hacienda del Río": 30.0,
+        "San Marcos": 30.0,
+        "Villas del Rey": 30.0,
+        "Cine Curto": 90.0
+      }
+    },
+    {
+      "idproducto": "04007",
+      "descripcion": "SQUIRT",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 50.0
+      }
+    },
+    {
+      "idproducto": "03005",
+      "descripcion": "EXTRA VEDURA",
+      "precios": {
+        "Montejano": 15.0,
+        "Hacienda del Río": 15.0,
+        "San Marcos": 15.0,
+        "Villas del Rey": 15.0,
+        "Cine Curto": 5.0
+      }
+    },
+    {
+      "idproducto": "04012",
+      "descripcion": "ORAGE CRUSH",
+      "precios": {
+        "Montejano": 40.0,
+        "Hacienda del Río": 40.0,
+        "San Marcos": 40.0,
+        "Villas del Rey": 40.0,
+        "Cine Curto": 50.0
+      }
+    }
+  ],
+  "insumos_union": 121,
+  "insumos_comunes_a_las_5": 93,
+  "insumos_faltantes": {
+    "001015": {
+      "descripcion": "TE EN POLVO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "005019": {
+      "descripcion": "CARNE SLIDER CINE CURTO",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "001037": {
+      "descripcion": "PAN DE HOT DOG",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "002017": {
+      "descripcion": "JUGO JUMEX",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "006005": {
+      "descripcion": "PECHUGA PARA ELEVORACION(BONELES,TIRAS,PECHUGAS)",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "005025": {
+      "descripcion": "QUESO MONTERY JACK",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "006001": {
+      "descripcion": "BOTELLA DE TE",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "002016": {
+      "descripcion": "SURTIDO PEPSI",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "005024": {
+      "descripcion": "TOCINO PARA PAPAS PICADO",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "001044": {
+      "descripcion": "PLATO MEDIANO CINE C.",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001023": {
+      "descripcion": "PIMIENTA MOLIDA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001004": {
+      "descripcion": "CARBON",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "005001": {
+      "descripcion": "CARNE PARA HAMBURGUESA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001022": {
+      "descripcion": "AJO MOLIDO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001024": {
+      "descripcion": "HUEVOS PZA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001043": {
+      "descripcion": "DEDOS DE QUESO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001042": {
+      "descripcion": "QUESOS PARA NAHOS",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001035": {
+      "descripcion": "QUESO PARA NACHOS",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "005004": {
+      "descripcion": "HIELO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001045": {
+      "descripcion": "SURTIDO COCA COLA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "003013": {
+      "descripcion": "VASO ADEREZO RANCH",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "001027": {
+      "descripcion": "SAL NITRO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001038": {
+      "descripcion": "SALCHICHA 1/4 DE LB",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "001017": {
+      "descripcion": "ADEREZO DE LA CASA",
+      "tiene": [
+        "Cine Curto"
+      ],
+      "no_tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ]
+    },
+    "004013": {
+      "descripcion": "LIMON AMARILLO",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001047": {
+      "descripcion": "PAN JR",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "003021": {
+      "descripcion": "PLATO CHICO CINE C.",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    },
+    "001046": {
+      "descripcion": "BRAWNIE POSTRE SR PATRICIA",
+      "tiene": [
+        "Montejano",
+        "Hacienda del Río",
+        "San Marcos",
+        "Villas del Rey"
+      ],
+      "no_tiene": [
+        "Cine Curto"
+      ]
+    }
+  }
+}

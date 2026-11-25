@@ -1,0 +1,6 @@
+Tablas comunes a las 3 base (Hacienda/SanMarcos/CineCurto): 355
+
+--- Montejano ---
+  TIENE DE MAS: ['CodigosPostales', 'CorteCaja', 'cheqlinkdepago', 'cuentas_procesar_mitmobile', 'cuentas_procesar_mitmobile_kiosko', 'estacionesprotectorpantalla', 'paymentproviders', 'polizasgeneradas', 'polizasgeneradasdetalle', 'promocionesArea', 'tempcaptura', 'tempcheqlinkdepago', 'tempchequesinfo', 'temptransacciones', 'usuariosperfilesreporte', 'workspace_apps_pricelists']
+--- Villas del Rey ---
+  TIENE DE MAS: ['cuentas_procesar_mitmobile', 'paymentproviders', 'polizasgeneradas', 'polizasgeneradasdetalle', 'tempchequesinfo', 'workspace_apps_pricelists']

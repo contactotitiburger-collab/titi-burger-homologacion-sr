@@ -1,0 +1,76 @@
+{
+  "lector": [
+    {
+      "id": 1,
+      "nombre": "Tabla de sucursales conectadas/faltantes",
+      "hecho": true
+    },
+    {
+      "id": 2,
+      "nombre": "MCP de solo lectura instalado y probado",
+      "hecho": true
+    },
+    {
+      "id": 3,
+      "nombre": "Mapa de la base de datos",
+      "hecho": true
+    },
+    {
+      "id": 4,
+      "nombre": "Reporte de cada lector + verificador",
+      "hecho": true
+    },
+    {
+      "id": 5,
+      "nombre": "Comparación entre sucursales",
+      "hecho": true
+    },
+    {
+      "id": 6,
+      "nombre": "Registro de actividad con horas",
+      "hecho": true
+    },
+    {
+      "id": 7,
+      "nombre": "Página de avance + claude-office funcionando",
+      "hecho": true
+    },
+    {
+      "id": 8,
+      "nombre": "Resumen corto (qué quedó, qué falló, qué falta)",
+      "hecho": true
+    }
+  ],
+  "editor": [
+    {
+      "id": 1,
+      "nombre": "Comparación contra la base de Félix",
+      "hecho": false
+    },
+    {
+      "id": 2,
+      "nombre": "Análisis de brechas aprobado",
+      "hecho": false
+    },
+    {
+      "id": 3,
+      "nombre": "Diseño del Editor y sistema de respaldos",
+      "hecho": false
+    },
+    {
+      "id": 4,
+      "nombre": "Prueba en una COPIA de la base de Félix",
+      "hecho": false
+    },
+    {
+      "id": 5,
+      "nombre": "Edición de la primera sucursal (aprobada)",
+      "hecho": false
+    },
+    {
+      "id": 6,
+      "nombre": "Edición del resto de sucursales (aprobada cada una)",
+      "hecho": false
+    }
+  ]
+}

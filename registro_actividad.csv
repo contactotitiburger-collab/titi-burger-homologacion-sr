@@ -1,0 +1,23 @@
+fecha,hora_inicio,hora_fin,duracion,tarea,resultado
+2026-11-24,19:09,19:20,11min,Paso1 descubrimiento tailscale+SQL,5/5 sucursales conectadas en linea y SQL responde; Montecarlo y Felix faltan (pendientes)
+2026-11-24,19:17,19:19,2min,Paso2 probar oguzhanpisgin/mssql-readonly-mcp,FALLO - incompatible con SQL Server 2014 legacy (SqlException pre-login class 20)
+2026-11-24,19:19,19:22,3min,Paso2 instalar y probar RichardHan/mssql_mcp_server (git version pymssql),OK - conecta y gate SELECT-only verificado bloqueando DELETE/UPDATE/DROP/EXEC/multi-statement
+2026-11-24,19:22,19:24,2min,Paso2 registrar 5 MCP lectores en Claude Code (uno por sucursal, puerto dinamico resuelto en cada arranque),OK - 5/5 Connected
+2026-11-24,19:24,19:40,16min,Paso3 lector Menu y Precios (productos/precios 5 sucursales),OK - 4/5 iguales; Cine Curto menu propio; 77 precios distintos (todos Cine Curto); encontrados combos delivery en $0 en Cine Curto para revisar
+2026-11-24,19:24,19:40,16min,Paso3 lector Inventario y Recetas,OK - 93/121 insumos comunes; hallazgo: almacen 10 significa TRASPASO en 4 sucursales pero MERMAS en Cine Curto
+2026-11-24,19:24,19:40,16min,Paso3 lector Ventas y Cortes + Verificador,OK - 3/5 sucursales verificadas (Hacienda,Villas,CineCurto); 2 NO VERIFICADAS (Montejano,SanMarcos) nube vs SQL no cuadra
+2026-11-24,19:24,19:40,16min,Paso3 lector Configuracion (usuarios/almacenes),OK - usuarios muy desparejos entre sucursales; usuario MONTECARLO raro dentro de base Montejano
+2026-11-24,19:40,19:45,5min,Paso4 Mapa de la base de datos,OK - guardado mapa_base_datos.md
+2026-11-25,07:00,07:05,5min,Paso7 instalar claude-office (Python 3.13 via uv sin sudo + backend + frontend estatico),OK - 3 pisos (Lectores/Finanzas/Editores) corriendo en 100.64.29.43:8101
+2026-11-24,09:00,10:30,90min,Desarrollo de scripts de conexion SQL y wrappers (paso1-5),OK - trabajo real de programacion no capturado en el detalle por tarea
+2026-11-24,10:30,11:10,40min,Debugging e instalacion de los 2 candidatos de MCP (compatibilidad SQL Server legacy),OK - diagnostico y cambio de libreria
+2026-11-24,11:10,11:40,30min,Construccion de la pagina de avance y servidor con clave,OK - HTML/CSS + servidor con autenticacion
+2026-11-24,11:40,12:00,20min,Instalacion y configuracion inicial de claude-office,OK - investigacion de stack y plan de instalacion
+2026-11-25,08:25,08:30,5min,Generar PDF de analisis de incongruencias para Rafael/Felix,OK - Analisis_Incongruencias_Tito_Lector.pdf
+2026-11-25,08:40,08:50,10min,Instalar cloudflared y exponer pagina de avance publicamente (tunel gratis sin sudo),OK - https://justice-relaxation-display-bio.trycloudflare.com
+2026-11-25,08:50,08:55,5min,Instalar skill pixel-art-studio para sprites de claude-office,OK - ~/.claude/skills/pixel-art-studio
+2026-11-25,08:55,09:09,14min,Rediseno de los anillos de progreso con paleta validada contra daltonismo,OK - azul+naranja pasan validador; violeta descartado por no pasar
+2026-11-25,09:09,09:14,5min,Rehacer la pagina de avance desde cero (pedido de Rafael),OK - anillos claros estilo referencia; sin contrasena; verificado con curl 200
+2026-11-25,09:14,09:21,7min,Agregar seguridad ligera (usuario/clave) a la pagina de avance,OK - cuenta felix restaurada; verificado 401 sin clave y 200 con clave
+2026-11-25,09:21,09:25,4min,Integrar el plan/presupuesto contratado (Opcion B) y ajustar fecha de arranque al 23-nov,OK - estado vamos-bien ahora sale de comparar horas usadas vs tiempo del contrato
+2026-11-25,09:25,09:30,5min,Corregir incongruencia: Revisar sucursales decia 100% sin Montecarlo conectada,OK - agregado item explicito + candado en codigo que bloquea generar si se vuelve a marcar mal
