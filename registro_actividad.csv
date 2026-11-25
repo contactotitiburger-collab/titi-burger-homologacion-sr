@@ -21,3 +21,4 @@ fecha,hora_inicio,hora_fin,duracion,tarea,resultado
 2026-11-25,09:14,09:21,7min,Agregar seguridad ligera (usuario/clave) a la pagina de avance,OK - cuenta felix restaurada; verificado 401 sin clave y 200 con clave
 2026-11-25,09:21,09:25,4min,Integrar el plan/presupuesto contratado (Opcion B) y ajustar fecha de arranque al 23-nov,OK - estado vamos-bien ahora sale de comparar horas usadas vs tiempo del contrato
 2026-11-25,09:25,09:30,5min,Corregir incongruencia: Revisar sucursales decia 100% sin Montecarlo conectada,OK - agregado item explicito + candado en codigo que bloquea generar si se vuelve a marcar mal
+2026-11-25,09:36,09:46,10min,Subir el proyecto a GitHub (repo privado) sacando credenciales del codigo primero,OK - https://github.com/contactotitiburger-collab/titi-burger-homologacion-sr
