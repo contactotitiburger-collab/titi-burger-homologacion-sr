@@ -1,8 +1,34 @@
 [
-  {"nombre": "Se hizo el plan de trabajo", "hecho": true},
-  {"nombre": "Se revisaron las 5 sucursales conectadas", "hecho": true},
-  {"nombre": "Conectar y revisar la sucursal Montecarlo", "hecho": false},
-  {"nombre": "Comparar cada sucursal contra la de Félix", "hecho": false},
-  {"nombre": "Corregir las diferencias encontradas", "hecho": false},
-  {"nombre": "Dejar las 6 sucursales exactamente iguales", "hecho": false}
+  {
+    "nombre": "Restablecer base de datos Soft Restaurant",
+    "dias": ["2026-11-23", "2026-11-24"],
+    "subobjetivos": [
+      {"nombre": "Se hizo el plan de trabajo", "hecho": true},
+      {"nombre": "Se revisaron las 5 sucursales conectadas", "hecho": true},
+      {"nombre": "Conectar y revisar la sucursal Montecarlo", "hecho": false},
+      {"nombre": "Comparar cada sucursal contra la de Félix", "hecho": false},
+      {"nombre": "Corregir las diferencias encontradas", "hecho": false},
+      {"nombre": "Dejar las 6 sucursales exactamente iguales", "hecho": false}
+    ]
+  },
+  {
+    "nombre": "Crear Tito Operador",
+    "dias": [],
+    "subobjetivos": [
+      {"nombre": "Diseñar los 3 niveles de permiso", "hecho": false},
+      {"nombre": "Nivel 1: consultas libres para cualquiera", "hecho": false},
+      {"nombre": "Nivel 2: catálogo e inventario (confirma Félix o Nancy)", "hecho": false},
+      {"nombre": "Nivel 3: dinero y cierres de caja (confirma Félix o David)", "hecho": false}
+    ]
+  },
+  {
+    "nombre": "Herramientas y reportes de apoyo",
+    "dias": ["2026-11-25"],
+    "subobjetivos": [
+      {"nombre": "Página de avance creada para Félix y Rafael", "hecho": true},
+      {"nombre": "Seguridad agregada (usuarios, auditoría)", "hecho": true},
+      {"nombre": "Código subido a GitHub", "hecho": true},
+      {"nombre": "Esta bitácora de objetivos", "hecho": true}
+    ]
+  }
 ]

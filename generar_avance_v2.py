@@ -144,9 +144,22 @@ _errores = verificar_numeros()
 if _errores:
     raise SystemExit("NO SE GENERO EL HTML -- corrige la fuente de datos:\n" + "\n".join(_errores))
 
-# ---------- actividades de hoy, en espanol llano (traducido a mano, maximo 6) ----------
+# ---------- traduccion de tareas a espanol llano (todas las fechas, no solo hoy) ----------
 # mapeo tarea-del-csv -> texto simple para quien no es tecnico
 TRADUCCION_HOY = {
+    "Paso1 descubrimiento tailscale+SQL": "Revisamos qué sucursales están conectadas",
+    "Paso2 probar oguzhanpisgin/mssql-readonly-mcp": "Probamos una primera forma de leer los datos (no funcionó)",
+    "Paso2 instalar y probar RichardHan/mssql_mcp_server (git version pymssql)": "Conectamos la forma de leer la información sin poder cambiarla",
+    "Paso2 registrar 5 MCP lectores en Claude Code (uno por sucursal, puerto dinamico resuelto en cada arranque)": "Conectamos las 5 sucursales para poder leerlas",
+    "Paso3 lector Menu y Precios (productos/precios 5 sucursales)": "Revisamos el menú y los precios de cada sucursal",
+    "Paso3 lector Inventario y Recetas": "Revisamos el inventario y las recetas",
+    "Paso3 lector Ventas y Cortes + Verificador": "Revisamos las ventas y los cortes de caja",
+    "Paso3 lector Configuracion (usuarios/almacenes)": "Revisamos los usuarios y la configuración",
+    "Paso4 Mapa de la base de datos": "Armamos el mapa de toda la información",
+    "Desarrollo de scripts de conexion SQL y wrappers (paso1-5)": "Programamos las conexiones a cada sucursal",
+    "Debugging e instalacion de los 2 candidatos de MCP (compatibilidad SQL Server legacy)": "Arreglamos problemas de compatibilidad",
+    "Construccion de la pagina de avance y servidor con clave": "Construimos la primera versión de la página de avance",
+    "Instalacion y configuracion inicial de claude-office": "Instalamos el panel de seguimiento interno",
     "Paso7 instalar claude-office (Python 3.13 via uv sin sudo + backend + frontend estatico)": "Organizamos el panel de seguimiento",
     "Generar PDF de analisis de incongruencias para Rafael/Felix": "Armamos el reporte de diferencias",
     "Instalar cloudflared y exponer pagina de avance publicamente (tunel gratis sin sudo)": "Hicimos público el enlace",
@@ -156,6 +169,18 @@ TRADUCCION_HOY = {
     "Agregar seguridad ligera (usuario/clave) a la pagina de avance": "Agregamos usuario y clave",
     "Integrar el plan/presupuesto contratado (Opcion B) y ajustar fecha de arranque al 23-nov": "Agregamos el plan contratado",
     "Corregir incongruencia: Revisar sucursales decia 100% sin Montecarlo conectada": "Corregimos un dato mal calculado",
+    "Coordinacion y revision entre tareas (estimado)": "Coordinación y revisión entre tareas",
+    "Subir el proyecto a GitHub (repo privado) sacando credenciales del codigo primero": "Guardamos el código en un lugar seguro",
+    "Agregar 3 usuarios (tito/rafael/felix) + bitacora de trabajo por objetivo": "Creamos cuentas y la primera bitácora",
+    "Auditoria de seguridad (agente) y arreglar los 5 hallazgos reales": "Revisamos y reforzamos la seguridad",
+    "Hacer clickeables las fases con aviso tipo toast que aparece y se desvanece": "Hicimos las etapas interactivas",
+    "Reescribir los textos de los avisos sin jerga de negocio para que Don Titi entienda": "Simplificamos los textos",
+    "Alargar el tiempo que dura visible el aviso de 4.5 a 9 segundos": "Ajuste del aviso",
+    "Presentacion del proyecto a Felix": "Presentación del proyecto a Félix",
+    "Explicacion de herramientas y cuentas (API cuentas Cloud)": "Explicación de herramientas y cuentas",
+    "Agregar horas de lunes 23-nov (dadas por Rafael) y ajuste de hoy al rango pedido": "Ajuste de horas registradas",
+    "Agregar menu de 3 puntitos + bitacora de objetivos (verde/rojo) y doble clic para cerrar avisos": "Creamos esta bitácora de objetivos",
+    "Arreglar CSV roto (comas sin escapar) y reestructurar objetivos en 3 niveles con horas reales": "Organizamos la bitácora por objetivo, con horas reales de cada día",
 }
 # tareas chicas/internas que se agrupan si hay mas de 6 actividades hoy (ver mas abajo)
 AGRUPABLES = {"Organizamos el panel de seguimiento", "Ajustes internos del sistema",
@@ -242,8 +267,9 @@ def tarjeta_fase(fase):
     </div>"""
 
 
-def fila_hoy(a):
-    ancho = max(8, round(100 * a["minutos"] / max_min_hoy))
+def fila_hoy(a, max_min=None):
+    max_min = max_min or max_min_hoy
+    ancho = max(8, round(100 * a["minutos"] / max_min))
     return f"""<div class="hoy-fila">
       <div class="hoy-texto">{a['texto']}</div>
       <div class="hoy-datos">
@@ -252,6 +278,39 @@ def fila_hoy(a):
         <span class="hoy-dur">{fmt_dur(a['minutos'])}</span>
       </div>
     </div>"""
+
+
+def tareas_del_dia(fecha):
+    """Todas las tareas de un dia (de registro_actividad.csv), traducidas, sin agrupar
+    (el detalle de horas es justo para ver todo, a diferencia de 'hoy' que se resume)."""
+    filas_dia = [f for f in filas if f["fecha"] == fecha]
+    out = []
+    for f in filas_dia:
+        out.append({
+            "texto": TRADUCCION_HOY.get(f["tarea"], f["tarea"]),
+            "inicio": f["hora_inicio"],
+            "minutos": parse_min(f["duracion"]),
+        })
+    return out
+
+
+def render_detalle_horas(dias):
+    """Seccion 'Ver que se trabajo' -- lista cada dia con sus horas y tareas reales."""
+    if not dias:
+        return '<p class="sin-dato">Sin horas registradas todavía.</p>'
+    bloques = []
+    for fecha in dias:
+        tareas = tareas_del_dia(fecha)
+        if not tareas:
+            continue
+        minutos_dia = sum(t["minutos"] for t in tareas)
+        max_dia = max((t["minutos"] for t in tareas), default=1)
+        filas_html_dia = "".join(fila_hoy(t, max_dia) for t in tareas)
+        bloques.append(f"""<details class="dia-detalle">
+          <summary>{fmt_fecha_es(fecha)} <span class="horas-badge">{fmt_dur(minutos_dia)}</span></summary>
+          <div class="hoy-lista">{filas_html_dia}</div>
+        </details>""")
+    return "".join(bloques)
 
 
 def fila_sigue(item):
@@ -279,12 +338,33 @@ def fila_objetivo(nombre, cumplido):
       <span class="objetivo-bolita" style="background:{color}"></span>
     </div>"""
 
-# Objetivos = lista curada de hitos grandes (objetivos.json), NO cada item
-# chiquito de fases.json -- Rafael pidio "unos 3 verdes max", no 18 filas.
-# Primero los cumplidos (verde), luego los pendientes (rojo).
-_objetivos = json.loads((BASE / "objetivos.json").read_text(encoding="utf-8"))
-objetivos_html = "".join(fila_objetivo(o["nombre"], True) for o in _objetivos if o["hecho"]) + \
-                 "".join(fila_objetivo(o["nombre"], False) for o in _objetivos if not o["hecho"])
+def render_objetivo_grande(cat):
+    """Un objetivo grande del plan (ej. 'Restablecer base de datos Soft Restaurant'):
+    al picarle se abren sus subobjetivos (verde primero, rojo despues) y, debajo,
+    un 'Ver que se trabajo' con las horas reales de los dias ligados a ese objetivo."""
+    subs = cat["subobjetivos"]
+    hechos = [s for s in subs if s["hecho"]]
+    pendientes = [s for s in subs if not s["hecho"]]
+    subs_html = "".join(fila_objetivo(s["nombre"], True) for s in hechos) + \
+                "".join(fila_objetivo(s["nombre"], False) for s in pendientes)
+    minutos_cat = sum(sum(parse_min(f["duracion"]) for f in filas if f["fecha"] == d) for d in cat["dias"])
+    horas_txt = fmt_dur(minutos_cat) if minutos_cat else "0 min"
+    detalle_horas = render_detalle_horas(cat["dias"])
+    pct_cat = round(100 * len(hechos) / len(subs)) if subs else 0
+    return f"""<details class="objetivo-grande">
+      <summary><span>{cat['nombre']}</span><span class="horas-badge">{pct_cat}% · {horas_txt}</span></summary>
+      <div class="subobjetivos">{subs_html}</div>
+      <details class="ver-horas">
+        <summary>Ver qué se trabajó</summary>
+        {detalle_horas}
+      </details>
+    </details>"""
+
+# Objetivos = jerarquia curada (objetivos.json): objetivo grande del plan -> sus
+# subobjetivos (verde primero, rojo despues) -> detalle real de horas por dia.
+# NO cada item chiquito de fases.json (Rafael pidio "unos 3 verdes max" arriba).
+_categorias = json.loads((BASE / "objetivos.json").read_text(encoding="utf-8"))
+objetivos_html = "".join(render_objetivo_grande(c) for c in _categorias)
 
 pasos_html = "".join(paso_circulo(f, i == len(fases) - 1) for i, f in enumerate(fases))
 tarjetas_html = "".join(tarjeta_fase(f) for f in fases)
@@ -437,6 +517,35 @@ html = f"""<!doctype html>
     margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:12px; }}
   .objetivo-texto {{ font-size:15px; line-height:1.6; }}
   .objetivo-bolita {{ width:14px; height:14px; border-radius:50%; flex:0 0 14px; }}
+
+  /* objetivo grande (acordeon de nivel 1) */
+  .objetivo-grande {{ background:#fff; border:1px solid var(--border); border-radius:16px;
+    margin-bottom:12px; overflow:hidden; }}
+  .objetivo-grande > summary {{ list-style:none; cursor:pointer; padding:16px; font-size:16px;
+    font-weight:600; display:flex; justify-content:space-between; align-items:center; gap:10px;
+    min-height:44px; }}
+  .objetivo-grande > summary::-webkit-details-marker {{ display:none; }}
+  .objetivo-grande > summary::after {{ content:"›"; font-size:20px; color:var(--ink2); margin-left:auto;
+    transform:rotate(90deg); transition:transform .2s; }}
+  .objetivo-grande[open] > summary::after {{ transform:rotate(270deg); }}
+  .objetivo-grande > summary > span:first-child {{ flex:1; }}
+  .horas-badge {{ font-size:12px; font-weight:600; color:var(--blue); background:#eaf4fe;
+    padding:4px 10px; border-radius:999px; white-space:nowrap; }}
+  .subobjetivos {{ padding:0 16px 14px; display:flex; flex-direction:column; gap:8px; }}
+  .subobjetivos .objetivo-fila {{ margin-bottom:0; box-shadow:none; }}
+
+  /* ver que se trabajo (acordeon de nivel 2, dentro del objetivo grande) */
+  .ver-horas {{ margin:0 16px 16px; border-top:1px solid var(--border); padding-top:10px; }}
+  .ver-horas > summary {{ list-style:none; cursor:pointer; font-size:14px; color:var(--blue);
+    font-weight:600; min-height:44px; display:flex; align-items:center; }}
+  .ver-horas > summary::-webkit-details-marker {{ display:none; }}
+
+  /* detalle por dia (acordeon de nivel 3, dentro de ver-horas) */
+  .dia-detalle {{ margin:10px 0; background:var(--bg); border-radius:12px; padding:4px 12px; }}
+  .dia-detalle > summary {{ list-style:none; cursor:pointer; font-size:13px; font-weight:600;
+    padding:10px 0; min-height:44px; display:flex; align-items:center; justify-content:space-between; }}
+  .dia-detalle > summary::-webkit-details-marker {{ display:none; }}
+  .hoy-lista {{ padding-bottom:10px; }}
 </style></head>
 <body>
 <div class="topbar"></div>
