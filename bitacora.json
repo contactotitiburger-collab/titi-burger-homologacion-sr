@@ -26,7 +26,9 @@
       {"tipo": "cambiado", "texto": "Rediseño completo de la página — más clara, sin tecnicismos"},
       {"tipo": "arreglado", "texto": "\"Revisar sucursales\" ya no dice 100% si falta una sucursal por conectar"},
       {"tipo": "seguridad", "texto": "Usuario y clave por persona (Tito, Rafael, Félix) + bloqueo por intentos fallidos"},
-      {"tipo": "seguridad", "texto": "El código se sube a GitHub (privado) sin ninguna contraseña adentro"}
+      {"tipo": "seguridad", "texto": "El código se sube a GitHub (privado) sin ninguna contraseña adentro"},
+      {"tipo": "seguridad", "texto": "Auditoría de seguridad: se arregló que el bloqueo por intentos fallidos no distinguía atacantes, permisos de archivos sueltos, y comparación de claves más segura"},
+      {"tipo": "arreglado", "texto": "Se borraron páginas viejas que ya no se usaban (podían filtrar un link interno)"}
     ]
   }
 ]

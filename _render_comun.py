@@ -1,4 +1,4 @@
-"""Funciones compartidas entre generar_avance.py y generar_reporte_diario.py.
+"""Funciones compartidas entre generar_avance_v2.py y generar_bitacora.py.
 Un solo lugar para el formato del timeline — para que no se vuelvan a desincronizar
 los dos generadores (eso fue justo el bug del 25-nov-2026)."""
 
