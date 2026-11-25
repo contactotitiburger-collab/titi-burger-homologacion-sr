@@ -227,7 +227,7 @@ def paso_circulo(fase, es_ultimo):
     else:
         circulo = f'<div class="paso-circ pendiente">{fase["id"]}</div>'
     linea = "" if es_ultimo else '<div class="paso-conector"></div>'
-    return f"""<div class="paso-item">
+    return f"""<div class="paso-item" onclick="mostrarToast({fase['id']})" role="button" tabindex="0">
       <div class="paso-fila">{circulo}{linea}</div>
       <div class="paso-nombre">{fase['nombre']}</div>
     </div>"""
@@ -236,7 +236,7 @@ def paso_circulo(fase, es_ultimo):
 def tarjeta_fase(fase):
     g1, g2 = fase["color"]
     anillo = ring(fase["pct"], 64, 7, "#FFFFFF", "rgba(255,255,255,.35)", "#FFFFFF", 15)
-    return f"""<div class="fase-card" style="background:linear-gradient(135deg,{g1},{g2});">
+    return f"""<div class="fase-card" style="background:linear-gradient(135deg,{g1},{g2});" onclick="mostrarToast({fase['id']})" role="button" tabindex="0">
       {anillo}
       <div class="fase-nombre">{fase['nombre']}</div>
     </div>"""
@@ -334,6 +334,15 @@ html = f"""<!doctype html>
   .plan-dato {{ display:flex; flex-direction:column; }}
   .plan-num {{ font-size:28px; font-weight:600; color:var(--blue); }}
   .plan-label {{ font-size:13px; color:var(--ink2); max-width:160px; }}
+  .paso-item, .fase-card {{ cursor:pointer; }}
+  .paso-item:hover .paso-nombre, .fase-card:hover {{ opacity:.85; }}
+  #toast {{ position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(16px);
+    background:var(--ink); color:#fff; padding:14px 18px; border-radius:14px; max-width:320px;
+    width:calc(100% - 32px); box-shadow:0 8px 24px rgba(20,60,100,0.25); opacity:0; pointer-events:none;
+    transition:opacity .25s, transform .25s; z-index:50; }}
+  #toast.show {{ opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }}
+  #toast b {{ display:block; font-size:14px; margin-bottom:4px; }}
+  #toast span {{ font-size:13px; opacity:.9; line-height:1.4; }}
   /* pasos */
   .pasos {{ display:flex; justify-content:space-between; margin:4px 0 24px; }}
   .paso-item {{ display:flex; flex-direction:column; align-items:center; flex:1; }}
@@ -455,6 +464,23 @@ html = f"""<!doctype html>
 
   <footer>Generado automáticamente por Tito · {datetime.now():%d-%m-%Y %H:%M}</footer>
 </div>
+
+<div id="toast"><b></b><span></span></div>
+<script>
+const FASES_INFO = {json.dumps({f["id"]: {"nombre": f["nombre"], "pct": f["pct"], "descripcion": f.get("descripcion", "")} for f in fases}, ensure_ascii=False)};
+let toastTimer = null;
+function mostrarToast(id) {{
+  const info = FASES_INFO[id];
+  if (!info) return;
+  const toast = document.getElementById('toast');
+  toast.querySelector('b').textContent = info.nombre + ' — ' + info.pct + '%';
+  toast.querySelector('span').textContent = info.descripcion;
+  toast.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove('show'), 4500);
+}}
+document.getElementById('toast').addEventListener('click', () => document.getElementById('toast').classList.remove('show'));
+</script>
 </body></html>"""
 
 (PAGINA_DIR / "index.html").write_text(html, encoding="utf-8")

@@ -3,6 +3,7 @@
     "id": 1,
     "nombre": "Plan",
     "color": ["#4FC3F7", "#1E90F0"],
+    "descripcion": "Opción B: ordenar Soft Restaurant y crear a Tito Operador. 217 horas contratadas ($21,700). Arrancó el 23 de noviembre de 2026.",
     "items": [
       {"nombre": "Plan de trabajo definido y aprobado", "hecho": true}
     ]
@@ -11,6 +12,7 @@
     "id": 2,
     "nombre": "Revisar sucursales",
     "color": ["#5EE6A8", "#22C58A"],
+    "descripcion": "Entrar a cada sucursal solo para VER — nunca modificar nada — y comparar menú, precios, inventario, ventas y usuarios entre todas.",
     "items": [
       {"nombre": "Ver qué sucursales están conectadas", "hecho": true},
       {"nombre": "Entrar a ver la información sin tocar nada", "hecho": true},
@@ -27,6 +29,7 @@
     "id": 3,
     "nombre": "Corregir diferencias",
     "color": ["#F48FB1", "#EC4F8A"],
+    "descripcion": "Con la base de Félix como referencia, corregir sucursal por sucursal lo que esté distinto — siempre con respaldo antes y tu aprobación en cada una.",
     "items": [
       {"nombre": "Comparar cada sucursal contra la de Félix", "hecho": false},
       {"nombre": "Aprobar qué se corrige y en qué orden", "hecho": false},
@@ -40,6 +43,7 @@
     "id": 4,
     "nombre": "Dejar todas iguales",
     "color": ["#B39DFF", "#7C4DFF"],
+    "descripcion": "Que las 6 sucursales queden con exactamente la misma información, y cerrar con una revisión final contigo y Don Titi.",
     "items": [
       {"nombre": "Las 6 sucursales con la misma información", "hecho": false},
       {"nombre": "Revisión final contigo y Don Titi", "hecho": false}
