@@ -227,7 +227,7 @@ def paso_circulo(fase, es_ultimo):
     else:
         circulo = f'<div class="paso-circ pendiente">{fase["id"]}</div>'
     linea = "" if es_ultimo else '<div class="paso-conector"></div>'
-    return f"""<div class="paso-item" onclick="mostrarToast({fase['id']})" role="button" tabindex="0">
+    return f"""<div class="paso-item" onclick="mostrarToast({fase['id']})" ondblclick="ocultarToast()" role="button" tabindex="0">
       <div class="paso-fila">{circulo}{linea}</div>
       <div class="paso-nombre">{fase['nombre']}</div>
     </div>"""
@@ -236,7 +236,7 @@ def paso_circulo(fase, es_ultimo):
 def tarjeta_fase(fase):
     g1, g2 = fase["color"]
     anillo = ring(fase["pct"], 64, 7, "#FFFFFF", "rgba(255,255,255,.35)", "#FFFFFF", 15)
-    return f"""<div class="fase-card" style="background:linear-gradient(135deg,{g1},{g2});" onclick="mostrarToast({fase['id']})" role="button" tabindex="0">
+    return f"""<div class="fase-card" style="background:linear-gradient(135deg,{g1},{g2});" onclick="mostrarToast({fase['id']})" ondblclick="ocultarToast()" role="button" tabindex="0">
       {anillo}
       <div class="fase-nombre">{fase['nombre']}</div>
     </div>"""
@@ -271,6 +271,20 @@ def detalle_fase(fase):
     )
     return f'<div class="detalle-fase"><b>{fase["nombre"]}</b><ul>{items_html}</ul></div>'
 
+
+def fila_objetivo(nombre, cumplido):
+    color = "#22C55E" if cumplido else "#F04E5E"
+    return f"""<div class="objetivo-fila">
+      <div class="objetivo-texto"><div>{nombre}</div><div>&nbsp;</div></div>
+      <span class="objetivo-bolita" style="background:{color}"></span>
+    </div>"""
+
+# Objetivos = lista curada de hitos grandes (objetivos.json), NO cada item
+# chiquito de fases.json -- Rafael pidio "unos 3 verdes max", no 18 filas.
+# Primero los cumplidos (verde), luego los pendientes (rojo).
+_objetivos = json.loads((BASE / "objetivos.json").read_text(encoding="utf-8"))
+objetivos_html = "".join(fila_objetivo(o["nombre"], True) for o in _objetivos if o["hecho"]) + \
+                 "".join(fila_objetivo(o["nombre"], False) for o in _objetivos if not o["hecho"])
 
 pasos_html = "".join(paso_circulo(f, i == len(fases) - 1) for i, f in enumerate(fases))
 tarjetas_html = "".join(tarjeta_fase(f) for f in fases)
@@ -395,9 +409,52 @@ html = f"""<!doctype html>
   .detalle-total a {{ color:var(--blue); text-decoration:none; font-weight:600; }}
   footer {{ text-align:center; color:var(--ink2); font-size:13px; padding:8px 0 24px; }}
   .sin-dato {{ color:var(--ink2); font-size:14px; }}
+
+  /* menu de 3 puntitos */
+  .menu-btn {{ position:fixed; top:14px; left:14px; width:44px; height:44px; border-radius:50%;
+    background:#fff; border:1px solid var(--border); box-shadow:0 2px 8px rgba(20,60,100,0.1);
+    display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--ink);
+    cursor:pointer; z-index:40; line-height:1; }}
+  .menu-dropdown {{ position:fixed; top:62px; left:14px; background:#fff; border:1px solid var(--border);
+    border-radius:12px; box-shadow:0 8px 24px rgba(20,60,100,0.15); display:none; overflow:hidden; z-index:40; }}
+  .menu-dropdown.show {{ display:block; }}
+  .menu-dropdown a {{ display:flex; align-items:center; min-height:44px; padding:0 16px; font-size:14px;
+    color:var(--ink); text-decoration:none; white-space:nowrap; cursor:pointer; }}
+  .menu-dropdown a:hover {{ background:var(--bg); }}
+
+  /* bitacora de objetivos (overlay de pantalla completa) */
+  #bitacora-overlay {{ display:none; position:fixed; inset:0; background:var(--bg); z-index:60;
+    overflow-y:auto; }}
+  #bitacora-overlay.show {{ display:block; }}
+  .bitacora-header {{ display:flex; justify-content:space-between; align-items:center;
+    padding:20px 16px; }}
+  .bitacora-header h2 {{ margin:0; }}
+  .cerrar-btn {{ width:44px; height:44px; border-radius:50%; background:#fff; border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--ink);
+    cursor:pointer; flex:0 0 44px; }}
+  .objetivos-lista {{ max-width:720px; margin:0 auto; padding:0 16px 32px; }}
+  .objetivo-fila {{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:14px 16px;
+    margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:12px; }}
+  .objetivo-texto {{ font-size:15px; line-height:1.6; }}
+  .objetivo-bolita {{ width:14px; height:14px; border-radius:50%; flex:0 0 14px; }}
 </style></head>
 <body>
 <div class="topbar"></div>
+
+<div class="menu-btn" onclick="toggleMenu()">⋮</div>
+<div class="menu-dropdown" id="menu-dropdown">
+  <a onclick="abrirBitacora()">Bitácora de trabajo</a>
+</div>
+
+<div id="bitacora-overlay">
+  <div class="bitacora-header">
+    <h2>Bitácora de trabajo</h2>
+    <div class="cerrar-btn" onclick="cerrarBitacora()">✕</div>
+  </div>
+  <div class="objetivos-lista">
+    {objetivos_html}
+  </div>
+</div>
 <div class="wrap">
 
   <div class="card">
@@ -479,7 +536,29 @@ function mostrarToast(id) {{
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toast.classList.remove('show'), 9000);
 }}
-document.getElementById('toast').addEventListener('click', () => document.getElementById('toast').classList.remove('show'));
+function ocultarToast() {{
+  clearTimeout(toastTimer);
+  document.getElementById('toast').classList.remove('show');
+}}
+document.getElementById('toast').addEventListener('click', ocultarToast);
+
+function toggleMenu() {{
+  document.getElementById('menu-dropdown').classList.toggle('show');
+}}
+function abrirBitacora() {{
+  document.getElementById('menu-dropdown').classList.remove('show');
+  document.getElementById('bitacora-overlay').classList.add('show');
+}}
+function cerrarBitacora() {{
+  document.getElementById('bitacora-overlay').classList.remove('show');
+}}
+document.addEventListener('click', (e) => {{
+  const dd = document.getElementById('menu-dropdown');
+  const btn = document.querySelector('.menu-btn');
+  if (dd.classList.contains('show') && !dd.contains(e.target) && e.target !== btn) {{
+    dd.classList.remove('show');
+  }}
+}});
 </script>
 </body></html>"""
 

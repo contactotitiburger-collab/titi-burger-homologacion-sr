@@ -1,0 +1,8 @@
+[
+  {"nombre": "Se hizo el plan de trabajo", "hecho": true},
+  {"nombre": "Se revisaron las 5 sucursales conectadas", "hecho": true},
+  {"nombre": "Conectar y revisar la sucursal Montecarlo", "hecho": false},
+  {"nombre": "Comparar cada sucursal contra la de Félix", "hecho": false},
+  {"nombre": "Corregir las diferencias encontradas", "hecho": false},
+  {"nombre": "Dejar las 6 sucursales exactamente iguales", "hecho": false}
+]
