@@ -252,7 +252,7 @@ def paso_circulo(fase, es_ultimo):
     else:
         circulo = f'<div class="paso-circ pendiente">{fase["id"]}</div>'
     linea = "" if es_ultimo else '<div class="paso-conector"></div>'
-    return f"""<div class="paso-item" onclick="mostrarToast({fase['id']})" ondblclick="ocultarToast()" role="button" tabindex="0">
+    return f"""<div class="paso-item" onclick="mostrarToast({fase['id']})" role="button" tabindex="0">
       <div class="paso-fila">{circulo}{linea}</div>
       <div class="paso-nombre">{fase['nombre']}</div>
     </div>"""
@@ -261,7 +261,7 @@ def paso_circulo(fase, es_ultimo):
 def tarjeta_fase(fase):
     g1, g2 = fase["color"]
     anillo = ring(fase["pct"], 64, 7, "#FFFFFF", "rgba(255,255,255,.35)", "#FFFFFF", 15)
-    return f"""<div class="fase-card" style="background:linear-gradient(135deg,{g1},{g2});" onclick="mostrarToast({fase['id']})" ondblclick="ocultarToast()" role="button" tabindex="0">
+    return f"""<div class="fase-card" style="background:linear-gradient(135deg,{g1},{g2});" onclick="mostrarToast({fase['id']})" role="button" tabindex="0">
       {anillo}
       <div class="fase-nombre">{fase['nombre']}</div>
     </div>"""
@@ -635,19 +635,23 @@ html = f"""<!doctype html>
 <script>
 const FASES_INFO = {json.dumps({f["id"]: {"nombre": f["nombre"], "pct": f["pct"], "descripcion": f.get("descripcion", "")} for f in fases}, ensure_ascii=False)};
 let toastTimer = null;
+let toastActivo = null;
 function mostrarToast(id) {{
+  if (toastActivo === id) {{ ocultarToast(); return; }}
   const info = FASES_INFO[id];
   if (!info) return;
   const toast = document.getElementById('toast');
   toast.querySelector('b').textContent = info.nombre + ' — ' + info.pct + '%';
   toast.querySelector('span').textContent = info.descripcion;
   toast.classList.add('show');
+  toastActivo = id;
   clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => toast.classList.remove('show'), 9000);
+  toastTimer = setTimeout(ocultarToast, 9000);
 }}
 function ocultarToast() {{
   clearTimeout(toastTimer);
   document.getElementById('toast').classList.remove('show');
+  toastActivo = null;
 }}
 document.getElementById('toast').addEventListener('click', ocultarToast);
 
