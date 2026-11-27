@@ -6,7 +6,7 @@
     "horas_presupuestadas": 217,
     "costo_total": 21700,
     "nota_fecha": "Fecha de arranque ajustada: el plan original decía 1-dic-2026, pero el trabajo arrancó el lunes 23-nov-2026 (cuando Rafael regresó con Félix). El resto del cronograma (10 semanas de trabajo + 4 de soporte) se recorrió esos mismos 8 días.",
-    "descripcion_plan": "Ordenar Soft Restaurant con un solo catalogo maestro (mismo producto, codigo y precio en las 6 sucursales, Montejano como base), replica por sucursal con respaldo + 10 tickets + firma de Felix, inventario global con mermas, y Tito Operador con 3 niveles de permiso. Tito en solo lectura, cambios con exportar/importar oficial de SR.",
+    "descripcion_plan": "Ordenar Soft Restaurant con un solo catalogo maestro (mismo producto, codigo y precio en las 6 sucursales, Montejano como base), replica por sucursal con respaldo + 10 tickets + firma de Felix, inventario global con mermas, y Tito Operador con 3 niveles de permiso. Tito en solo lectura, cambios con exportar/importar oficial de SR. Actualizado 27-nov-2026: el menú se iguala contra Montejano y los insumos/costos/paquetes contra Félix (la base de Félix es la de la cocina y reusa códigos). Las correcciones las prepara Tito Editor (respaldo, aprobación, deshacer y verificación con los lectores); mientras no haya login de escritura, Félix las captura en SR con la hoja que arma el Editor.",
     "fases_plan": [
         {
             "nombre": "Diagnostico y lectura de las 6 sucursales",

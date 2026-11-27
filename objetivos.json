@@ -4,7 +4,8 @@
         "dias": [
             "2026-11-23",
             "2026-11-24",
-            "2026-11-26"
+            "2026-11-26",
+            "2026-11-27"
         ],
         "subobjetivos": [
             {
@@ -25,6 +26,14 @@
             },
             {
                 "nombre": "Comparar cada sucursal contra la de Félix",
+                "hecho": true
+            },
+            {
+                "nombre": "Lista de correcciones con gravedad, sucursal por sucursal",
+                "hecho": true
+            },
+            {
+                "nombre": "Crear a Tito Editor y probarlo en seco",
                 "hecho": true
             },
             {

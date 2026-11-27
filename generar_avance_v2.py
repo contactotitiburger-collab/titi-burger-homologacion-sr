@@ -216,7 +216,7 @@ que_sigue = [
 
 bloqueos = []
 
-frase_dueno = "Ya quedaron conectadas las 6 sucursales y la compu de Félix, y el tablero de inventario las muestra en vivo. Sigue revisar Montecarlo a fondo y comparar cada sucursal contra la de Félix para corregir lo que esté distinto."
+frase_dueno = "Ya se comparó cada sucursal contra la de Félix y quedó la lista de lo que hay que corregir. Tito Editor ya está listo y probado sin tocar ninguna sucursal; sigue que Rafael y Félix decidan qué se corrige y en qué orden."
 # estado_chip ya se calculó arriba comparando horas usadas vs tiempo del contrato (ver plan_contrato.json)
 ESTADO_TXT = {"vamos_bien": "Vamos bien", "con_retraso": "Con retraso", "atorado": "Atorado"}
 ESTADO_COLOR = {"vamos_bien": "#22C55E", "con_retraso": "#F5B83D", "atorado": "#F04E5E"}

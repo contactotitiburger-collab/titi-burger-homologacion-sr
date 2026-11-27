@@ -80,10 +80,14 @@
             "#F48FB1",
             "#EC4F8A"
         ],
-        "descripcion": "Usando la sucursal de Félix como ejemplo a seguir, aquí se va a corregir lo que esté distinto, sucursal por sucursal — siempre guardando una copia de seguridad antes y pidiendo tu aprobación en cada una.",
+        "descripcion": "Aquí se corrige lo que esté distinto, sucursal por sucursal, siempre con copia de seguridad y con tu aprobación. Regla aprendida en el análisis: el menú, los precios y las recetas se igualan contra Montejano; los insumos, costos y paquetes contra la de Félix (su base es la de la cocina y usa los mismos códigos para otras cosas, así que no se copia completa).",
         "items": [
             {
                 "nombre": "Comparar cada sucursal contra la de Félix",
+                "hecho": true
+            },
+            {
+                "nombre": "Félix confirma qué partes de su base ya son definitivas",
                 "hecho": false
             },
             {
@@ -92,10 +96,14 @@
             },
             {
                 "nombre": "Preparar la forma de corregir con respaldo",
-                "hecho": false
+                "hecho": true
             },
             {
-                "nombre": "Probar la corrección en una copia, no en vivo",
+                "nombre": "Probar la corrección en una copia local, no en vivo",
+                "hecho": true
+            },
+            {
+                "nombre": "Probar la corrección en una copia real de la base (respaldo restaurado)",
                 "hecho": false
             },
             {
@@ -104,6 +112,10 @@
             },
             {
                 "nombre": "Corregir el resto, una por una (con tu aprobación)",
+                "hecho": false
+            },
+            {
+                "nombre": "Cine Curto: mapa de códigos propio antes de corregir",
                 "hecho": false
             }
         ]

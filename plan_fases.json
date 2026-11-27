@@ -1,0 +1,122 @@
+[
+    {
+        "area": "Diagnóstico y lectura de las 6 sucursales",
+        "etiqueta": "Diagnóstico",
+        "desc": "Entramos a las 6 sucursales y leímos toda su información (menú, precios, inventario) sin cambiarle nada, para ver cómo está cada una.",
+        "horas": 25,
+        "items": [
+            {
+                "n": "Plan de trabajo definido",
+                "hecho": true
+            },
+            {
+                "n": "Conectar y leer las 6 sucursales (solo lectura)",
+                "hecho": true
+            },
+            {
+                "n": "Revisar menú, precios e inventario de cada una",
+                "hecho": true
+            },
+            {
+                "n": "Mapa de la base de datos",
+                "hecho": true
+            },
+            {
+                "n": "Conectar Montecarlo y Félix (usuario de lectura)",
+                "hecho": true
+            }
+        ]
+    },
+    {
+        "area": "Catálogo maestro: dejar las 6 parejas",
+        "etiqueta": "Catálogo",
+        "desc": "Dejar que las 6 sucursales manejen el mismo menú, con los mismos precios y los mismos códigos, tomando Montejano como la base del menú y la de Félix como la base de insumos, costos y paquetes.",
+        "horas": 60,
+        "items": [
+            {
+                "n": "Comparar cada sucursal contra la base",
+                "hecho": true
+            },
+            {
+                "n": "Lista de correcciones con gravedad (1,530: 479 seguras, 939 por decidir, 112 que no se tocan)",
+                "hecho": true
+            },
+            {
+                "n": "Tito Editor creado y probado en seco (sin conexión a sucursales)",
+                "hecho": true
+            },
+            {
+                "n": "Decisiones de Rafael y Félix sobre lo que hay que decidir",
+                "hecho": false
+            },
+            {
+                "n": "Corregir las diferencias encontradas",
+                "hecho": false
+            },
+            {
+                "n": "Dejar las 6 sucursales con el mismo catálogo",
+                "hecho": false
+            }
+        ]
+    },
+    {
+        "area": "Copiar el catálogo a cada sucursal",
+        "etiqueta": "Copiar",
+        "desc": "Pasar los cambios a cada sucursal con Tito Editor: lote chico, respaldo completo antes, aprobación de Rafael y de Félix, de madrugada (3 a 10 am) y nunca en diciembre; después los lectores verifican y, si algo sale mal, se deshace.",
+        "horas": 65,
+        "items": [
+            {
+                "n": "Probar en una copia real de la base (respaldo restaurado)",
+                "hecho": false
+            },
+            {
+                "n": "Respaldar e importar en cada sucursal",
+                "hecho": false
+            },
+            {
+                "n": "Probar 10 tickets y firma de Félix por sucursal",
+                "hecho": false
+            },
+            {
+                "n": "Inventario global y reporte de mermas de carne",
+                "hecho": false
+            }
+        ]
+    },
+    {
+        "area": "Tito Operador (3 niveles de permiso)",
+        "etiqueta": "Tito Operador",
+        "desc": "Preparar a Tito para que ayude en la operación: consultar ventas e inventario, y hacer cambios con permiso según el nivel (consultas, catálogo o caja).",
+        "horas": 50,
+        "items": [
+            {
+                "n": "Diseñar los 3 niveles de permiso",
+                "hecho": false
+            },
+            {
+                "n": "Nivel 1: consultas libres",
+                "hecho": false
+            },
+            {
+                "n": "Nivel 2: catálogo e inventario (confirma Félix o Nancy)",
+                "hecho": false
+            },
+            {
+                "n": "Nivel 3: dinero y cierres de caja (confirma Félix o David)",
+                "hecho": false
+            }
+        ]
+    },
+    {
+        "area": "Soporte y seguimiento",
+        "etiqueta": "Soporte",
+        "desc": "Acompañar unas semanas después de terminar, para resolver dudas y afinar lo que haga falta.",
+        "horas": 17,
+        "items": [
+            {
+                "n": "4 semanas de soporte",
+                "hecho": false
+            }
+        ]
+    }
+]
