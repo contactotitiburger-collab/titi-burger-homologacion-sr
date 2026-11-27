@@ -120,7 +120,7 @@ if all(f["estado"] == "hecho" for f in fases):
 # aunque Montecarlo seguia sin conectar. Mientras Montecarlo siga sin conectarse,
 # la fase de sucursales DEBE tener un item de Montecarlo marcado como no-hecho --
 # si alguien lo borra o lo marca hecho por error, esto truena antes de publicar.
-MONTECARLO_CONECTADA = False
+MONTECARLO_CONECTADA = True  # 26-nov-2026: conectada a la red + usuario de lectura creado, se lee softrestaurant12
 
 def verificar_numeros():
     errores = []
