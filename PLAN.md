@@ -8,8 +8,9 @@
 2. **Tito Lector lee todas las carretas** y entiende cada diferencia. ✅
 3. **Reporte de diferencias** de cada carreta contra la base de Félix, y de lo que le falta a la de Félix. ✅ (falta que Rafael lo apruebe)
 4. **Arreglar la base de Félix.** Está mal hecha; se modifica como Félix la quiera. Si falta un producto, **se le crea código nuevo**. Se comprueba que quede perfecta.
-5. **Usar Soft Restaurant a su máxima capacidad.** Antes de editar: bajar agentes e información (cómo lo usan los pros) para acomodar todo en su lugar. Ejemplo: un combo en **menos de 10 clics**.
+5. **Usar Soft Restaurant a su máxima capacidad.** (Investigado 27-nov: combo = producto compuesto con bebida y papas forzadas ≈ 4–6 clics.) Antes de editar: bajar agentes e información (cómo lo usan los pros) para acomodar todo en su lugar. Ejemplo: un combo en **menos de 10 clics**.
 6. **Copy paste de la base de Félix a todas las carretas.** Antes, respaldo completo de cada una (se guarda todo; no importa que se borre). Primero **una sola carreta**, luego las demás, una por una. Nunca en diciembre.
+   - **Cómo (investigación 27-nov, ver INVESTIGACION_SR_27NOV.md):** con la opción oficial de SR "Recuperar base de datos → Seleccionar catálogos a recuperar". Antes: subir Hacienda, Villas, San Marcos y Cine Curto de SR11 a SR12 con el distribuidor (trae SQL 2019) y el SQL de Montejano (SR12 sobre SQL 2014 SP1). Avisar a Soporte de Integraciones por Uber/Rappi/DiDi.
    - Bloqueo técnico: Félix y Montecarlo = SQL 2019; Montejano, Hacienda, Villas, San Marcos, Cine Curto = SQL 2014. Hay que subir esas 5 a 2019 para poder pegar la copia.
 7. **Clases a Félix y Marco**, con mucho tiempo, ya con las bases regularizadas.
 8. Después (contrato): **Tito Operador** (3 niveles de permiso) y **soporte**.

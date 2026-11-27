@@ -117,8 +117,8 @@
   "descripcion": "Antes de copiar, se investiga a fondo (agentes, guías, cómo lo usan los pros) para acomodar todo en su lugar: que un combo salga en menos de 10 clics, botones y grupos ordenados.",
   "items": [
    {
-    "nombre": "Investigar agentes e información para sacarle todo a Soft Restaurant",
-    "hecho": false
+    "nombre": "Investigar cómo sacarle todo a Soft Restaurant (hecho 27-nov: combos como producto compuesto, 4 a 6 clics)",
+    "hecho": true
    },
    {
     "nombre": "Propuesta de acomodo: combos en menos clics, botones y grupos",
@@ -148,7 +148,7 @@
     "hecho": false
    },
    {
-    "nombre": "Subir el SQL de 5 cajas de la versión 2014 a la 2019 para poder pegar la copia",
+    "nombre": "Subir Hacienda, Villas, San Marcos y Cine Curto a Soft Restaurant 12 con el distribuidor (trae SQL 2019) y el SQL de Montejano a 2019",
     "hecho": false
    },
    {
@@ -156,11 +156,11 @@
     "hecho": false
    },
    {
-    "nombre": "Copiar a la primera carreta y revisarla",
+    "nombre": "Copiar el catálogo de Félix a la primera carreta con la opción oficial de SR (Recuperar base de datos → catálogos)",
     "hecho": false
    },
    {
-    "nombre": "Ajustar lo propio de cada carreta (almacén, impresoras, nube)",
+    "nombre": "Revisar lo propio de cada carreta (impresoras, folios, facturas) y avisar a Soporte de Integraciones por Uber, Rappi y DiDi",
     "hecho": false
    },
    {
