@@ -40,3 +40,4 @@ fecha,hora_inicio,hora_fin,duracion,tarea,resultado
 2026-11-26,15:20,15:24,4min,Crear cuenta de Marco Perez en la pagina de avance,OK - usuario marco con clave propia; servicio reiniciado
 2026-11-26,15:24,15:40,16min,Conectar la compu de Felix a la red Tailscale (guia paso a paso del login) y detectar su Soft Restaurant,"OK - desktop-bc8qefq 100.113.241.107 en la red; SQL Server 2019 instancia SOFTRESTAURANT puerto 56659; falta crear usuario de solo-lectura tito"
 2026-11-26,15:55,16:25,30min,Re-vincular el bot de WhatsApp que se habia desconectado (perdio sesion),"OK - linked/connected/healthy; QR entregado como imagen por link; gateway reiniciado"
+2026-11-26,16:45,16:50,5min,Conectar y verificar la sucursal Montecarlo en Tailscale,"OK conexion directa 8ms; SQL Server 2019 instancia SOFTRESTAURANT puerto 51050; falta crear usuario de solo-lectura tito para leer (mismo paso que compu de Felix)"
