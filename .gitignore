@@ -1,12 +1,10 @@
-# Nunca subir el token secreto de la URL ni la pagina generada (el nombre de
-# carpeta DENTRO de avance/ es el token -- subirla expondria el link privado).
-.token_avance
-avance/
-
-# Python
+node_modules/
 __pycache__/
 *.pyc
 noche_2026-11-26/fotos/
 noche_2026-11-26/analisis_completo.json
 *.bak_noche
 salud_cajas/
+.venv/
+credentials/
+*.log
