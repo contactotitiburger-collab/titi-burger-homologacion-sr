@@ -31,5 +31,16 @@
       {"tipo": "seguridad", "texto": "Auditoría de seguridad: se arregló que el bloqueo por intentos fallidos no distinguía atacantes, permisos de archivos sueltos, y comparación de claves más segura"},
       {"tipo": "arreglado", "texto": "Se borraron páginas viejas que ya no se usaban (podían filtrar un link interno)"}
     ]
+  },
+  {
+    "fecha": "2026-11-26",
+    "titulo": "Las 6 sucursales conectadas y en vivo",
+    "cambios": [
+      {"tipo": "agregado", "texto": "Se conectaron las 2 que faltaban: la computadora de Félix (la base de referencia) y la sucursal Montecarlo — ya están las 6"},
+      {"tipo": "agregado", "texto": "El tablero de inventario muestra las 6 sucursales en vivo: Montejano, Hacienda del Río, Montecarlo, Villas del Rey, San Marcos y Cine Curto"},
+      {"tipo": "agregado", "texto": "Chequeo de salud automático: si una sucursal o el tablero se cae, Tito le avisa a Rafael por WhatsApp (y avisa cuando se recupera)"},
+      {"tipo": "agregado", "texto": "Se le creó cuenta propia a Marco en la página de avance"},
+      {"tipo": "arreglado", "texto": "Se reconectó el bot de WhatsApp que había perdido la sesión"}
+    ]
   }
 ]

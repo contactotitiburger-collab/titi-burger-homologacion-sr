@@ -208,17 +208,15 @@ max_min_hoy = max((a["minutos"] for a in actividades_hoy), default=1)
 
 # ---------- que sigue (real, de lo que se sabe hoy) ----------
 que_sigue = [
-    {"estado": "pendiente", "texto": "Conectar la computadora de Félix y la sucursal Montecarlo", "quien": "Félix"},
+    {"estado": "pendiente", "texto": "Revisar Montecarlo a fondo con los ayudantes (igual que a las otras 5)", "quien": "Tito"},
     {"estado": "pendiente", "texto": "Comparar cada sucursal contra la de Félix", "quien": "Tito"},
     {"estado": "pendiente", "texto": "Corregir las diferencias, una sucursal a la vez", "quien": "Tito, con tu aprobación"},
     {"estado": "pendiente", "texto": "Dejar las 6 sucursales exactamente iguales", "quien": "Tito"},
 ]
 
-bloqueos = [
-    {"texto": "Falta conectar la computadora de Félix (es la referencia para comparar) y la sucursal Montecarlo.", "quien": "Félix / Rafael"},
-]
+bloqueos = []
 
-frase_dueno = "Ya revisamos las 5 sucursales conectadas. Sigue comparar cada una contra la de Félix y corregir lo que esté distinto."
+frase_dueno = "Ya quedaron conectadas las 6 sucursales y la compu de Félix, y el tablero de inventario las muestra en vivo. Sigue revisar Montecarlo a fondo y comparar cada sucursal contra la de Félix para corregir lo que esté distinto."
 # estado_chip ya se calculó arriba comparando horas usadas vs tiempo del contrato (ver plan_contrato.json)
 ESTADO_TXT = {"vamos_bien": "Vamos bien", "con_retraso": "Con retraso", "atorado": "Atorado"}
 ESTADO_COLOR = {"vamos_bien": "#22C55E", "con_retraso": "#F5B83D", "atorado": "#F04E5E"}
@@ -334,7 +332,7 @@ def detalle_fase(fase):
 def fila_objetivo(nombre, cumplido):
     color = "#22C55E" if cumplido else "#F04E5E"
     return f"""<div class="objetivo-fila">
-      <div class="objetivo-texto"><div>{nombre}</div><div>&nbsp;</div></div>
+      <div class="objetivo-texto">{nombre}</div>
       <span class="objetivo-bolita" style="background:{color}"></span>
     </div>"""
 
@@ -385,6 +383,93 @@ else:
 
 ring_principal = ring(pct_global, 160, 10, "#1E90F0", "#E3EEF6", "#12324A", 40)
 
+# ===================== DASHBOARD REDISEÑADO (7 puntos, 26-nov-2026) =====================
+import math as _math
+plan_fases = json.loads((BASE / "plan_fases.json").read_text(encoding="utf-8"))
+for _pf in plan_fases:
+    _n = len(_pf["items"]); _h = sum(1 for _it in _pf["items"] if _it["hecho"])
+    _pf["pct"] = round(100 * _h / _n) if _n else 0
+    _pf["estado"] = "hecho" if _pf["pct"] == 100 else ("curso" if _pf["pct"] > 0 else "pendiente")
+fase_actual_plan = next((_pf for _pf in plan_fases if _pf["estado"] != "hecho"), plan_fases[-1])
+_idx_act = plan_fases.index(fase_actual_plan)
+_segs = max(1, len(plan_fases) - 1)
+if all(_pf["estado"] == "hecho" for _pf in plan_fases):
+    _linea_fill = 1.0
+else:
+    _linea_fill = (_idx_act + fase_actual_plan["pct"] / 100.0) / _segs
+_linea_fill = max(0.0, min(1.0, _linea_fill))
+_COL = {"hecho": "#22C55E", "curso": "#1E90F0", "pendiente": "#C9CFD6"}
+_ESTTXT = {"hecho": "Terminada", "curso": "En curso", "pendiente": "Pendiente"}
+
+def _anillo_fase(pf, idx):
+    size, stroke = 56, 6
+    r = (size - stroke) / 2
+    circ = 2 * _math.pi * r
+    col = _COL[pf["estado"]]
+    off = circ * (1 - pf["pct"] / 100.0)
+    arco = ""
+    if pf["pct"] > 0:
+        arco = (f'<circle cx="{size/2}" cy="{size/2}" r="{r}" fill="none" stroke="{col}" stroke-width="{stroke}" '
+                f'stroke-linecap="round" stroke-dasharray="{circ:.1f}" stroke-dashoffset="{off:.1f}" '
+                f'transform="rotate(-90 {size/2} {size/2})"/>')
+    numcol = col if pf["pct"] > 0 else "#9DB2C2"
+    return (f'<div class="pf-dot" onclick="verFasePlan({idx})">'
+            f'<svg width="{size}" height="{size}" viewBox="0 0 {size} {size}">'
+            f'<circle cx="{size/2}" cy="{size/2}" r="{r}" fill="#fff" stroke="#E3EEF6" stroke-width="{stroke}"/>{arco}'
+            f'<text x="50%" y="53%" text-anchor="middle" dominant-baseline="middle" '
+            f'style="font:600 13px Poppins,sans-serif;fill:{numcol};">{pf["pct"]}%</text>'
+            f'</svg><div class="pf-dot-lbl">{pf["etiqueta"]}</div></div>')
+
+dots_html = (
+    '<div class="pf-row">'
+    '<div class="pf-line-bg"></div>'
+    f'<div class="pf-line-fill" style="width:calc(80% * {_linea_fill:.4f});"></div>'
+    + "".join(_anillo_fase(pf, i) for i, pf in enumerate(plan_fases))
+    + '</div><div id="fase-resumen" class="pf-resumen"></div>'
+)
+
+# Punto 2: desglose de la fase actual
+_bd_items = ""
+for _it in fase_actual_plan["items"]:
+    _c = "#22C55E" if _it["hecho"] else "#C9CFD6"
+    _ic = "✓" if _it["hecho"] else "○"
+    _cls = "bd-done" if _it["hecho"] else "bd-pend"
+    _bd_items += f'<div class="bd-item"><span class="bd-ic" style="color:{_c}">{_ic}</span><span class="{_cls}">{_it["n"]}</span></div>'
+breakdown_html = (
+    f'<div class="bd-head"><h2>En qué vamos ahorita</h2><span class="bd-badge">{fase_actual_plan["pct"]}%</span></div>'
+    f'<p class="bd-fase">{fase_actual_plan["area"]}</p>'
+    f'<div class="bd-list">{_bd_items}</div>'
+)
+
+# Punto 7: Bitácora por áreas (incluye pendientes con 0% · 0 min, en orden del plan)
+_bit = ""
+for _pf in plan_fases:
+    _hechos = [x for x in _pf["items"] if x["hecho"]]
+    _pend = [x for x in _pf["items"] if not x["hecho"]]
+    _rows = ""
+    for _it in _hechos + _pend:
+        _col = "#22C55E" if _it["hecho"] else "#C9CFD6"
+        _ptxt = "100% · hecho" if _it["hecho"] else "0% · 0 min"
+        _rows += (f'<div class="bit-item"><span class="bit-dot" style="background:{_col}"></span>'
+                  f'<span class="bit-nom">{_it["n"]}</span><span class="bit-pct">{_ptxt}</span></div>')
+    _bit += (f'<div class="bit-area"><div class="bit-area-head">'
+             f'<span class="bit-area-tit">{_pf["area"]}</span>'
+             f'<span class="bit-area-badge" style="color:{_COL[_pf["estado"]]}">{_pf["pct"]}%</span></div>{_rows}</div>')
+bitacora_areas_html = _bit
+
+plan_fases_js = json.dumps(
+    [{"a": pf["area"], "p": pf["pct"], "e": _ESTTXT[pf["estado"]],
+      "h": sum(1 for it in pf["items"] if it["hecho"]),
+      "f": sum(1 for it in pf["items"] if not it["hecho"]), "d": pf.get("desc","")} for pf in plan_fases],
+    ensure_ascii=False)
+
+# Círculo grande: se queda como está ahorita (% global del prefijo)
+_tt = sum(len(pf["items"]) for pf in plan_fases)
+_th = sum(1 for pf in plan_fases for it in pf["items"] if it["hecho"])
+pct_plan_global = round(100 * _th / _tt) if _tt else 0
+frase_plan = "Ya terminamos de leer las 6 sucursales. Ahora vamos ordenando el cat\u00e1logo para que todas manejen el mismo men\u00fa y los mismos precios."
+ring_big = ring(pct_plan_global, 128, 12, "var(--blue)", "var(--track)", "var(--ink)", 32)
+
 html = f"""<!doctype html>
 <html lang="es"><head>
 <meta charset="utf-8">
@@ -397,16 +482,14 @@ html = f"""<!doctype html>
   :root {{
     --bg:#EEF7FC; --bg-top:#D6EEFA; --card:#FFFFFF; --border:#E6EEF5;
     --blue:#1E90F0; --track:#E3EEF6; --ink:#12324A; --ink2:#5B7488;
-    --listo:#22C55E; --encurso:#1E90F0; --pendiente:#A0B4C4; --atorado:#F04E5E; --retraso:#F5B83D;
+    --listo:#22C55E; --encurso:#1E90F0; --pendiente:#A0B4C4;
   }}
   * {{ box-sizing:border-box; }}
-  body {{ margin:0; font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif;
-    background:var(--bg); color:var(--ink); }}
+  body {{ margin:0; font-family:"Poppins",system-ui,-apple-system,"Segoe UI",sans-serif; background:var(--bg); color:var(--ink); }}
   .topbar {{ height:120px; background:linear-gradient(180deg,var(--bg-top),var(--bg)); }}
   .wrap {{ max-width:960px; margin:-90px auto 0; padding:0 16px 32px; }}
   @media (min-width:700px) {{ .wrap {{ padding:0 24px 40px; }} }}
-  .card {{ background:var(--card); border:1px solid var(--border); border-radius:20px;
-    box-shadow:0 4px 16px rgba(20,60,100,0.06); padding:20px; margin-bottom:16px; }}
+  .card {{ background:var(--card); border:1px solid var(--border); border-radius:20px; box-shadow:0 4px 16px rgba(20,60,100,0.06); padding:20px; margin-bottom:16px; }}
   @media (min-width:700px) {{ .card {{ padding:28px; }} }}
   h1 {{ font-size:22px; font-weight:600; margin:0 0 4px; }}
   @media (min-width:700px) {{ h1 {{ font-size:28px; }} }}
@@ -414,47 +497,33 @@ html = f"""<!doctype html>
   h2 {{ font-size:17px; font-weight:600; margin:0 0 14px; }}
   p {{ font-size:15px; line-height:1.5; margin:0; }}
   .ring-wrap {{ display:flex; flex-direction:column; align-items:center; }}
-  .ring-label {{ font-size:15px; color:var(--ink2); margin-top:6px; text-align:center; }}
   .vamos-top {{ display:flex; flex-direction:column; align-items:center; gap:14px; text-align:center; }}
   @media (min-width:560px) {{ .vamos-top {{ flex-direction:row; text-align:left; gap:24px; }} }}
   .vamos-texto p {{ margin-bottom:12px; }}
   .chip {{ display:inline-block; padding:6px 14px; border-radius:999px; font-size:13px; font-weight:600; color:#fff; }}
-  .resumen-mini {{ border-top:1px solid var(--border); margin-top:16px; padding-top:14px; display:flex;
-    flex-direction:column; gap:8px; }}
+  .resumen-mini {{ border-top:1px solid var(--border); margin-top:16px; padding-top:14px; display:flex; flex-direction:column; gap:8px; }}
   .resumen-item {{ display:flex; align-items:flex-start; gap:8px; font-size:14px; color:var(--ink2); }}
   .resumen-item b {{ color:var(--ink); }}
   .resumen-punto {{ width:8px; height:8px; border-radius:50%; margin-top:6px; flex:0 0 8px; }}
-  .plan-grid {{ display:flex; gap:24px; flex-wrap:wrap; }}
-  .plan-dato {{ display:flex; flex-direction:column; }}
-  .plan-num {{ font-size:28px; font-weight:600; color:var(--blue); }}
-  .plan-label {{ font-size:13px; color:var(--ink2); max-width:160px; }}
-  .paso-item, .fase-card {{ cursor:pointer; }}
-  .paso-item:hover .paso-nombre, .fase-card:hover {{ opacity:.85; }}
-  #toast {{ position:fixed; left:50%; bottom:28px; transform:translateX(-50%) translateY(16px);
-    background:var(--ink); color:#fff; padding:14px 18px; border-radius:14px; max-width:320px;
-    width:calc(100% - 32px); box-shadow:0 8px 24px rgba(20,60,100,0.25); opacity:0; pointer-events:none;
-    transition:opacity .25s, transform .25s; z-index:50; }}
-  #toast.show {{ opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }}
-  #toast b {{ display:block; font-size:14px; margin-bottom:4px; }}
-  #toast span {{ font-size:13px; opacity:.9; line-height:1.4; }}
-  /* pasos */
-  .pasos {{ display:flex; justify-content:space-between; margin:4px 0 24px; }}
-  .paso-item {{ display:flex; flex-direction:column; align-items:center; flex:1; }}
-  .paso-fila {{ display:flex; align-items:center; width:100%; }}
-  .paso-circ {{ width:36px; height:36px; border-radius:50%; flex:0 0 36px; display:flex; align-items:center;
-    justify-content:center; font-size:15px; font-weight:600; position:relative; }}
-  .paso-circ.hecho {{ background:var(--blue); color:#fff; }}
-  .paso-circ.en-curso {{ background:#fff; color:var(--blue); border:2px solid var(--blue); }}
-  .paso-circ.en-curso .halo {{ position:absolute; inset:-6px; border-radius:50%; border:2px solid var(--blue); opacity:.35; }}
-  .paso-circ.pendiente {{ background:#fff; color:var(--pendiente); border:2px solid var(--pendiente); }}
-  .paso-conector {{ height:2px; background:var(--track); flex:1; margin:0 2px; }}
-  .paso-nombre {{ font-size:12px; color:var(--ink2); text-align:center; margin-top:6px; max-width:80px; }}
-  /* tarjetas de fase */
-  .fases-grid {{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }}
-  @media (min-width:700px) {{ .fases-grid {{ grid-template-columns:repeat(4,1fr); }} }}
-  .fase-card {{ border-radius:16px; padding:16px; display:flex; flex-direction:column; align-items:center;
-    color:#fff; min-height:150px; justify-content:center; }}
-  .fase-nombre {{ font-size:13px; font-weight:600; margin-top:8px; text-align:center; color:#fff; }}
+  /* fila de fases (bolitas) */
+  .pf-row {{ position:relative; display:flex; justify-content:space-between; align-items:flex-start; padding:4px 0 0; margin-bottom:4px; }}
+  .pf-line-bg {{ position:absolute; top:28px; left:10%; right:10%; height:3px; background:var(--track); border-radius:2px; z-index:0; }}
+  .pf-line-fill {{ position:absolute; top:28px; left:10%; height:3px; background:linear-gradient(90deg,#22C55E,#1E90F0); border-radius:2px; z-index:0; transition:width .5s ease; }}
+  .pf-dot {{ position:relative; z-index:1; width:20%; display:flex; flex-direction:column; align-items:center; cursor:pointer; }}
+  .pf-dot-lbl {{ font-size:10px; color:var(--ink2); text-align:center; margin-top:6px; line-height:1.2; padding:0 2px; }}
+  @media (min-width:560px) {{ .pf-dot-lbl {{ font-size:12px; }} }}
+  .pf-resumen {{ display:none; margin-top:16px; background:#F4FAFE; border:1px solid var(--border); border-radius:12px; padding:13px 15px; font-size:14px; color:var(--ink); line-height:1.5; }}
+  .pf-resumen.show {{ display:block; }}
+  .pf-resumen b {{ display:block; margin-bottom:4px; }}
+  /* desglose fase actual */
+  .bd-head {{ display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }}
+  .bd-head h2 {{ margin:0; }}
+  .bd-badge {{ font-size:13px; font-weight:600; color:var(--blue); background:#eaf4fe; padding:4px 12px; border-radius:999px; }}
+  .bd-fase {{ color:var(--ink2); font-size:14px; margin:0 0 16px; }}
+  .bd-list {{ display:flex; flex-direction:column; gap:11px; }}
+  .bd-item {{ display:flex; align-items:center; gap:10px; font-size:15px; }}
+  .bd-ic {{ font-size:16px; flex:0 0 auto; width:18px; }}
+  .bd-pend {{ color:var(--ink2); }}
   /* hoy */
   .hoy-header {{ display:flex; justify-content:space-between; align-items:baseline; margin-bottom:14px; }}
   .hoy-total {{ font-size:15px; font-weight:600; color:var(--blue); }}
@@ -470,82 +539,28 @@ html = f"""<!doctype html>
   .sigue-punto {{ width:12px; height:12px; border-radius:50%; margin-top:5px; flex:0 0 12px; }}
   .sigue-texto {{ font-size:15px; }}
   .sigue-quien {{ font-size:13px; color:var(--ink2); margin-top:2px; }}
-  /* bloqueos */
-  .bloqueo-card {{ border-left:4px solid var(--atorado); }}
-  .bloqueo-card-ok {{ border-left:4px solid var(--listo); }}
-  .bloqueo-fila {{ margin-bottom:10px; }}
-  .bloqueo-texto {{ font-size:15px; }}
-  .bloqueo-quien {{ font-size:13px; color:var(--ink2); margin-top:3px; }}
-  .bloqueo-ok {{ font-size:15px; color:var(--listo); font-weight:600; }}
-  /* detalle */
-  details summary {{ cursor:pointer; font-size:15px; font-weight:600; color:var(--blue); padding:4px 0;
-    min-height:44px; display:flex; align-items:center; }}
-  .detalle-fase {{ margin:14px 0; }}
-  .detalle-fase b {{ font-size:15px; }}
-  .detalle-fase ul {{ list-style:none; padding:0; margin:8px 0 0; }}
-  .detalle-fase li {{ font-size:14px; padding:4px 0; color:var(--ink2); }}
-  .detalle-fase li.ok {{ color:var(--ink); }}
-  .detalle-total {{ font-size:14px; color:var(--ink2); margin-top:16px; padding-top:16px; border-top:1px solid var(--border); }}
-  .detalle-total a {{ color:var(--blue); text-decoration:none; font-weight:600; }}
   footer {{ text-align:center; color:var(--ink2); font-size:13px; padding:8px 0 24px; }}
-  .sin-dato {{ color:var(--ink2); font-size:14px; }}
-
-  /* menu de 3 puntitos */
-  .menu-btn {{ position:fixed; top:14px; left:14px; width:44px; height:44px; border-radius:50%;
-    background:#fff; border:1px solid var(--border); box-shadow:0 2px 8px rgba(20,60,100,0.1);
-    display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--ink);
-    cursor:pointer; z-index:40; line-height:1; }}
-  .menu-dropdown {{ position:fixed; top:62px; left:14px; background:#fff; border:1px solid var(--border);
-    border-radius:12px; box-shadow:0 8px 24px rgba(20,60,100,0.15); display:none; overflow:hidden; z-index:40; }}
+  /* menu */
+  .menu-btn {{ position:fixed; top:14px; left:14px; width:44px; height:44px; border-radius:50%; background:#fff; border:1px solid var(--border); box-shadow:0 2px 8px rgba(20,60,100,0.1); display:flex; align-items:center; justify-content:center; font-size:22px; color:var(--ink); cursor:pointer; z-index:40; line-height:1; }}
+  .menu-dropdown {{ position:fixed; top:62px; left:14px; background:#fff; border:1px solid var(--border); border-radius:12px; box-shadow:0 8px 24px rgba(20,60,100,0.15); display:none; overflow:hidden; z-index:40; }}
   .menu-dropdown.show {{ display:block; }}
-  .menu-dropdown a {{ display:flex; align-items:center; min-height:44px; padding:0 16px; font-size:14px;
-    color:var(--ink); text-decoration:none; white-space:nowrap; cursor:pointer; }}
+  .menu-dropdown a {{ display:flex; align-items:center; min-height:44px; padding:0 16px; font-size:14px; color:var(--ink); text-decoration:none; white-space:nowrap; cursor:pointer; }}
   .menu-dropdown a:hover {{ background:var(--bg); }}
-
-  /* bitacora de objetivos (overlay de pantalla completa) */
-  #bitacora-overlay {{ display:none; position:fixed; inset:0; background:var(--bg); z-index:60;
-    overflow-y:auto; }}
+  /* bitacora overlay */
+  #bitacora-overlay {{ display:none; position:fixed; inset:0; background:var(--bg); z-index:60; overflow-y:auto; }}
   #bitacora-overlay.show {{ display:block; }}
-  .bitacora-header {{ display:flex; justify-content:space-between; align-items:center;
-    padding:20px 16px; }}
+  .bitacora-header {{ display:flex; justify-content:space-between; align-items:center; padding:20px 16px; max-width:720px; margin:0 auto; }}
   .bitacora-header h2 {{ margin:0; }}
-  .cerrar-btn {{ width:44px; height:44px; border-radius:50%; background:#fff; border:1px solid var(--border);
-    display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--ink);
-    cursor:pointer; flex:0 0 44px; }}
-  .objetivos-lista {{ max-width:720px; margin:0 auto; padding:0 16px 32px; }}
-  .objetivo-fila {{ background:#fff; border:1px solid var(--border); border-radius:16px; padding:14px 16px;
-    margin-bottom:10px; display:flex; justify-content:space-between; align-items:center; gap:12px; }}
-  .objetivo-texto {{ font-size:15px; line-height:1.6; }}
-  .objetivo-bolita {{ width:14px; height:14px; border-radius:50%; flex:0 0 14px; }}
-
-  /* objetivo grande (acordeon de nivel 1) */
-  .objetivo-grande {{ background:#fff; border:1px solid var(--border); border-radius:16px;
-    margin-bottom:12px; overflow:hidden; }}
-  .objetivo-grande > summary {{ list-style:none; cursor:pointer; padding:16px; font-size:16px;
-    font-weight:600; display:flex; justify-content:space-between; align-items:center; gap:10px;
-    min-height:44px; }}
-  .objetivo-grande > summary::-webkit-details-marker {{ display:none; }}
-  .objetivo-grande > summary::after {{ content:"›"; font-size:20px; color:var(--ink2); margin-left:auto;
-    transform:rotate(90deg); transition:transform .2s; }}
-  .objetivo-grande[open] > summary::after {{ transform:rotate(270deg); }}
-  .objetivo-grande > summary > span:first-child {{ flex:1; }}
-  .horas-badge {{ font-size:12px; font-weight:600; color:var(--blue); background:#eaf4fe;
-    padding:4px 10px; border-radius:999px; white-space:nowrap; }}
-  .subobjetivos {{ padding:0 16px 14px; display:flex; flex-direction:column; gap:8px; }}
-  .subobjetivos .objetivo-fila {{ margin-bottom:0; box-shadow:none; }}
-
-  /* ver que se trabajo (acordeon de nivel 2, dentro del objetivo grande) */
-  .ver-horas {{ margin:0 16px 16px; border-top:1px solid var(--border); padding-top:10px; }}
-  .ver-horas > summary {{ list-style:none; cursor:pointer; font-size:14px; color:var(--blue);
-    font-weight:600; min-height:44px; display:flex; align-items:center; }}
-  .ver-horas > summary::-webkit-details-marker {{ display:none; }}
-
-  /* detalle por dia (acordeon de nivel 3, dentro de ver-horas) */
-  .dia-detalle {{ margin:10px 0; background:var(--bg); border-radius:12px; padding:4px 12px; }}
-  .dia-detalle > summary {{ list-style:none; cursor:pointer; font-size:13px; font-weight:600;
-    padding:10px 0; min-height:44px; display:flex; align-items:center; justify-content:space-between; }}
-  .dia-detalle > summary::-webkit-details-marker {{ display:none; }}
-  .hoy-lista {{ padding-bottom:10px; }}
+  .cerrar-btn {{ width:44px; height:44px; border-radius:50%; background:#fff; border:1px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:20px; color:var(--ink); cursor:pointer; flex:0 0 44px; }}
+  .objetivos-lista {{ max-width:720px; margin:0 auto; padding:0 16px 40px; }}
+  .bit-area {{ margin-bottom:24px; }}
+  .bit-area-head {{ display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; padding-bottom:8px; border-bottom:2px solid var(--border); }}
+  .bit-area-tit {{ font-size:15px; font-weight:600; color:var(--ink); }}
+  .bit-area-badge {{ font-size:13px; font-weight:600; }}
+  .bit-item {{ display:flex; align-items:center; gap:10px; background:#fff; border:1px solid var(--border); border-radius:12px; padding:12px 14px; margin-bottom:8px; }}
+  .bit-dot {{ width:12px; height:12px; border-radius:50%; flex:0 0 12px; }}
+  .bit-nom {{ flex:1; font-size:14px; color:var(--ink); }}
+  .bit-pct {{ font-size:12px; color:var(--ink2); white-space:nowrap; }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -564,16 +579,19 @@ html = f"""<!doctype html>
     {objetivos_html}
   </div>
 </div>
+
 <div class="wrap">
 
   <div class="card">
     <h1>Avance del proyecto — Titi Burger</h1>
     <p class="actualizado">Actualizado hoy a las {ahora}</p>
 
+    {dots_html}
+
     <div class="vamos-top">
-      {ring_principal}
+      {ring_big}
       <div class="vamos-texto">
-        <p>{frase_dueno}</p>
+        <p>{frase_plan}</p>
         <span class="chip" style="background:{ESTADO_COLOR[estado_chip]}">{ESTADO_TXT[estado_chip]}</span>
       </div>
     </div>
@@ -587,18 +605,7 @@ html = f"""<!doctype html>
   </div>
 
   <div class="card">
-    <h2>El plan contratado</h2>
-    <p style="margin-bottom:14px;">Arrancamos el {fmt_fecha_es(plan['inicio'])} (el lunes que regresaste con Félix, no el 1 de diciembre como decía el plan original). Termina estimado: {fmt_fecha_es(plan['fin_soporte'])}.</p>
-    <div class="plan-grid">
-      <div class="plan-dato"><span class="plan-num">{pct_tiempo_plan}%</span><span class="plan-label">del tiempo contratado</span></div>
-      <div class="plan-dato"><span class="plan-num">{pct_horas_plan}%</span><span class="plan-label">de las {plan['horas_presupuestadas']} horas (llevamos {horas_usadas} h)</span></div>
-    </div>
-  </div>
-
-  <div class="card">
-    <h2>Las 4 etapas</h2>
-    <div class="pasos">{pasos_html}</div>
-    <div class="fases-grid">{tarjetas_html}</div>
+    {breakdown_html}
   </div>
 
   <div class="card">
@@ -611,66 +618,30 @@ html = f"""<!doctype html>
     {sigue_html}
   </div>
 
-  <div class="card {bloqueo_card_class}">
-    <h2>Necesitamos de ti</h2>
-    {bloqueos_html}
-  </div>
-
-  <div class="card">
-    <details>
-      <summary>Ver detalle</summary>
-      {detalle_html}
-      <div class="detalle-total">
-        Horas totales del proyecto: <b>{horas_total_txt}</b><br>
-        <a href="../Analisis_Incongruencias_Tito_Lector.pdf" target="_blank">Ver PDF de diferencias encontradas</a><br>
-        <a href="bitacora.html">Ver bitácora completa del proyecto</a>
-      </div>
-    </details>
-  </div>
-
   <footer>Generado automáticamente por Tito · {datetime.now():%d-%m-%Y %H:%M}</footer>
 </div>
 
-<div id="toast"><b></b><span></span></div>
 <script>
-const FASES_INFO = {json.dumps({f["id"]: {"nombre": f["nombre"], "pct": f["pct"], "descripcion": f.get("descripcion", "")} for f in fases}, ensure_ascii=False)};
-let toastTimer = null;
-let toastActivo = null;
-function mostrarToast(id) {{
-  if (toastActivo === id) {{ ocultarToast(); return; }}
-  const info = FASES_INFO[id];
-  if (!info) return;
-  const toast = document.getElementById('toast');
-  toast.querySelector('b').textContent = info.nombre + ' — ' + info.pct + '%';
-  toast.querySelector('span').textContent = info.descripcion;
-  toast.classList.add('show');
-  toastActivo = id;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(ocultarToast, 9000);
+const PLAN_FASES = {plan_fases_js};
+function verFasePlan(i) {{
+  const box = document.getElementById('fase-resumen');
+  const f = PLAN_FASES[i];
+  if (!f) return;
+  if (box.dataset.open === String(i)) {{ box.classList.remove('show'); box.dataset.open = ''; return; }}
+  box.innerHTML = '<b>' + f.a + '</b>' + f.d;
+  box.classList.add('show');
+  box.dataset.open = String(i);
 }}
-function ocultarToast() {{
-  clearTimeout(toastTimer);
-  document.getElementById('toast').classList.remove('show');
-  toastActivo = null;
-}}
-document.getElementById('toast').addEventListener('click', ocultarToast);
-
-function toggleMenu() {{
-  document.getElementById('menu-dropdown').classList.toggle('show');
-}}
+function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{
   document.getElementById('menu-dropdown').classList.remove('show');
   document.getElementById('bitacora-overlay').classList.add('show');
 }}
-function cerrarBitacora() {{
-  document.getElementById('bitacora-overlay').classList.remove('show');
-}}
+function cerrarBitacora() {{ document.getElementById('bitacora-overlay').classList.remove('show'); }}
 document.addEventListener('click', (e) => {{
   const dd = document.getElementById('menu-dropdown');
   const btn = document.querySelector('.menu-btn');
-  if (dd.classList.contains('show') && !dd.contains(e.target) && e.target !== btn) {{
-    dd.classList.remove('show');
-  }}
+  if (dd.classList.contains('show') && !dd.contains(e.target) && e.target !== btn) {{ dd.classList.remove('show'); }}
 }});
 </script>
 </body></html>"""
@@ -679,6 +650,5 @@ document.addEventListener('click', (e) => {{
 (OUT_DIR / "index.html").write_text(
     f'<!doctype html><meta http-equiv="refresh" content="0; url=/{TOKEN}/">'
     f'<a href="/{TOKEN}/">Ir a la página de avance</a>', encoding="utf-8")
-print(f"% global: {pct_global}  |  horas hoy: {horas_hoy_txt}  |  horas totales: {horas_total_txt}")
+print(f"% global (circulo): {pct_global}  |  horas hoy: {horas_hoy_txt}")
 print(f"archivo: {PAGINA_DIR / 'index.html'}")
-print(f"token: {TOKEN}")

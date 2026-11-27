@@ -1,54 +1,130 @@
 [
-  {
-    "id": 1,
-    "nombre": "Plan",
-    "color": ["#4FC3F7", "#1E90F0"],
-    "descripcion": "Aquí se armó el plan de trabajo: se creó a Tito Lector, un equipo de 5 ayudantes digitales encargados de revisar cada sucursal sin tocar ni cambiar nada.",
-    "items": [
-      {"nombre": "Plan de trabajo definido y aprobado", "hecho": true}
-    ]
-  },
-  {
-    "id": 2,
-    "nombre": "Revisar sucursales",
-    "color": ["#5EE6A8", "#22C58A"],
-    "descripcion": "Los 5 ayudantes entraron a cada sucursal, leyeron toda la información (menú, precios, inventario, ventas, usuarios) y la compararon entre todas. Ya se conectó Montecarlo (la 6ª); falta leerla con los ayudantes y conectar la compu de Félix, que es la base de referencia.",
-    "items": [
-      {"nombre": "Ver qué sucursales están conectadas", "hecho": true},
-      {"nombre": "Entrar a ver la información sin tocar nada", "hecho": true},
-      {"nombre": "Mapa de qué información guarda cada sucursal", "hecho": true},
-      {"nombre": "Revisar menú y precios de cada sucursal", "hecho": true},
-      {"nombre": "Revisar inventario y recetas", "hecho": true},
-      {"nombre": "Revisar ventas y cortes de caja", "hecho": true},
-      {"nombre": "Revisar usuarios y configuración", "hecho": true},
-      {"nombre": "Comparar las 5 sucursales conectadas entre sí", "hecho": true},
-      {"nombre": "Conectar Montecarlo a la red y dejarla leíble", "hecho": true},
-      {"nombre": "Revisar Montecarlo con los 5 ayudantes", "hecho": false},
-      {"nombre": "Conectar la compu de Félix (la base de referencia)", "hecho": false}
-    ]
-  },
-  {
-    "id": 3,
-    "nombre": "Corregir diferencias",
-    "color": ["#F48FB1", "#EC4F8A"],
-    "descripcion": "Usando la sucursal de Félix como ejemplo a seguir, aquí se va a corregir lo que esté distinto, sucursal por sucursal — siempre guardando una copia de seguridad antes y pidiendo tu aprobación en cada una.",
-    "items": [
-      {"nombre": "Comparar cada sucursal contra la de Félix", "hecho": false},
-      {"nombre": "Aprobar qué se corrige y en qué orden", "hecho": false},
-      {"nombre": "Preparar la forma de corregir con respaldo", "hecho": false},
-      {"nombre": "Probar la corrección en una copia, no en vivo", "hecho": false},
-      {"nombre": "Corregir la primera sucursal (con tu aprobación)", "hecho": false},
-      {"nombre": "Corregir el resto, una por una (con tu aprobación)", "hecho": false}
-    ]
-  },
-  {
-    "id": 4,
-    "nombre": "Dejar todas iguales",
-    "color": ["#B39DFF", "#7C4DFF"],
-    "descripcion": "Al final, las 6 sucursales van a tener exactamente la misma información — y se revisa todo junto contigo y Don Titi antes de darlo por terminado.",
-    "items": [
-      {"nombre": "Las 6 sucursales con la misma información", "hecho": false},
-      {"nombre": "Revisión final contigo y Don Titi", "hecho": false}
-    ]
-  }
+    {
+        "id": 1,
+        "nombre": "Plan",
+        "color": [
+            "#4FC3F7",
+            "#1E90F0"
+        ],
+        "descripcion": "Aquí se armó el plan de trabajo: se creó a Tito Lector, un equipo de 5 ayudantes digitales encargados de revisar cada sucursal sin tocar ni cambiar nada.",
+        "items": [
+            {
+                "nombre": "Plan de trabajo definido y aprobado",
+                "hecho": true
+            }
+        ]
+    },
+    {
+        "id": 2,
+        "nombre": "Revisar sucursales",
+        "color": [
+            "#5EE6A8",
+            "#22C58A"
+        ],
+        "descripcion": "Los ayudantes entraron a cada sucursal, leyeron toda la información (menú, precios, inventario, ventas, usuarios) y la compararon entre todas. Ya se conectaron las 6 sucursales y la compu de Félix (la base de referencia); solo falta hacerle a Montecarlo la misma revisión a fondo que a las demás.",
+        "items": [
+            {
+                "nombre": "Ver qué sucursales están conectadas",
+                "hecho": true
+            },
+            {
+                "nombre": "Entrar a ver la información sin tocar nada",
+                "hecho": true
+            },
+            {
+                "nombre": "Mapa de qué información guarda cada sucursal",
+                "hecho": true
+            },
+            {
+                "nombre": "Revisar menú y precios de cada sucursal",
+                "hecho": true
+            },
+            {
+                "nombre": "Revisar inventario y recetas",
+                "hecho": true
+            },
+            {
+                "nombre": "Revisar ventas y cortes de caja",
+                "hecho": true
+            },
+            {
+                "nombre": "Revisar usuarios y configuración",
+                "hecho": true
+            },
+            {
+                "nombre": "Comparar las 5 sucursales conectadas entre sí",
+                "hecho": true
+            },
+            {
+                "nombre": "Conectar Montecarlo a la red y dejarla leíble",
+                "hecho": true
+            },
+            {
+                "nombre": "Revisar Montecarlo con los 5 ayudantes",
+                "hecho": true
+            },
+            {
+                "nombre": "Conectar la compu de Félix (la base de referencia)",
+                "hecho": true
+            },
+            {
+                "nombre": "Comparar las 6 sucursales contra la base de Felix",
+                "hecho": true
+            }
+        ]
+    },
+    {
+        "id": 3,
+        "nombre": "Corregir diferencias",
+        "color": [
+            "#F48FB1",
+            "#EC4F8A"
+        ],
+        "descripcion": "Usando la sucursal de Félix como ejemplo a seguir, aquí se va a corregir lo que esté distinto, sucursal por sucursal — siempre guardando una copia de seguridad antes y pidiendo tu aprobación en cada una.",
+        "items": [
+            {
+                "nombre": "Comparar cada sucursal contra la de Félix",
+                "hecho": false
+            },
+            {
+                "nombre": "Aprobar qué se corrige y en qué orden",
+                "hecho": false
+            },
+            {
+                "nombre": "Preparar la forma de corregir con respaldo",
+                "hecho": false
+            },
+            {
+                "nombre": "Probar la corrección en una copia, no en vivo",
+                "hecho": false
+            },
+            {
+                "nombre": "Corregir la primera sucursal (con tu aprobación)",
+                "hecho": false
+            },
+            {
+                "nombre": "Corregir el resto, una por una (con tu aprobación)",
+                "hecho": false
+            }
+        ]
+    },
+    {
+        "id": 4,
+        "nombre": "Dejar todas iguales",
+        "color": [
+            "#B39DFF",
+            "#7C4DFF"
+        ],
+        "descripcion": "Al final, las 6 sucursales van a tener exactamente la misma información — y se revisa todo junto contigo y Don Titi antes de darlo por terminado.",
+        "items": [
+            {
+                "nombre": "Las 6 sucursales con la misma información",
+                "hecho": false
+            },
+            {
+                "nombre": "Revisión final contigo y Don Titi",
+                "hecho": false
+            }
+        ]
+    }
 ]

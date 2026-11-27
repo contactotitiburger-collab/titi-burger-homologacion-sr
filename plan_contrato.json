@@ -1,9 +1,42 @@
 {
-  "nombre": "Opción B — Ordenar Soft Restaurant + Tito Operador",
-  "inicio": "2026-11-23",
-  "fin_trabajo": "2027-02-01",
-  "fin_soporte": "2027-03-01",
-  "horas_presupuestadas": 217,
-  "costo_total": 21700,
-  "nota_fecha": "Fecha de arranque ajustada: el plan original decía 1-dic-2026, pero el trabajo arrancó el lunes 23-nov-2026 (cuando Rafael regresó con Félix). El resto del cronograma (10 semanas de trabajo + 4 de soporte) se recorrió esos mismos 8 días."
+    "nombre": "Opción B — Ordenar Soft Restaurant + Tito Operador",
+    "inicio": "2026-11-23",
+    "fin_trabajo": "2027-02-01",
+    "fin_soporte": "2027-03-01",
+    "horas_presupuestadas": 217,
+    "costo_total": 21700,
+    "nota_fecha": "Fecha de arranque ajustada: el plan original decía 1-dic-2026, pero el trabajo arrancó el lunes 23-nov-2026 (cuando Rafael regresó con Félix). El resto del cronograma (10 semanas de trabajo + 4 de soporte) se recorrió esos mismos 8 días.",
+    "descripcion_plan": "Ordenar Soft Restaurant con un solo catalogo maestro (mismo producto, codigo y precio en las 6 sucursales, Montejano como base), replica por sucursal con respaldo + 10 tickets + firma de Felix, inventario global con mermas, y Tito Operador con 3 niveles de permiso. Tito en solo lectura, cambios con exportar/importar oficial de SR.",
+    "fases_plan": [
+        {
+            "nombre": "Diagnostico y lectura de las 6 sucursales",
+            "fechas": "nov - dic",
+            "horas": 25,
+            "estado": "hecho"
+        },
+        {
+            "nombre": "Catalogo maestro: dejar las 6 parejas",
+            "fechas": "dic",
+            "horas": 60,
+            "estado": "curso"
+        },
+        {
+            "nombre": "Replica e inventario en cada sucursal",
+            "fechas": "enero",
+            "horas": 65,
+            "estado": "pend"
+        },
+        {
+            "nombre": "Tito Operador (3 niveles de permiso)",
+            "fechas": "fin ene - feb",
+            "horas": 50,
+            "estado": "pend"
+        },
+        {
+            "nombre": "Soporte",
+            "fechas": "feb - mar",
+            "horas": 17,
+            "estado": "pend"
+        }
+    ]
 }

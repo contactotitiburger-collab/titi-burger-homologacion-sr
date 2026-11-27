@@ -1,36 +1,91 @@
 [
-  {
-    "nombre": "Restablecer base de datos Soft Restaurant",
-    "dias": ["2026-11-23", "2026-11-24", "2026-11-26"],
-    "subobjetivos": [
-      {"nombre": "Se hizo el plan de trabajo", "hecho": true},
-      {"nombre": "Se revisaron las 5 sucursales conectadas", "hecho": true},
-      {"nombre": "Conectar a la red las 2 máquinas nuevas (Montecarlo y la compu de Félix)", "hecho": true},
-      {"nombre": "Crear el usuario de lectura en Montecarlo y Félix para poder leerlas", "hecho": false},
-      {"nombre": "Comparar cada sucursal contra la de Félix", "hecho": false},
-      {"nombre": "Corregir las diferencias encontradas", "hecho": false},
-      {"nombre": "Dejar las 6 sucursales exactamente iguales", "hecho": false}
-    ]
-  },
-  {
-    "nombre": "Crear Tito Operador",
-    "dias": [],
-    "subobjetivos": [
-      {"nombre": "Diseñar los 3 niveles de permiso", "hecho": false},
-      {"nombre": "Nivel 1: consultas libres para cualquiera", "hecho": false},
-      {"nombre": "Nivel 2: catálogo e inventario (confirma Félix o Nancy)", "hecho": false},
-      {"nombre": "Nivel 3: dinero y cierres de caja (confirma Félix o David)", "hecho": false}
-    ]
-  },
-  {
-    "nombre": "Herramientas y reportes de apoyo",
-    "dias": ["2026-11-25", "2026-11-26"],
-    "subobjetivos": [
-      {"nombre": "Página de avance creada para Félix y Rafael", "hecho": true},
-      {"nombre": "Seguridad agregada (usuarios, auditoría)", "hecho": true},
-      {"nombre": "Código subido a GitHub", "hecho": true},
-      {"nombre": "Esta bitácora de objetivos", "hecho": true},
-      {"nombre": "Bot de WhatsApp re-vinculado (se había caído)", "hecho": true}
-    ]
-  }
+    {
+        "nombre": "Restablecer base de datos Soft Restaurant",
+        "dias": [
+            "2026-11-23",
+            "2026-11-24",
+            "2026-11-26"
+        ],
+        "subobjetivos": [
+            {
+                "nombre": "Se hizo el plan de trabajo",
+                "hecho": true
+            },
+            {
+                "nombre": "Se revisaron las 5 sucursales conectadas",
+                "hecho": true
+            },
+            {
+                "nombre": "Conectar a la red las 2 máquinas nuevas (Montecarlo y la compu de Félix)",
+                "hecho": true
+            },
+            {
+                "nombre": "Crear el usuario de lectura en Montecarlo y Félix para poder leerlas",
+                "hecho": true
+            },
+            {
+                "nombre": "Comparar cada sucursal contra la de Félix",
+                "hecho": true
+            },
+            {
+                "nombre": "Corregir las diferencias encontradas",
+                "hecho": false
+            },
+            {
+                "nombre": "Dejar las 6 sucursales exactamente iguales",
+                "hecho": false
+            }
+        ]
+    },
+    {
+        "nombre": "Crear Tito Operador",
+        "dias": [],
+        "subobjetivos": [
+            {
+                "nombre": "Diseñar los 3 niveles de permiso",
+                "hecho": false
+            },
+            {
+                "nombre": "Nivel 1: consultas libres para cualquiera",
+                "hecho": false
+            },
+            {
+                "nombre": "Nivel 2: catálogo e inventario (confirma Félix o Nancy)",
+                "hecho": false
+            },
+            {
+                "nombre": "Nivel 3: dinero y cierres de caja (confirma Félix o David)",
+                "hecho": false
+            }
+        ]
+    },
+    {
+        "nombre": "Herramientas y reportes de apoyo",
+        "dias": [
+            "2026-11-25",
+            "2026-11-26"
+        ],
+        "subobjetivos": [
+            {
+                "nombre": "Página de avance creada para Félix y Rafael",
+                "hecho": true
+            },
+            {
+                "nombre": "Seguridad agregada (usuarios, auditoría)",
+                "hecho": true
+            },
+            {
+                "nombre": "Código subido a GitHub",
+                "hecho": true
+            },
+            {
+                "nombre": "Esta bitácora de objetivos",
+                "hecho": true
+            },
+            {
+                "nombre": "Bot de WhatsApp re-vinculado (se había caído)",
+                "hecho": true
+            }
+        ]
+    }
 ]

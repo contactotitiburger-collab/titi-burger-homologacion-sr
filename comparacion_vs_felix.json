@@ -1,0 +1,1737 @@
+{
+ "generado": "2026-11-26 21:20",
+ "referencia": "Felix (softrestaurant12)",
+ "felix_conteo": {
+  "productos": 95,
+  "insumos": 115
+ },
+ "errores": {},
+ "comparacion": {
+  "Montejano": {
+   "conteo": {
+    "productos": 233,
+    "insumos": 113
+   },
+   "productos_faltantes_vs_felix": {
+    "01059": "GEL ANTIVATERIAL",
+    "01062": "FILTROS",
+    "01063": "ADEREZO DE LA CASA",
+    "102001": "CHILE CALIFORNIA"
+   },
+   "productos_extra_no_en_felix": {
+    "01002": "TITI DOBLE CARNE",
+    "01003": "TITI DOBLE QUESO",
+    "01004": "TITI HAWAIANA",
+    "01005": "TITI CALIFORNIA",
+    "01006": "TITI TOCINO",
+    "01008": "TITI PECHUGA DE POLLO",
+    "01009": "TITI LOW CARB DE CARNE",
+    "01033": "TITI COMBO LOW CARB CARNE",
+    "01034": "TITI  LOW CARB DE POLLO",
+    "01036": "TITI COMBO CALIFORNIA",
+    "01037": "TITI COMBO DOBLE CARNE",
+    "01064": "EXTRA CHILE ASADO DIDI",
+    "01066": "TITI HAWAIANA DIDI",
+    "01067": "TITI CALIFORNIA DIDI",
+    "01068": "TITI WESTER DIDI",
+    "01069": "TITI PECHUGA DE POLLO DIDI",
+    "01071": "TITI DOBLE QUESO DIDI",
+    "01072": "TITI TOCINO DIDI",
+    "01073": "TITI CLASICA  UBER",
+    "01074": "TITI HAWAIANA UBER",
+    "01075": "TITI TOCINO UBER",
+    "01076": "TITI CALIFORNIA UBER",
+    "01077": "TITI WESTER UBER",
+    "01078": "TITI DOBLE CARNE UBER",
+    "01079": "TITI PECHUGA DE POLLO UBER",
+    "01080": "TITI DOBLE QUESO UBER",
+    "01081": "AROS DE CEBOLLA UBER",
+    "01082": "PAPAS ALA FRANCESA UBER",
+    "01084": "TITI DOBLE CARNE  DIDI",
+    "01085": "EXTRA INGREDIENTES  DI",
+    "01086": "AROS DE CEBOLLA  RAP",
+    "01087": "PAPAS ALA FRANCESA  RAP",
+    "01089": "EXTRA INGREDIENTES RAP",
+    "01090": "EXTRA INGRDIENTES UB",
+    "01093": "COMBO TOCINO +PAPAS + BEBIDA  DIDI",
+    "01094": "COMBO TOCINO +PAPAS + BEBIDA  RAPPI",
+    "01095": "PROMOCION  DUO DIDI",
+    "01096": "PROMOCION  DUO RAPPI",
+    "01097": "PROMOCION  DUO UBER",
+    "01098": "COMBMO TITI NIGHT DIDI",
+    "01099": "COMBMO TITI NIGHT RAPPI",
+    "01100": "COMBMO TITI NIGHT UBER",
+    "01104": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "01105": "COMBO TOCINO  + PAPAS + BEBIDA UBER",
+    "01107": "BONELESS + MEDIA ORDEN DE PAPAS  RAPPI",
+    "01108": "BONELESS + MEDIA ORDEN DE PAPAS  UBER",
+    "01109": "COMBO DOBLE QUESO + PAPAS + BEBIDA DIDI",
+    "01110": "COMBO DOBLE QUESO + PAPAS + BEBIDA RAPPI",
+    "01111": "COMBO DOBLE QUESO + PAPAS + BEBIDA UBER",
+    "01113": "COMBO TITI JR",
+    "01114": "TITI JR",
+    "01115": "COMBO CLASICA  + PAPAS + BEBIDA DIDI",
+    "01116": "COMBO CLASICA  + PAPAS + BEBIDA UBER",
+    "01117": "COMBO CLASICA  + PAPAS + BEBIDA RAPPI",
+    "01118": "COMBO DOBLE CARNE   + PAPAS + BEBIDA UBER",
+    "01119": "COMBO DOBLE CARNE  + PAPAS + BEBIDA DIDI",
+    "01120": "COMBO DOBLE CARNE + PAPAS + BEBIDA RAPPI",
+    "01121": "COMBO HAWAIANA + PAPAS + BEBIDA UBER",
+    "01122": "COMBO HAWAIANA + PAPAS + BEBIDA DIDI",
+    "01123": "COMBO HAWAIANA + PAPAS + BEBIDA RAPPI",
+    "01124": "COMBO WESTER +  PAPAS + BEBIDA DIDI",
+    "01125": "COMBO WESTER +  PAPAS + BEBIDA RAPPI",
+    "01126": "COMBO WESTER +  PAPAS + BEBIDA UBER",
+    "014018": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "03001": "PAPAS A LA FRANCESA",
+    "03002": "TOCINO EXTRA",
+    "03004": "ADEREZO DE LA CASA 4 ONZ",
+    "03005": "EXTRA VEDURA",
+    "03006": "CHILE PREPARADO",
+    "03007": "AROS DE CEBOLLA DIDI",
+    "03009": "EXTRA TOCINO (PAP)",
+    "03010": "EXTRA AROS CEBOLLA (RAP)",
+    "03011": "EXTRA PAPAS A LA FRANCESA  (RAP)",
+    "03012": "EXTRA QUSO   (RAP)",
+    "03013": "EXTRA CHILE ASADO (RAP)",
+    "03014": "EXTRA CHILE CALIFORNIA (RAP),UBER,DIDI",
+    "03015": "EXTRA CARNE (RAP)",
+    "03016": "EXTRA PIÑA (RAP),UBER,DIDI",
+    "03017": "EXTRA AGUA DE JAMAICA (RAP)",
+    "03018": "EXTRA TE (RAP)",
+    "03019": "PEPSI (RAP)",
+    "03020": "NARANJA (RAP)",
+    "03023": "ROOTBEER (RAP)",
+    "03024": "MANZANITA (RAP)",
+    "03026": "PAPAS A LA FRANCESA (DIDI)",
+    "03029": "EXTRA CHILES ASADO DIDI",
+    "03030": "PECHUGA DE POLLO EXTRA",
+    "03031": "EXTRA CARNE DIDI , RAPPI ,UBER",
+    "03032": "EXTRA QUESO",
+    "03035": "EXTRA SODA  DIDI , RAP,UBE",
+    "03036": "EXTRA PIÑA",
+    "03037": "CALIFORNIA EXTRA",
+    "03040": "BRAWNIE POSTRE",
+    "03043": "EXTRA CARNE  JR",
+    "04017": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "05001": "BONELESS BBQ ORDEN",
+    "05002": "BONELESS BBQ 1/2",
+    "05003": "BONELESS RET HOT ORDEN",
+    "05004": "BONELESS RET HOT 1/2",
+    "05005": "BONELESS BBQ ORDEN DIDI",
+    "05006": "BONELESS RET HOT DIDI",
+    "05007": "BONELESS BBQ ORDEN RAPI",
+    "05008": "BONELESS RET HOT ORDEN RAPI",
+    "05009": "BONELESS BBQ ORDEN UBER",
+    "05010": "BONELESS RET HOT ORDEN UBER",
+    "100003": "EXTRA QUESO BLANCO",
+    "100004": "EXTRA QUESO AMARILLO",
+    "100005": "EXTRA LECHUGA",
+    "100006": "EXTRA TOMATE",
+    "100007": "EXTRA CEBOLLA",
+    "100008": "EXTRA CHILE",
+    "100011": "EXTRA CEBOLLA CARAMELIZADA",
+    "100012": "EXTRA SALSA  BBQ / BUFALO / MAGO ABANERO O ADEREZO",
+    "100013": "EXTRA RANCH",
+    "100014": "EXTRA SALSA DE LA CASA",
+    "100015": "EXTRA CARNE",
+    "100018": "EXTRA TERIYAQUI",
+    "100019": "UBER",
+    "100020": "DIDI",
+    "100022": "EXTRA CALIFORNIA",
+    "100025": "SIN TOMATE",
+    "100029": "MERMAS",
+    "100030": "PAN PARILLERO PARA MERMA",
+    "100031": "PAN BROCHE PARA MERMA",
+    "100036": "NATURALES",
+    "100037": "MIXTO DOS COMBINACIONES",
+    "101001": "MERMA DE PAN PARRILLERO",
+    "101002": "MERMA DE PAPAS A LA FRANCESA",
+    "101003": "MERMA DE AROS DE CEBOLLA",
+    "101004": "MERMA DE PIÑA",
+    "101005": "MERMA DE CHILE CALIFORNIA",
+    "101006": "MERMA DE BONELES 1/2 ORDEN",
+    "101007": "MERMA DE BONELES 1 ORDEN",
+    "101008": "MERMA DE QUESO",
+    "101009": "MERMA DE PECHUGA DE POLLO",
+    "101010": "MERMA SURTIDO DE LA PEPSI",
+    "101011": "MERMA SURTIDO DE LA COCA COLA",
+    "101012": "MERMA AGUA DE JAMAICA",
+    "101014": "MERMA SODA ROOT BEER",
+    "101015": "MERMA SODA DR PEPPER",
+    "101016": "MERMA DE CARNE PARA HAMBURGUSA",
+    "101017": "MERMA DE TOCINO"
+   },
+   "insumos_faltantes_vs_felix": {
+    "003022": "TAPA 2 OZ",
+    "003023": "SERVILLESTAS CHICA PARA MESA",
+    "003024": "PLATO DE ALMEJA 8X8 CON DIVICION 200 PZA",
+    "005024": "PAPAS EN GAJO"
+   },
+   "insumos_extra_no_en_felix": {
+    "001005": "MAYONESA",
+    "001018": "ADEREZO DE LA CASA 4 ONZ"
+   },
+   "precios_distintos_vs_felix": {
+    "01055": {
+     "desc": "JABON LIQUIDO BOTELLA",
+     "felix": 19.8,
+     "sucursal": 202.0
+    },
+    "01039": {
+     "desc": "GALON DE MANTECA 17 LITROS",
+     "felix": 834.0,
+     "sucursal": 235.0
+    },
+    "01038": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 215.0
+    },
+    "01053": {
+     "desc": "TENEDORA PAQ 100 PZA",
+     "felix": 14.3,
+     "sucursal": 247.0
+    },
+    "01043": {
+     "desc": "BOTELLA DE CATSUP",
+     "felix": 69.3,
+     "sucursal": 235.0
+    },
+    "01054": {
+     "desc": "BOLSA NEGRAS PZA",
+     "felix": 3.85,
+     "sucursal": 182.0
+    },
+    "01046": {
+     "desc": "CAJ DE CATSUPITOS 200 PZA",
+     "felix": 137.0,
+     "sucursal": 230.0
+    },
+    "01057": {
+     "desc": "FABULOSO BOTELLA",
+     "felix": 8.03,
+     "sucursal": 182.0
+    },
+    "01007": {
+     "desc": "MOSTAZA GAL",
+     "felix": 152.9,
+     "sucursal": 185.0
+    },
+    "01040": {
+     "desc": "SACO DE CARBON  12 KG",
+     "felix": 225.0,
+     "sucursal": 245.0
+    },
+    "01056": {
+     "desc": "ROLLO PAPEL DE BANO",
+     "felix": 35.5,
+     "sucursal": 195.0
+    },
+    "01106": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 220.0
+    },
+    "01047": {
+     "desc": "TARIYAKI BOTELLA",
+     "felix": 59.4,
+     "sucursal": 225.0
+    },
+    "01051": {
+     "desc": "SAL BOLSA",
+     "felix": 14.5,
+     "sucursal": 208.0
+    },
+    "01052": {
+     "desc": "SALSA RET HOT GAL",
+     "felix": 240.9,
+     "sucursal": 228.0
+    },
+    "01049": {
+     "desc": "SALSA BBQ GAL",
+     "felix": 313.5,
+     "sucursal": 215.0
+    },
+    "01060": {
+     "desc": "JABON EN POLVO BOLSA",
+     "felix": 21.45,
+     "sucursal": 40.0
+    },
+    "01050": {
+     "desc": "ADERESO RACH GAL",
+     "felix": 396.0,
+     "sucursal": 208.0
+    }
+   },
+   "resumen": {
+    "prod_faltan": 4,
+    "prod_extra": 142,
+    "ins_faltan": 4,
+    "ins_extra": 2,
+    "precios_distintos": 18
+   }
+  },
+  "Hacienda del Rio": {
+   "conteo": {
+    "productos": 233,
+    "insumos": 113
+   },
+   "productos_faltantes_vs_felix": {
+    "01059": "GEL ANTIVATERIAL",
+    "01062": "FILTROS",
+    "01063": "ADEREZO DE LA CASA",
+    "102001": "CHILE CALIFORNIA"
+   },
+   "productos_extra_no_en_felix": {
+    "01002": "TITI DOBLE CARNE",
+    "01003": "TITI DOBLE QUESO",
+    "01004": "TITI HAWAIANA",
+    "01005": "TITI CALIFORNIA",
+    "01006": "TITI TOCINO",
+    "01008": "TITI PECHUGA DE POLLO",
+    "01009": "TITI LOW CARB DE CARNE",
+    "01033": "TITI COMBO LOW CARB CARNE",
+    "01034": "TITI  LOW CARB DE POLLO",
+    "01036": "TITI COMBO CALIFORNIA",
+    "01037": "TITI COMBO DOBLE CARNE",
+    "01064": "EXTRA CHILE ASADO DIDI",
+    "01066": "TITI HAWAIANA DIDI",
+    "01067": "TITI CALIFORNIA DIDI",
+    "01068": "TITI WESTER DIDI",
+    "01069": "TITI PECHUGA DE POLLO DIDI",
+    "01071": "TITI DOBLE QUESO DIDI",
+    "01072": "TITI TOCINO DIDI",
+    "01073": "TITI CLASICA  UBER",
+    "01074": "TITI HAWAIANA UBER",
+    "01075": "TITI TOCINO UBER",
+    "01076": "TITI CALIFORNIA UBER",
+    "01077": "TITI WESTER UBER",
+    "01078": "TITI DOBLE CARNE UBER",
+    "01079": "TITI PECHUGA DE POLLO UBER",
+    "01080": "TITI DOBLE QUESO UBER",
+    "01081": "AROS DE CEBOLLA UBER",
+    "01082": "PAPAS ALA FRANCESA UBER",
+    "01084": "TITI DOBLE CARNE  DIDI",
+    "01085": "EXTRA INGREDIENTES  DI",
+    "01086": "AROS DE CEBOLLA  RAP",
+    "01087": "PAPAS ALA FRANCESA  RAP",
+    "01089": "EXTRA INGREDIENTES RAP",
+    "01090": "EXTRA INGRDIENTES UB",
+    "01093": "COMBO TOCINO +PAPAS + BEBIDA  DIDI",
+    "01094": "COMBO TOCINO +PAPAS + BEBIDA  RAPPI",
+    "01095": "PROMOCION  DUO DIDI",
+    "01096": "PROMOCION  DUO RAPPI",
+    "01097": "PROMOCION  DUO UBER",
+    "01098": "COMBMO TITI NIGHT DIDI",
+    "01099": "COMBMO TITI NIGHT RAPPI",
+    "01100": "COMBMO TITI NIGHT UBER",
+    "01104": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "01105": "COMBO TOCINO  + PAPAS + BEBIDA UBER",
+    "01107": "BONELESS + MEDIA ORDEN DE PAPAS  RAPPI",
+    "01108": "BONELESS + MEDIA ORDEN DE PAPAS  UBER",
+    "01109": "COMBO DOBLE QUESO + PAPAS + BEBIDA DIDI",
+    "01110": "COMBO DOBLE QUESO + PAPAS + BEBIDA RAPPI",
+    "01111": "COMBO DOBLE QUESO + PAPAS + BEBIDA UBER",
+    "01113": "COMBO TITI JR",
+    "01114": "TITI JR",
+    "01115": "COMBO CLASICA  + PAPAS + BEBIDA DIDI",
+    "01116": "COMBO CLASICA  + PAPAS + BEBIDA UBER",
+    "01117": "COMBO CLASICA  + PAPAS + BEBIDA RAPPI",
+    "01118": "COMBO DOBLE CARNE   + PAPAS + BEBIDA UBER",
+    "01119": "COMBO DOBLE CARNE  + PAPAS + BEBIDA DIDI",
+    "01120": "COMBO DOBLE CARNE + PAPAS + BEBIDA RAPPI",
+    "01121": "COMBO HAWAIANA + PAPAS + BEBIDA UBER",
+    "01122": "COMBO HAWAIANA + PAPAS + BEBIDA DIDI",
+    "01123": "COMBO HAWAIANA + PAPAS + BEBIDA RAPPI",
+    "01124": "COMBO WESTER +  PAPAS + BEBIDA DIDI",
+    "01125": "COMBO WESTER +  PAPAS + BEBIDA RAPPI",
+    "01126": "COMBO WESTER +  PAPAS + BEBIDA UBER",
+    "014018": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "03001": "PAPAS A LA FRANCESA",
+    "03002": "TOCINO EXTRA",
+    "03004": "ADEREZO DE LA CASA 4 ONZ",
+    "03005": "EXTRA VEDURA",
+    "03006": "CHILE PREPARADO",
+    "03007": "AROS DE CEBOLLA DIDI",
+    "03009": "EXTRA TOCINO (PAP)",
+    "03010": "EXTRA AROS CEBOLLA (RAP)",
+    "03011": "EXTRA PAPAS A LA FRANCESA  (RAP)",
+    "03012": "EXTRA QUSO   (RAP)",
+    "03013": "EXTRA CHILE ASADO (RAP)",
+    "03014": "EXTRA CHILE CALIFORNIA (RAP),UBER,DIDI",
+    "03015": "EXTRA CARNE (RAP)",
+    "03016": "EXTRA PIÑA (RAP),UBER,DIDI",
+    "03017": "EXTRA AGUA DE JAMAICA (RAP)",
+    "03018": "EXTRA TE (RAP)",
+    "03019": "PEPSI (RAP)",
+    "03020": "NARANJA (RAP)",
+    "03023": "ROOTBEER (RAP)",
+    "03024": "MANZANITA (RAP)",
+    "03026": "PAPAS A LA FRANCESA (DIDI)",
+    "03029": "EXTRA CHILES ASADO DIDI",
+    "03030": "PECHUGA DE POLLO EXTRA",
+    "03031": "EXTRA CARNE DIDI , RAPPI ,UBER",
+    "03032": "EXTRA QUESO",
+    "03035": "EXTRA SODA  DIDI , RAP,UBE",
+    "03036": "EXTRA PIÑA",
+    "03037": "CALIFORNIA EXTRA",
+    "03040": "BRAWNIE POSTRE",
+    "03043": "EXTRA CARNE  JR",
+    "04017": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "05001": "BONELESS BBQ ORDEN",
+    "05002": "BONELESS BBQ 1/2",
+    "05003": "BONELESS RET HOT ORDEN",
+    "05004": "BONELESS RET HOT 1/2",
+    "05005": "BONELESS BBQ ORDEN DIDI",
+    "05006": "BONELESS RET HOT DIDI",
+    "05007": "BONELESS BBQ ORDEN RAPI",
+    "05008": "BONELESS RET HOT ORDEN RAPI",
+    "05009": "BONELESS BBQ ORDEN UBER",
+    "05010": "BONELESS RET HOT ORDEN UBER",
+    "100003": "EXTRA QUESO BLANCO",
+    "100004": "EXTRA QUESO AMARILLO",
+    "100005": "EXTRA LECHUGA",
+    "100006": "EXTRA TOMATE",
+    "100007": "EXTRA CEBOLLA",
+    "100008": "EXTRA CHILE",
+    "100011": "EXTRA CEBOLLA CARAMELIZADA",
+    "100012": "EXTRA SALSA  BBQ / BUFALO / MAGO ABANERO O ADEREZO",
+    "100013": "EXTRA RANCH",
+    "100014": "EXTRA SALSA DE LA CASA",
+    "100015": "EXTRA CARNE",
+    "100018": "EXTRA TERIYAQUI",
+    "100019": "UBER",
+    "100020": "DIDI",
+    "100022": "EXTRA CALIFORNIA",
+    "100025": "SIN TOMATE",
+    "100029": "MERMAS",
+    "100030": "PAN PARILLERO PARA MERMA",
+    "100031": "PAN BROCHE PARA MERMA",
+    "100036": "NATURALES",
+    "100037": "MIXTO DOS COMBINACIONES",
+    "101001": "MERMA DE PAN PARRILLERO",
+    "101002": "MERMA DE PAPAS A LA FRANCESA",
+    "101003": "MERMA DE AROS DE CEBOLLA",
+    "101004": "MERMA DE PIÑA",
+    "101005": "MERMA DE CHILE CALIFORNIA",
+    "101006": "MERMA DE BONELES 1/2 ORDEN",
+    "101007": "MERMA DE BONELES 1 ORDEN",
+    "101008": "MERMA DE QUESO",
+    "101009": "MERMA DE PECHUGA DE POLLO",
+    "101010": "MERMA SURTIDO DE LA PEPSI",
+    "101011": "MERMA SURTIDO DE LA COCA COLA",
+    "101012": "MERMA AGUA DE JAMAICA",
+    "101014": "MERMA SODA ROOT BEER",
+    "101015": "MERMA SODA DR PEPPER",
+    "101016": "MERMA DE CARNE PARA HAMBURGUSA",
+    "101017": "MERMA DE TOCINO"
+   },
+   "insumos_faltantes_vs_felix": {
+    "003022": "TAPA 2 OZ",
+    "003023": "SERVILLESTAS CHICA PARA MESA",
+    "003024": "PLATO DE ALMEJA 8X8 CON DIVICION 200 PZA",
+    "005024": "PAPAS EN GAJO"
+   },
+   "insumos_extra_no_en_felix": {
+    "001005": "MAYONESA",
+    "001018": "ADEREZO DE LA CASA 4 ONZ"
+   },
+   "precios_distintos_vs_felix": {
+    "01055": {
+     "desc": "JABON LIQUIDO BOTELLA",
+     "felix": 19.8,
+     "sucursal": 202.0
+    },
+    "01039": {
+     "desc": "GALON DE MANTECA 17 LITROS",
+     "felix": 834.0,
+     "sucursal": 235.0
+    },
+    "01038": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 215.0
+    },
+    "01053": {
+     "desc": "TENEDORA PAQ 100 PZA",
+     "felix": 14.3,
+     "sucursal": 247.0
+    },
+    "01043": {
+     "desc": "BOTELLA DE CATSUP",
+     "felix": 69.3,
+     "sucursal": 235.0
+    },
+    "01054": {
+     "desc": "BOLSA NEGRAS PZA",
+     "felix": 3.85,
+     "sucursal": 182.0
+    },
+    "01046": {
+     "desc": "CAJ DE CATSUPITOS 200 PZA",
+     "felix": 137.0,
+     "sucursal": 230.0
+    },
+    "01057": {
+     "desc": "FABULOSO BOTELLA",
+     "felix": 8.03,
+     "sucursal": 182.0
+    },
+    "01007": {
+     "desc": "MOSTAZA GAL",
+     "felix": 152.9,
+     "sucursal": 185.0
+    },
+    "01040": {
+     "desc": "SACO DE CARBON  12 KG",
+     "felix": 225.0,
+     "sucursal": 245.0
+    },
+    "01056": {
+     "desc": "ROLLO PAPEL DE BANO",
+     "felix": 35.5,
+     "sucursal": 195.0
+    },
+    "01106": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 220.0
+    },
+    "01047": {
+     "desc": "TARIYAKI BOTELLA",
+     "felix": 59.4,
+     "sucursal": 225.0
+    },
+    "01051": {
+     "desc": "SAL BOLSA",
+     "felix": 14.5,
+     "sucursal": 208.0
+    },
+    "01052": {
+     "desc": "SALSA RET HOT GAL",
+     "felix": 240.9,
+     "sucursal": 228.0
+    },
+    "01049": {
+     "desc": "SALSA BBQ GAL",
+     "felix": 313.5,
+     "sucursal": 215.0
+    },
+    "01060": {
+     "desc": "JABON EN POLVO BOLSA",
+     "felix": 21.45,
+     "sucursal": 40.0
+    },
+    "01050": {
+     "desc": "ADERESO RACH GAL",
+     "felix": 396.0,
+     "sucursal": 208.0
+    }
+   },
+   "resumen": {
+    "prod_faltan": 4,
+    "prod_extra": 142,
+    "ins_faltan": 4,
+    "ins_extra": 2,
+    "precios_distintos": 18
+   }
+  },
+  "Montecarlo": {
+   "conteo": {
+    "productos": 233,
+    "insumos": 113
+   },
+   "productos_faltantes_vs_felix": {
+    "01059": "GEL ANTIVATERIAL",
+    "01062": "FILTROS",
+    "01063": "ADEREZO DE LA CASA",
+    "102001": "CHILE CALIFORNIA"
+   },
+   "productos_extra_no_en_felix": {
+    "01002": "TITI DOBLE CARNE",
+    "01003": "TITI DOBLE QUESO",
+    "01004": "TITI HAWAIANA",
+    "01005": "TITI CALIFORNIA",
+    "01006": "TITI TOCINO",
+    "01008": "TITI PECHUGA DE POLLO",
+    "01009": "TITI LOW CARB DE CARNE",
+    "01033": "TITI COMBO LOW CARB CARNE",
+    "01034": "TITI  LOW CARB DE POLLO",
+    "01036": "TITI COMBO CALIFORNIA",
+    "01037": "TITI COMBO DOBLE CARNE",
+    "01064": "EXTRA CHILE ASADO DIDI",
+    "01066": "TITI HAWAIANA DIDI",
+    "01067": "TITI CALIFORNIA DIDI",
+    "01068": "TITI WESTER DIDI",
+    "01069": "TITI PECHUGA DE POLLO DIDI",
+    "01071": "TITI DOBLE QUESO DIDI",
+    "01072": "TITI TOCINO DIDI",
+    "01073": "TITI CLASICA  UBER",
+    "01074": "TITI HAWAIANA UBER",
+    "01075": "TITI TOCINO UBER",
+    "01076": "TITI CALIFORNIA UBER",
+    "01077": "TITI WESTER UBER",
+    "01078": "TITI DOBLE CARNE UBER",
+    "01079": "TITI PECHUGA DE POLLO UBER",
+    "01080": "TITI DOBLE QUESO UBER",
+    "01081": "AROS DE CEBOLLA UBER",
+    "01082": "PAPAS ALA FRANCESA UBER",
+    "01084": "TITI DOBLE CARNE  DIDI",
+    "01085": "EXTRA INGREDIENTES  DI",
+    "01086": "AROS DE CEBOLLA  RAP",
+    "01087": "PAPAS ALA FRANCESA  RAP",
+    "01089": "EXTRA INGREDIENTES RAP",
+    "01090": "EXTRA INGRDIENTES UB",
+    "01093": "COMBO TOCINO +PAPAS + BEBIDA  DIDI",
+    "01094": "COMBO TOCINO +PAPAS + BEBIDA  RAPPI",
+    "01095": "PROMOCION  DUO DIDI",
+    "01096": "PROMOCION  DUO RAPPI",
+    "01097": "PROMOCION  DUO UBER",
+    "01098": "COMBMO TITI NIGHT DIDI",
+    "01099": "COMBMO TITI NIGHT RAPPI",
+    "01100": "COMBMO TITI NIGHT UBER",
+    "01104": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "01105": "COMBO TOCINO  + PAPAS + BEBIDA UBER",
+    "01107": "BONELESS + MEDIA ORDEN DE PAPAS  RAPPI",
+    "01108": "BONELESS + MEDIA ORDEN DE PAPAS  UBER",
+    "01109": "COMBO DOBLE QUESO + PAPAS + BEBIDA DIDI",
+    "01110": "COMBO DOBLE QUESO + PAPAS + BEBIDA RAPPI",
+    "01111": "COMBO DOBLE QUESO + PAPAS + BEBIDA UBER",
+    "01113": "COMBO TITI JR",
+    "01114": "TITI JR",
+    "01115": "COMBO CLASICA  + PAPAS + BEBIDA DIDI",
+    "01116": "COMBO CLASICA  + PAPAS + BEBIDA UBER",
+    "01117": "COMBO CLASICA  + PAPAS + BEBIDA RAPPI",
+    "01118": "COMBO DOBLE CARNE   + PAPAS + BEBIDA UBER",
+    "01119": "COMBO DOBLE CARNE  + PAPAS + BEBIDA DIDI",
+    "01120": "COMBO DOBLE CARNE + PAPAS + BEBIDA RAPPI",
+    "01121": "COMBO HAWAIANA + PAPAS + BEBIDA UBER",
+    "01122": "COMBO HAWAIANA + PAPAS + BEBIDA DIDI",
+    "01123": "COMBO HAWAIANA + PAPAS + BEBIDA RAPPI",
+    "01124": "COMBO WESTER +  PAPAS + BEBIDA DIDI",
+    "01125": "COMBO WESTER +  PAPAS + BEBIDA RAPPI",
+    "01126": "COMBO WESTER +  PAPAS + BEBIDA UBER",
+    "014018": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "03001": "PAPAS A LA FRANCESA",
+    "03002": "TOCINO EXTRA",
+    "03004": "ADEREZO DE LA CASA 4 ONZ",
+    "03005": "EXTRA VEDURA",
+    "03006": "CHILE PREPARADO",
+    "03007": "AROS DE CEBOLLA DIDI",
+    "03009": "EXTRA TOCINO (PAP)",
+    "03010": "EXTRA AROS CEBOLLA (RAP)",
+    "03011": "EXTRA PAPAS A LA FRANCESA  (RAP)",
+    "03012": "EXTRA QUSO   (RAP)",
+    "03013": "EXTRA CHILE ASADO (RAP)",
+    "03014": "EXTRA CHILE CALIFORNIA (RAP),UBER,DIDI",
+    "03015": "EXTRA CARNE (RAP)",
+    "03016": "EXTRA PIÑA (RAP),UBER,DIDI",
+    "03017": "EXTRA AGUA DE JAMAICA (RAP)",
+    "03018": "EXTRA TE (RAP)",
+    "03019": "PEPSI (RAP)",
+    "03020": "NARANJA (RAP)",
+    "03023": "ROOTBEER (RAP)",
+    "03024": "MANZANITA (RAP)",
+    "03026": "PAPAS A LA FRANCESA (DIDI)",
+    "03029": "EXTRA CHILES ASADO DIDI",
+    "03030": "PECHUGA DE POLLO EXTRA",
+    "03031": "EXTRA CARNE DIDI , RAPPI ,UBER",
+    "03032": "EXTRA QUESO",
+    "03035": "EXTRA SODA  DIDI , RAP,UBE",
+    "03036": "EXTRA PIÑA",
+    "03037": "CALIFORNIA EXTRA",
+    "03040": "BRAWNIE POSTRE",
+    "03043": "EXTRA CARNE  JR",
+    "04017": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "05001": "BONELESS BBQ ORDEN",
+    "05002": "BONELESS BBQ 1/2",
+    "05003": "BONELESS RET HOT ORDEN",
+    "05004": "BONELESS RET HOT 1/2",
+    "05005": "BONELESS BBQ ORDEN DIDI",
+    "05006": "BONELESS RET HOT DIDI",
+    "05007": "BONELESS BBQ ORDEN RAPI",
+    "05008": "BONELESS RET HOT ORDEN RAPI",
+    "05009": "BONELESS BBQ ORDEN UBER",
+    "05010": "BONELESS RET HOT ORDEN UBER",
+    "100003": "EXTRA QUESO BLANCO",
+    "100004": "EXTRA QUESO AMARILLO",
+    "100005": "EXTRA LECHUGA",
+    "100006": "EXTRA TOMATE",
+    "100007": "EXTRA CEBOLLA",
+    "100008": "EXTRA CHILE",
+    "100011": "EXTRA CEBOLLA CARAMELIZADA",
+    "100012": "EXTRA SALSA  BBQ / BUFALO / MAGO ABANERO O ADEREZO",
+    "100013": "EXTRA RANCH",
+    "100014": "EXTRA SALSA DE LA CASA",
+    "100015": "EXTRA CARNE",
+    "100018": "EXTRA TERIYAQUI",
+    "100019": "UBER",
+    "100020": "DIDI",
+    "100022": "EXTRA CALIFORNIA",
+    "100025": "SIN TOMATE",
+    "100029": "MERMAS",
+    "100030": "PAN PARILLERO PARA MERMA",
+    "100031": "PAN BROCHE PARA MERMA",
+    "100036": "NATURALES",
+    "100037": "MIXTO DOS COMBINACIONES",
+    "101001": "MERMA DE PAN PARRILLERO",
+    "101002": "MERMA DE PAPAS A LA FRANCESA",
+    "101003": "MERMA DE AROS DE CEBOLLA",
+    "101004": "MERMA DE PIÑA",
+    "101005": "MERMA DE CHILE CALIFORNIA",
+    "101006": "MERMA DE BONELES 1/2 ORDEN",
+    "101007": "MERMA DE BONELES 1 ORDEN",
+    "101008": "MERMA DE QUESO",
+    "101009": "MERMA DE PECHUGA DE POLLO",
+    "101010": "MERMA SURTIDO DE LA PEPSI",
+    "101011": "MERMA SURTIDO DE LA COCA COLA",
+    "101012": "MERMA AGUA DE JAMAICA",
+    "101014": "MERMA SODA ROOT BEER",
+    "101015": "MERMA SODA DR PEPPER",
+    "101016": "MERMA DE CARNE PARA HAMBURGUSA",
+    "101017": "MERMA DE TOCINO"
+   },
+   "insumos_faltantes_vs_felix": {
+    "003022": "TAPA 2 OZ",
+    "003023": "SERVILLESTAS CHICA PARA MESA",
+    "003024": "PLATO DE ALMEJA 8X8 CON DIVICION 200 PZA",
+    "005024": "PAPAS EN GAJO"
+   },
+   "insumos_extra_no_en_felix": {
+    "001005": "MAYONESA",
+    "001018": "ADEREZO DE LA CASA 4 ONZ"
+   },
+   "precios_distintos_vs_felix": {
+    "01055": {
+     "desc": "JABON LIQUIDO BOTELLA",
+     "felix": 19.8,
+     "sucursal": 202.0
+    },
+    "01039": {
+     "desc": "GALON DE MANTECA 17 LITROS",
+     "felix": 834.0,
+     "sucursal": 235.0
+    },
+    "01038": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 215.0
+    },
+    "01053": {
+     "desc": "TENEDORA PAQ 100 PZA",
+     "felix": 14.3,
+     "sucursal": 247.0
+    },
+    "01043": {
+     "desc": "BOTELLA DE CATSUP",
+     "felix": 69.3,
+     "sucursal": 235.0
+    },
+    "01054": {
+     "desc": "BOLSA NEGRAS PZA",
+     "felix": 3.85,
+     "sucursal": 182.0
+    },
+    "01046": {
+     "desc": "CAJ DE CATSUPITOS 200 PZA",
+     "felix": 137.0,
+     "sucursal": 230.0
+    },
+    "01057": {
+     "desc": "FABULOSO BOTELLA",
+     "felix": 8.03,
+     "sucursal": 182.0
+    },
+    "01007": {
+     "desc": "MOSTAZA GAL",
+     "felix": 152.9,
+     "sucursal": 185.0
+    },
+    "01040": {
+     "desc": "SACO DE CARBON  12 KG",
+     "felix": 225.0,
+     "sucursal": 245.0
+    },
+    "01056": {
+     "desc": "ROLLO PAPEL DE BANO",
+     "felix": 35.5,
+     "sucursal": 195.0
+    },
+    "01106": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 220.0
+    },
+    "01047": {
+     "desc": "TARIYAKI BOTELLA",
+     "felix": 59.4,
+     "sucursal": 225.0
+    },
+    "01051": {
+     "desc": "SAL BOLSA",
+     "felix": 14.5,
+     "sucursal": 208.0
+    },
+    "01052": {
+     "desc": "SALSA RET HOT GAL",
+     "felix": 240.9,
+     "sucursal": 228.0
+    },
+    "01049": {
+     "desc": "SALSA BBQ GAL",
+     "felix": 313.5,
+     "sucursal": 215.0
+    },
+    "01060": {
+     "desc": "JABON EN POLVO BOLSA",
+     "felix": 21.45,
+     "sucursal": 40.0
+    },
+    "01050": {
+     "desc": "ADERESO RACH GAL",
+     "felix": 396.0,
+     "sucursal": 208.0
+    }
+   },
+   "resumen": {
+    "prod_faltan": 4,
+    "prod_extra": 142,
+    "ins_faltan": 4,
+    "ins_extra": 2,
+    "precios_distintos": 18
+   }
+  },
+  "Villas del Rey": {
+   "conteo": {
+    "productos": 233,
+    "insumos": 113
+   },
+   "productos_faltantes_vs_felix": {
+    "01059": "GEL ANTIVATERIAL",
+    "01062": "FILTROS",
+    "01063": "ADEREZO DE LA CASA",
+    "102001": "CHILE CALIFORNIA"
+   },
+   "productos_extra_no_en_felix": {
+    "01002": "TITI DOBLE CARNE",
+    "01003": "TITI DOBLE QUESO",
+    "01004": "TITI HAWAIANA",
+    "01005": "TITI CALIFORNIA",
+    "01006": "TITI TOCINO",
+    "01008": "TITI PECHUGA DE POLLO",
+    "01009": "TITI LOW CARB DE CARNE",
+    "01033": "TITI COMBO LOW CARB CARNE",
+    "01034": "TITI  LOW CARB DE POLLO",
+    "01036": "TITI COMBO CALIFORNIA",
+    "01037": "TITI COMBO DOBLE CARNE",
+    "01064": "EXTRA CHILE ASADO DIDI",
+    "01066": "TITI HAWAIANA DIDI",
+    "01067": "TITI CALIFORNIA DIDI",
+    "01068": "TITI WESTER DIDI",
+    "01069": "TITI PECHUGA DE POLLO DIDI",
+    "01071": "TITI DOBLE QUESO DIDI",
+    "01072": "TITI TOCINO DIDI",
+    "01073": "TITI CLASICA  UBER",
+    "01074": "TITI HAWAIANA UBER",
+    "01075": "TITI TOCINO UBER",
+    "01076": "TITI CALIFORNIA UBER",
+    "01077": "TITI WESTER UBER",
+    "01078": "TITI DOBLE CARNE UBER",
+    "01079": "TITI PECHUGA DE POLLO UBER",
+    "01080": "TITI DOBLE QUESO UBER",
+    "01081": "AROS DE CEBOLLA UBER",
+    "01082": "PAPAS ALA FRANCESA UBER",
+    "01084": "TITI DOBLE CARNE  DIDI",
+    "01085": "EXTRA INGREDIENTES  DI",
+    "01086": "AROS DE CEBOLLA  RAP",
+    "01087": "PAPAS ALA FRANCESA  RAP",
+    "01089": "EXTRA INGREDIENTES RAP",
+    "01090": "EXTRA INGRDIENTES UB",
+    "01093": "COMBO TOCINO +PAPAS + BEBIDA  DIDI",
+    "01094": "COMBO TOCINO +PAPAS + BEBIDA  RAPPI",
+    "01095": "PROMOCION  DUO DIDI",
+    "01096": "PROMOCION  DUO RAPPI",
+    "01097": "PROMOCION  DUO UBER",
+    "01098": "COMBMO TITI NIGHT DIDI",
+    "01099": "COMBMO TITI NIGHT RAPPI",
+    "01100": "COMBMO TITI NIGHT UBER",
+    "01104": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "01105": "COMBO TOCINO  + PAPAS + BEBIDA UBER",
+    "01107": "BONELESS + MEDIA ORDEN DE PAPAS  RAPPI",
+    "01108": "BONELESS + MEDIA ORDEN DE PAPAS  UBER",
+    "01109": "COMBO DOBLE QUESO + PAPAS + BEBIDA DIDI",
+    "01110": "COMBO DOBLE QUESO + PAPAS + BEBIDA RAPPI",
+    "01111": "COMBO DOBLE QUESO + PAPAS + BEBIDA UBER",
+    "01113": "COMBO TITI JR",
+    "01114": "TITI JR",
+    "01115": "COMBO CLASICA  + PAPAS + BEBIDA DIDI",
+    "01116": "COMBO CLASICA  + PAPAS + BEBIDA UBER",
+    "01117": "COMBO CLASICA  + PAPAS + BEBIDA RAPPI",
+    "01118": "COMBO DOBLE CARNE   + PAPAS + BEBIDA UBER",
+    "01119": "COMBO DOBLE CARNE  + PAPAS + BEBIDA DIDI",
+    "01120": "COMBO DOBLE CARNE + PAPAS + BEBIDA RAPPI",
+    "01121": "COMBO HAWAIANA + PAPAS + BEBIDA UBER",
+    "01122": "COMBO HAWAIANA + PAPAS + BEBIDA DIDI",
+    "01123": "COMBO HAWAIANA + PAPAS + BEBIDA RAPPI",
+    "01124": "COMBO WESTER +  PAPAS + BEBIDA DIDI",
+    "01125": "COMBO WESTER +  PAPAS + BEBIDA RAPPI",
+    "01126": "COMBO WESTER +  PAPAS + BEBIDA UBER",
+    "014018": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "03001": "PAPAS A LA FRANCESA",
+    "03002": "TOCINO EXTRA",
+    "03004": "ADEREZO DE LA CASA 4 ONZ",
+    "03005": "EXTRA VEDURA",
+    "03006": "CHILE PREPARADO",
+    "03007": "AROS DE CEBOLLA DIDI",
+    "03009": "EXTRA TOCINO (PAP)",
+    "03010": "EXTRA AROS CEBOLLA (RAP)",
+    "03011": "EXTRA PAPAS A LA FRANCESA  (RAP)",
+    "03012": "EXTRA QUSO   (RAP)",
+    "03013": "EXTRA CHILE ASADO (RAP)",
+    "03014": "EXTRA CHILE CALIFORNIA (RAP),UBER,DIDI",
+    "03015": "EXTRA CARNE (RAP)",
+    "03016": "EXTRA PIÑA (RAP),UBER,DIDI",
+    "03017": "EXTRA AGUA DE JAMAICA (RAP)",
+    "03018": "EXTRA TE (RAP)",
+    "03019": "PEPSI (RAP)",
+    "03020": "NARANJA (RAP)",
+    "03023": "ROOTBEER (RAP)",
+    "03024": "MANZANITA (RAP)",
+    "03026": "PAPAS A LA FRANCESA (DIDI)",
+    "03029": "EXTRA CHILES ASADO DIDI",
+    "03030": "PECHUGA DE POLLO EXTRA",
+    "03031": "EXTRA CARNE DIDI , RAPPI ,UBER",
+    "03032": "EXTRA QUESO",
+    "03035": "EXTRA SODA  DIDI , RAP,UBE",
+    "03036": "EXTRA PIÑA",
+    "03037": "CALIFORNIA EXTRA",
+    "03040": "BRAWNIE POSTRE",
+    "03043": "EXTRA CARNE  JR",
+    "04017": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "05001": "BONELESS BBQ ORDEN",
+    "05002": "BONELESS BBQ 1/2",
+    "05003": "BONELESS RET HOT ORDEN",
+    "05004": "BONELESS RET HOT 1/2",
+    "05005": "BONELESS BBQ ORDEN DIDI",
+    "05006": "BONELESS RET HOT DIDI",
+    "05007": "BONELESS BBQ ORDEN RAPI",
+    "05008": "BONELESS RET HOT ORDEN RAPI",
+    "05009": "BONELESS BBQ ORDEN UBER",
+    "05010": "BONELESS RET HOT ORDEN UBER",
+    "100003": "EXTRA QUESO BLANCO",
+    "100004": "EXTRA QUESO AMARILLO",
+    "100005": "EXTRA LECHUGA",
+    "100006": "EXTRA TOMATE",
+    "100007": "EXTRA CEBOLLA",
+    "100008": "EXTRA CHILE",
+    "100011": "EXTRA CEBOLLA CARAMELIZADA",
+    "100012": "EXTRA SALSA  BBQ / BUFALO / MAGO ABANERO O ADEREZO",
+    "100013": "EXTRA RANCH",
+    "100014": "EXTRA SALSA DE LA CASA",
+    "100015": "EXTRA CARNE",
+    "100018": "EXTRA TERIYAQUI",
+    "100019": "UBER",
+    "100020": "DIDI",
+    "100022": "EXTRA CALIFORNIA",
+    "100025": "SIN TOMATE",
+    "100029": "MERMAS",
+    "100030": "PAN PARILLERO PARA MERMA",
+    "100031": "PAN BROCHE PARA MERMA",
+    "100036": "NATURALES",
+    "100037": "MIXTO DOS COMBINACIONES",
+    "101001": "MERMA DE PAN PARRILLERO",
+    "101002": "MERMA DE PAPAS A LA FRANCESA",
+    "101003": "MERMA DE AROS DE CEBOLLA",
+    "101004": "MERMA DE PIÑA",
+    "101005": "MERMA DE CHILE CALIFORNIA",
+    "101006": "MERMA DE BONELES 1/2 ORDEN",
+    "101007": "MERMA DE BONELES 1 ORDEN",
+    "101008": "MERMA DE QUESO",
+    "101009": "MERMA DE PECHUGA DE POLLO",
+    "101010": "MERMA SURTIDO DE LA PEPSI",
+    "101011": "MERMA SURTIDO DE LA COCA COLA",
+    "101012": "MERMA AGUA DE JAMAICA",
+    "101014": "MERMA SODA ROOT BEER",
+    "101015": "MERMA SODA DR PEPPER",
+    "101016": "MERMA DE CARNE PARA HAMBURGUSA",
+    "101017": "MERMA DE TOCINO"
+   },
+   "insumos_faltantes_vs_felix": {
+    "003022": "TAPA 2 OZ",
+    "003023": "SERVILLESTAS CHICA PARA MESA",
+    "003024": "PLATO DE ALMEJA 8X8 CON DIVICION 200 PZA",
+    "005024": "PAPAS EN GAJO"
+   },
+   "insumos_extra_no_en_felix": {
+    "001005": "MAYONESA",
+    "001018": "ADEREZO DE LA CASA 4 ONZ"
+   },
+   "precios_distintos_vs_felix": {
+    "01055": {
+     "desc": "JABON LIQUIDO BOTELLA",
+     "felix": 19.8,
+     "sucursal": 202.0
+    },
+    "01039": {
+     "desc": "GALON DE MANTECA 17 LITROS",
+     "felix": 834.0,
+     "sucursal": 235.0
+    },
+    "01038": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 215.0
+    },
+    "01053": {
+     "desc": "TENEDORA PAQ 100 PZA",
+     "felix": 14.3,
+     "sucursal": 247.0
+    },
+    "01043": {
+     "desc": "BOTELLA DE CATSUP",
+     "felix": 69.3,
+     "sucursal": 235.0
+    },
+    "01054": {
+     "desc": "BOLSA NEGRAS PZA",
+     "felix": 3.85,
+     "sucursal": 182.0
+    },
+    "01046": {
+     "desc": "CAJ DE CATSUPITOS 200 PZA",
+     "felix": 137.0,
+     "sucursal": 230.0
+    },
+    "01057": {
+     "desc": "FABULOSO BOTELLA",
+     "felix": 8.03,
+     "sucursal": 182.0
+    },
+    "01007": {
+     "desc": "MOSTAZA GAL",
+     "felix": 152.9,
+     "sucursal": 185.0
+    },
+    "01040": {
+     "desc": "SACO DE CARBON  12 KG",
+     "felix": 225.0,
+     "sucursal": 245.0
+    },
+    "01056": {
+     "desc": "ROLLO PAPEL DE BANO",
+     "felix": 35.5,
+     "sucursal": 195.0
+    },
+    "01106": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 220.0
+    },
+    "01047": {
+     "desc": "TARIYAKI BOTELLA",
+     "felix": 59.4,
+     "sucursal": 225.0
+    },
+    "01051": {
+     "desc": "SAL BOLSA",
+     "felix": 14.5,
+     "sucursal": 208.0
+    },
+    "01052": {
+     "desc": "SALSA RET HOT GAL",
+     "felix": 240.9,
+     "sucursal": 228.0
+    },
+    "01049": {
+     "desc": "SALSA BBQ GAL",
+     "felix": 313.5,
+     "sucursal": 215.0
+    },
+    "01060": {
+     "desc": "JABON EN POLVO BOLSA",
+     "felix": 21.45,
+     "sucursal": 40.0
+    },
+    "01050": {
+     "desc": "ADERESO RACH GAL",
+     "felix": 396.0,
+     "sucursal": 208.0
+    }
+   },
+   "resumen": {
+    "prod_faltan": 4,
+    "prod_extra": 142,
+    "ins_faltan": 4,
+    "ins_extra": 2,
+    "precios_distintos": 18
+   }
+  },
+  "San Marcos": {
+   "conteo": {
+    "productos": 233,
+    "insumos": 113
+   },
+   "productos_faltantes_vs_felix": {
+    "01059": "GEL ANTIVATERIAL",
+    "01062": "FILTROS",
+    "01063": "ADEREZO DE LA CASA",
+    "102001": "CHILE CALIFORNIA"
+   },
+   "productos_extra_no_en_felix": {
+    "01002": "TITI DOBLE CARNE",
+    "01003": "TITI DOBLE QUESO",
+    "01004": "TITI HAWAIANA",
+    "01005": "TITI CALIFORNIA",
+    "01006": "TITI TOCINO",
+    "01008": "TITI PECHUGA DE POLLO",
+    "01009": "TITI LOW CARB DE CARNE",
+    "01033": "TITI COMBO LOW CARB CARNE",
+    "01034": "TITI  LOW CARB DE POLLO",
+    "01036": "TITI COMBO CALIFORNIA",
+    "01037": "TITI COMBO DOBLE CARNE",
+    "01064": "EXTRA CHILE ASADO DIDI",
+    "01066": "TITI HAWAIANA DIDI",
+    "01067": "TITI CALIFORNIA DIDI",
+    "01068": "TITI WESTER DIDI",
+    "01069": "TITI PECHUGA DE POLLO DIDI",
+    "01071": "TITI DOBLE QUESO DIDI",
+    "01072": "TITI TOCINO DIDI",
+    "01073": "TITI CLASICA  UBER",
+    "01074": "TITI HAWAIANA UBER",
+    "01075": "TITI TOCINO UBER",
+    "01076": "TITI CALIFORNIA UBER",
+    "01077": "TITI WESTER UBER",
+    "01078": "TITI DOBLE CARNE UBER",
+    "01079": "TITI PECHUGA DE POLLO UBER",
+    "01080": "TITI DOBLE QUESO UBER",
+    "01081": "AROS DE CEBOLLA UBER",
+    "01082": "PAPAS ALA FRANCESA UBER",
+    "01084": "TITI DOBLE CARNE  DIDI",
+    "01085": "EXTRA INGREDIENTES  DI",
+    "01086": "AROS DE CEBOLLA  RAP",
+    "01087": "PAPAS ALA FRANCESA  RAP",
+    "01089": "EXTRA INGREDIENTES RAP",
+    "01090": "EXTRA INGRDIENTES UB",
+    "01093": "COMBO TOCINO +PAPAS + BEBIDA  DIDI",
+    "01094": "COMBO TOCINO +PAPAS + BEBIDA  RAPPI",
+    "01095": "PROMOCION  DUO DIDI",
+    "01096": "PROMOCION  DUO RAPPI",
+    "01097": "PROMOCION  DUO UBER",
+    "01098": "COMBMO TITI NIGHT DIDI",
+    "01099": "COMBMO TITI NIGHT RAPPI",
+    "01100": "COMBMO TITI NIGHT UBER",
+    "01104": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "01105": "COMBO TOCINO  + PAPAS + BEBIDA UBER",
+    "01107": "BONELESS + MEDIA ORDEN DE PAPAS  RAPPI",
+    "01108": "BONELESS + MEDIA ORDEN DE PAPAS  UBER",
+    "01109": "COMBO DOBLE QUESO + PAPAS + BEBIDA DIDI",
+    "01110": "COMBO DOBLE QUESO + PAPAS + BEBIDA RAPPI",
+    "01111": "COMBO DOBLE QUESO + PAPAS + BEBIDA UBER",
+    "01113": "COMBO TITI JR",
+    "01114": "TITI JR",
+    "01115": "COMBO CLASICA  + PAPAS + BEBIDA DIDI",
+    "01116": "COMBO CLASICA  + PAPAS + BEBIDA UBER",
+    "01117": "COMBO CLASICA  + PAPAS + BEBIDA RAPPI",
+    "01118": "COMBO DOBLE CARNE   + PAPAS + BEBIDA UBER",
+    "01119": "COMBO DOBLE CARNE  + PAPAS + BEBIDA DIDI",
+    "01120": "COMBO DOBLE CARNE + PAPAS + BEBIDA RAPPI",
+    "01121": "COMBO HAWAIANA + PAPAS + BEBIDA UBER",
+    "01122": "COMBO HAWAIANA + PAPAS + BEBIDA DIDI",
+    "01123": "COMBO HAWAIANA + PAPAS + BEBIDA RAPPI",
+    "01124": "COMBO WESTER +  PAPAS + BEBIDA DIDI",
+    "01125": "COMBO WESTER +  PAPAS + BEBIDA RAPPI",
+    "01126": "COMBO WESTER +  PAPAS + BEBIDA UBER",
+    "014018": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "03001": "PAPAS A LA FRANCESA",
+    "03002": "TOCINO EXTRA",
+    "03004": "ADEREZO DE LA CASA 4 ONZ",
+    "03005": "EXTRA VEDURA",
+    "03006": "CHILE PREPARADO",
+    "03007": "AROS DE CEBOLLA DIDI",
+    "03009": "EXTRA TOCINO (PAP)",
+    "03010": "EXTRA AROS CEBOLLA (RAP)",
+    "03011": "EXTRA PAPAS A LA FRANCESA  (RAP)",
+    "03012": "EXTRA QUSO   (RAP)",
+    "03013": "EXTRA CHILE ASADO (RAP)",
+    "03014": "EXTRA CHILE CALIFORNIA (RAP),UBER,DIDI",
+    "03015": "EXTRA CARNE (RAP)",
+    "03016": "EXTRA PIÑA (RAP),UBER,DIDI",
+    "03017": "EXTRA AGUA DE JAMAICA (RAP)",
+    "03018": "EXTRA TE (RAP)",
+    "03019": "PEPSI (RAP)",
+    "03020": "NARANJA (RAP)",
+    "03023": "ROOTBEER (RAP)",
+    "03024": "MANZANITA (RAP)",
+    "03026": "PAPAS A LA FRANCESA (DIDI)",
+    "03029": "EXTRA CHILES ASADO DIDI",
+    "03030": "PECHUGA DE POLLO EXTRA",
+    "03031": "EXTRA CARNE DIDI , RAPPI ,UBER",
+    "03032": "EXTRA QUESO",
+    "03035": "EXTRA SODA  DIDI , RAP,UBE",
+    "03036": "EXTRA PIÑA",
+    "03037": "CALIFORNIA EXTRA",
+    "03040": "BRAWNIE POSTRE",
+    "03043": "EXTRA CARNE  JR",
+    "04017": "COMBO DE FIESTA 4 CLASICA + 1 PAPAS + 4 BEBIDA UBER",
+    "05001": "BONELESS BBQ ORDEN",
+    "05002": "BONELESS BBQ 1/2",
+    "05003": "BONELESS RET HOT ORDEN",
+    "05004": "BONELESS RET HOT 1/2",
+    "05005": "BONELESS BBQ ORDEN DIDI",
+    "05006": "BONELESS RET HOT DIDI",
+    "05007": "BONELESS BBQ ORDEN RAPI",
+    "05008": "BONELESS RET HOT ORDEN RAPI",
+    "05009": "BONELESS BBQ ORDEN UBER",
+    "05010": "BONELESS RET HOT ORDEN UBER",
+    "100003": "EXTRA QUESO BLANCO",
+    "100004": "EXTRA QUESO AMARILLO",
+    "100005": "EXTRA LECHUGA",
+    "100006": "EXTRA TOMATE",
+    "100007": "EXTRA CEBOLLA",
+    "100008": "EXTRA CHILE",
+    "100011": "EXTRA CEBOLLA CARAMELIZADA",
+    "100012": "EXTRA SALSA  BBQ / BUFALO / MAGO ABANERO O ADEREZO",
+    "100013": "EXTRA RANCH",
+    "100014": "EXTRA SALSA DE LA CASA",
+    "100015": "EXTRA CARNE",
+    "100018": "EXTRA TERIYAQUI",
+    "100019": "UBER",
+    "100020": "DIDI",
+    "100022": "EXTRA CALIFORNIA",
+    "100025": "SIN TOMATE",
+    "100029": "MERMAS",
+    "100030": "PAN PARILLERO PARA MERMA",
+    "100031": "PAN BROCHE PARA MERMA",
+    "100036": "NATURALES",
+    "100037": "MIXTO DOS COMBINACIONES",
+    "101001": "MERMA DE PAN PARRILLERO",
+    "101002": "MERMA DE PAPAS A LA FRANCESA",
+    "101003": "MERMA DE AROS DE CEBOLLA",
+    "101004": "MERMA DE PIÑA",
+    "101005": "MERMA DE CHILE CALIFORNIA",
+    "101006": "MERMA DE BONELES 1/2 ORDEN",
+    "101007": "MERMA DE BONELES 1 ORDEN",
+    "101008": "MERMA DE QUESO",
+    "101009": "MERMA DE PECHUGA DE POLLO",
+    "101010": "MERMA SURTIDO DE LA PEPSI",
+    "101011": "MERMA SURTIDO DE LA COCA COLA",
+    "101012": "MERMA AGUA DE JAMAICA",
+    "101014": "MERMA SODA ROOT BEER",
+    "101015": "MERMA SODA DR PEPPER",
+    "101016": "MERMA DE CARNE PARA HAMBURGUSA",
+    "101017": "MERMA DE TOCINO"
+   },
+   "insumos_faltantes_vs_felix": {
+    "003022": "TAPA 2 OZ",
+    "003023": "SERVILLESTAS CHICA PARA MESA",
+    "003024": "PLATO DE ALMEJA 8X8 CON DIVICION 200 PZA",
+    "005024": "PAPAS EN GAJO"
+   },
+   "insumos_extra_no_en_felix": {
+    "001005": "MAYONESA",
+    "001018": "ADEREZO DE LA CASA 4 ONZ"
+   },
+   "precios_distintos_vs_felix": {
+    "01055": {
+     "desc": "JABON LIQUIDO BOTELLA",
+     "felix": 19.8,
+     "sucursal": 202.0
+    },
+    "01039": {
+     "desc": "GALON DE MANTECA 17 LITROS",
+     "felix": 834.0,
+     "sucursal": 235.0
+    },
+    "01038": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 215.0
+    },
+    "01053": {
+     "desc": "TENEDORA PAQ 100 PZA",
+     "felix": 14.3,
+     "sucursal": 247.0
+    },
+    "01043": {
+     "desc": "BOTELLA DE CATSUP",
+     "felix": 69.3,
+     "sucursal": 235.0
+    },
+    "01054": {
+     "desc": "BOLSA NEGRAS PZA",
+     "felix": 3.85,
+     "sucursal": 182.0
+    },
+    "01046": {
+     "desc": "CAJ DE CATSUPITOS 200 PZA",
+     "felix": 137.0,
+     "sucursal": 230.0
+    },
+    "01057": {
+     "desc": "FABULOSO BOTELLA",
+     "felix": 8.03,
+     "sucursal": 182.0
+    },
+    "01007": {
+     "desc": "MOSTAZA GAL",
+     "felix": 152.9,
+     "sucursal": 185.0
+    },
+    "01040": {
+     "desc": "SACO DE CARBON  12 KG",
+     "felix": 225.0,
+     "sucursal": 245.0
+    },
+    "01056": {
+     "desc": "ROLLO PAPEL DE BANO",
+     "felix": 35.5,
+     "sucursal": 195.0
+    },
+    "01106": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 220.0
+    },
+    "01047": {
+     "desc": "TARIYAKI BOTELLA",
+     "felix": 59.4,
+     "sucursal": 225.0
+    },
+    "01051": {
+     "desc": "SAL BOLSA",
+     "felix": 14.5,
+     "sucursal": 208.0
+    },
+    "01052": {
+     "desc": "SALSA RET HOT GAL",
+     "felix": 240.9,
+     "sucursal": 228.0
+    },
+    "01049": {
+     "desc": "SALSA BBQ GAL",
+     "felix": 313.5,
+     "sucursal": 215.0
+    },
+    "01060": {
+     "desc": "JABON EN POLVO BOLSA",
+     "felix": 21.45,
+     "sucursal": 40.0
+    },
+    "01050": {
+     "desc": "ADERESO RACH GAL",
+     "felix": 396.0,
+     "sucursal": 208.0
+    }
+   },
+   "resumen": {
+    "prod_faltan": 4,
+    "prod_extra": 142,
+    "ins_faltan": 4,
+    "ins_extra": 2,
+    "precios_distintos": 18
+   }
+  },
+  "Cine Curto": {
+   "conteo": {
+    "productos": 164,
+    "insumos": 101
+   },
+   "productos_faltantes_vs_felix": {
+    "01010": "TITI COMBO DOBLE CARNE (UB)",
+    "01012": "TITI COMBO CALIFORNIA (UB)",
+    "01013": "TITI PACK WESTERN (UB)",
+    "01014": "TITI COMBO HAWAIANA (UB)",
+    "01015": "TITI COMBO LOW CARB POLLO  (UB)",
+    "01016": "TITI PACK TOCINO (UB)",
+    "01017": "TITI COMBO DOBLE CARNE (RA)",
+    "01018": "TITI COMBO DOBLE QUESO (RA)",
+    "01019": "TITI COMBO CALIFORNIA (RA)",
+    "01020": "TITI COMBO HAWAIANA (RA)",
+    "01021": "TITI PACK WESTERN (RA)",
+    "01022": "TITI PACK TOCINO (RA)",
+    "01023": "TITI COMBO LOW CARB POLLO (RA)",
+    "01024": "TITI PACK PECHUGA DE POLLO (UB)",
+    "01025": "TITI PACK PECHUGA DE POLLO (RA)",
+    "01026": "TITI COMBO DOBLE CARNE (DI)",
+    "01027": "TITI COMBO DOBLE QUESO (DI)",
+    "01028": "TITI COMBO CALIFORNIA (DI)",
+    "01029": "TITI COMBO HAWAIANA (DI)",
+    "01030": "TITI COMBO TOCINO (DI)",
+    "01031": "TITI PACK PECHUGA DE POLLO (DI)",
+    "01032": "TITI PACK WESTERN (DI)",
+    "01035": "TITI COMBO DOBLE QUESO (UB)",
+    "01038": "PAN PARRILLERO",
+    "01039": "GALON DE MANTECA 17 LITROS",
+    "01040": "SACO DE CARBON  12 KG",
+    "01041": "TITI COMBO LOW CARB POLLO (DI)",
+    "01042": "TITI COMBO LOW CARB CARNE (UB)",
+    "01043": "BOTELLA DE CATSUP",
+    "01044": "TITI COMBO LOW CARB CARNE (RA)",
+    "01045": "TITI COMBO LOW CARB CARNE (DI)",
+    "01046": "CAJ DE CATSUPITOS 200 PZA",
+    "01047": "TARIYAKI BOTELLA",
+    "01048": "TITI COMBO  CLASICA",
+    "01112": "MEDIA ORDEN PAPAS  JR",
+    "03008": "SERVICIO ADOMICILIO",
+    "04024": "JUGO JUMEX",
+    "100032": "SIN KECHUT",
+    "100033": "SALSA MANGO ABANERO",
+    "100034": "SALSA BBQ",
+    "100035": "SALSA BUFALO",
+    "101013": "MERMA TE DE LA CASA",
+    "102001": "CHILE CALIFORNIA"
+   },
+   "productos_extra_no_en_felix": {
+    "01002": "C..TITI DOBLE CARNE",
+    "01003": "TITI DOBLE QUESO",
+    "01004": "TITI HAWAIANA",
+    "01005": "C.TITI CALIFORNIA",
+    "01006": "C..TITI TOCINO",
+    "01008": "TITI PECHUGA DE POLLO",
+    "01009": "TITI LOW CARB DE CARNE",
+    "01034": "TITI  LOW CARB DE POLLO",
+    "01064": "HOT DOG 1/4 DE LB",
+    "01065": "D..PAPAS CON TOCINO",
+    "01066": "HAWAIANA DIDI",
+    "01067": "CALIFORNIA DIDI",
+    "01068": "WESTER DIDI",
+    "01069": "POLLO DIDI",
+    "01071": "DOBLE QUESO DIDI",
+    "01072": "TOCINO DIDI",
+    "01073": "CLASICA  UBER",
+    "01074": "HAWAIANA UBER",
+    "01075": "TOCINO UBER",
+    "01076": "CALIFORNIA UBER",
+    "01077": "WESTER UBER",
+    "01078": "DOBLE CARNE UBER",
+    "01079": "POLLO UBER",
+    "01080": "DOBLE QUESO UBER",
+    "01081": "AROS DE CEBOLLA UBER",
+    "01082": "PAPAS UBER",
+    "01084": "DOBLE CARNE  DI",
+    "01085": "EXTRA INGREDIENTES  DI",
+    "01086": "AROS DE CEBOLLA  RAP",
+    "01087": "PAPAS RAP",
+    "01089": "EXTRA INGREDIENTES RAP",
+    "01090": "EXTRA INGRDIENTES UB",
+    "01093": "D..PAPAS CON CARNE",
+    "01094": "CHAROLA FAMILIAR",
+    "01095": "CHAROLA PARA CONPARTIR",
+    "01096": "E.NACHOS CLASICO",
+    "01097": "NACHOS CON CHILE BEANS",
+    "01098": "E.NACHOS CON CARNES",
+    "01099": "COMBO BONELES +  CERVEZA",
+    "01100": "MARTE DE 2X1",
+    "01104": "BONELES + PAPAS",
+    "01105": "PROMOCION BANCALI",
+    "01107": "NACHOS",
+    "01108": "HAMBURGUESAS",
+    "01109": "PAPAS PREPARADA",
+    "01110": "CHAROLAS",
+    "01111": "BONELESS BARRA",
+    "014017": "TIRAS DE POLO",
+    "03001": "PAPAS A LA FRANCESA",
+    "03002": "TOCINO",
+    "03003": "ADEREZO DE LA CASA 2 ONZ",
+    "03004": "ADEREZO DE LA CASA 4 ONZ",
+    "03005": "CHILE ASADO EXTRA 2 PZA",
+    "03007": "AROS DE CEBOLLAS",
+    "03009": "EXTRA TOCINO (PAP)",
+    "03010": "EXTRA AROS CEBOLLA (RAP)",
+    "03011": "EXTRA PAPAS (RAP)",
+    "03012": "EXTRA QUSO   (RAP)",
+    "03013": "EXTRA CHILE ASADO (RAP)",
+    "03014": "EXTRA CHILE CALIFORNIA (RAP)",
+    "03015": "EXTRA CARNE (RAP)",
+    "03016": "EXTRA PIÑA (RAP)",
+    "03017": "EXTRA JAMAICA (RAP)",
+    "03018": "EXTRA TE (RAP)",
+    "03019": "PEPSI (RAP)",
+    "03020": "NARANJA (RAP)",
+    "03023": "ROOTBEER (RAP)",
+    "03024": "MANZAN (RAP)",
+    "03025": "EXTRA  AROS DIDI",
+    "03026": "EXTRA PAPAS DIDI",
+    "03027": "EXTRA TOCINO DIDI",
+    "03029": "EXTRA CHILES ASADO DIDI",
+    "03030": "PECHUGA DE POLLO",
+    "03031": "EXTRA CARNE DIDI , RAPPI ,UBER",
+    "03032": "PAPAS EN GAJO",
+    "03033": "..HAMBURGUESA JR CHICA",
+    "03035": "EXTRA SODA  DIDI , RAP,UBE",
+    "03036": "ADEREZO DE LA CASA UBER,PAPPI,DIDI 4 ONZ",
+    "05001": "BONELESS BBQ ORDEN",
+    "05002": "BONELESS BBQ 1/2",
+    "05003": "BONELESS RET HOT ORDEN",
+    "05004": "BONELESS RET HOT 1/2",
+    "05005": "BONELESS BBQ ORDEN DIDI",
+    "05006": "BONELESS RET HOT DIDI",
+    "05007": "BONELESS BBQ ORDEN RAPI",
+    "05008": "BONELESS RET HOT ORDEN RAPI",
+    "05009": "BONELESS BBQ ORDEN UBER",
+    "05010": "BONELESS RET HOT ORDEN UBER",
+    "05011": "BONELESS MISTOS  BUF O BBQ",
+    "05012": "BONELESS MANGO ABANERO",
+    "05013": "BONELESS MISTO MANGO A. BUFALO",
+    "05014": "BONELESS MISTO MANGO A. BBQ",
+    "05015": "BONELES ORDEN NATURAL",
+    "100003": "EXTRA QUESO BLANCO",
+    "100004": "EXTRA QUESO AMARILLO",
+    "100005": "EXTRA LECHUGA",
+    "100006": "EXTRA TOMATE",
+    "100007": "EXTRA CEBOLLA",
+    "100008": "EXTRA CHILE",
+    "100009": "EXTRA PIÑA",
+    "100011": "EXTRA CEBOLLA CARAMELIZADA",
+    "100012": "EXTRA SALSA BBQ",
+    "100013": "INGREDIENTE EXTRA",
+    "100014": "EXTRA SALSA DE LA CASA",
+    "100015": "EXTRA CARNE",
+    "100018": "EXTRA TERIYAQUI",
+    "100019": "UBER",
+    "100020": "DIDI",
+    "100022": "EXTRA CALIFORNIA",
+    "100025": "SIN TOMATE",
+    "100029": "PAN MERMA",
+    "100030": "PAPAS FRANCESA O GAJO"
+   },
+   "insumos_faltantes_vs_felix": {
+    "001004": "CARBON",
+    "001015": "TE EN POLVO",
+    "001022": "AJO MOLIDO",
+    "001023": "PIMIENTA MOLIDA",
+    "001024": "HUEVOS PZA",
+    "001027": "SAL NITRO",
+    "001042": "QUESOS PARA NAHOS",
+    "001043": "DEDOS DE QUESO",
+    "001044": "PLATO MEDIANO CINE C.",
+    "001045": "SURTIDO COCA COLA",
+    "001046": "BRAWNIE POSTRE SR PATRICIA",
+    "001047": "PAN JR",
+    "002016": "SURTIDO PEPSI",
+    "002017": "JUGO JUMEX",
+    "003021": "PLATO CHICO CINE C.",
+    "003022": "TAPA 2 OZ",
+    "003023": "SERVILLESTAS CHICA PARA MESA",
+    "003024": "PLATO DE ALMEJA 8X8 CON DIVICION 200 PZA",
+    "004013": "LIMON AMARILLO",
+    "005001": "CARNE PARA HAMBURGUESA",
+    "005004": "HIELO",
+    "005025": "QUESO MONTERY JACK",
+    "006005": "PECHUGA PARA ELEVORACION(BONELES,TIRAS,PECHUGAS)"
+   },
+   "insumos_extra_no_en_felix": {
+    "001005": "MAYONESA",
+    "001017": "ADEREZO DE LA CASA",
+    "001018": "ADEREZO DE LA CASA 4 ONZ",
+    "001035": "QUESO PARA NACHOS",
+    "001037": "PAN DE HOT DOG",
+    "001038": "SALCHICHA 1/4 DE LB",
+    "003013": "VASO ADEREZO RANCH",
+    "005019": "CARNE SLIDER CINE CURTO",
+    "006001": "BOTELLA DE TE"
+   },
+   "precios_distintos_vs_felix": {
+    "01057": {
+     "desc": "FABULOSO BOTELLA",
+     "felix": 8.03,
+     "sucursal": 182.0
+    },
+    "04009": {
+     "desc": "7 UP",
+     "felix": 40.0,
+     "sucursal": 50.0
+    },
+    "04014": {
+     "desc": "COCA CERO",
+     "felix": 40.0,
+     "sucursal": 60.0
+    },
+    "01055": {
+     "desc": "JABON LIQUIDO BOTELLA",
+     "felix": 19.8,
+     "sucursal": 202.0
+    },
+    "01051": {
+     "desc": "SAL BOLSA",
+     "felix": 14.5,
+     "sucursal": 208.0
+    },
+    "01052": {
+     "desc": "SALSA RET HOT GAL",
+     "felix": 240.9,
+     "sucursal": 228.0
+    },
+    "01049": {
+     "desc": "SALSA BBQ GAL",
+     "felix": 313.5,
+     "sucursal": 215.0
+    },
+    "01007": {
+     "desc": "MOSTAZA GAL",
+     "felix": 152.9,
+     "sucursal": 270.0
+    },
+    "04005": {
+     "desc": "PEPSI",
+     "felix": 40.0,
+     "sucursal": 50.0
+    },
+    "01062": {
+     "desc": "FILTROS",
+     "felix": 0.0,
+     "sucursal": 150.0
+    },
+    "01091": {
+     "desc": "PAPAS",
+     "felix": 0.0,
+     "sucursal": 80.0
+    },
+    "04004": {
+     "desc": "COCA COLA LIGHT",
+     "felix": 40.0,
+     "sucursal": 60.0
+    },
+    "04010": {
+     "desc": "ROOT BEER",
+     "felix": 40.0,
+     "sucursal": 50.0
+    },
+    "01061": {
+     "desc": "EXTRA TOCINO DIDI",
+     "felix": 25.0,
+     "sucursal": 20.0
+    },
+    "04007": {
+     "desc": "SQUIRT",
+     "felix": 40.0,
+     "sucursal": 50.0
+    },
+    "01101": {
+     "desc": "COMBO PAREJA 2 TOCINO + 2 PAPAS + 2 BEBIDA",
+     "felix": 480.0,
+     "sucursal": 680.0
+    },
+    "03034": {
+     "desc": "EXTRA TE DIDI",
+     "felix": 30.0,
+     "sucursal": 52.0
+    },
+    "04002": {
+     "desc": "JAMAICA",
+     "felix": 35.0,
+     "sucursal": 50.0
+    },
+    "01103": {
+     "desc": "COMBO PAREJA 2 TOCINO + 2 PAPAS + 2 BEBIDA",
+     "felix": 510.0,
+     "sucursal": 220.0
+    },
+    "04003": {
+     "desc": "COCA COLA",
+     "felix": 40.0,
+     "sucursal": 60.0
+    },
+    "01056": {
+     "desc": "ROLLO PAPEL DE BANO",
+     "felix": 35.5,
+     "sucursal": 195.0
+    },
+    "04011": {
+     "desc": "DR PEPPER",
+     "felix": 40.0,
+     "sucursal": 50.0
+    },
+    "01106": {
+     "desc": "PAN PARRILLERO",
+     "felix": 10.78,
+     "sucursal": 90.0
+    },
+    "04006": {
+     "desc": "MANZANITA SOL",
+     "felix": 40.0,
+     "sucursal": 50.0
+    },
+    "01001": {
+     "desc": "TITI CLASICA",
+     "felix": 150.0,
+     "sucursal": 220.0
+    },
+    "01088": {
+     "desc": "TITI JR PROMIOCION DIA DE LA HAMBURGUESA",
+     "felix": 1.0,
+     "sucursal": 0.0
+    },
+    "01060": {
+     "desc": "JABON EN POLVO BOLSA",
+     "felix": 21.45,
+     "sucursal": 40.0
+    },
+    "04015": {
+     "desc": "AGUA 600",
+     "felix": 15.0,
+     "sucursal": 30.0
+    },
+    "100010": {
+     "desc": "EXTRA TOCINO",
+     "felix": 30.0,
+     "sucursal": 25.0
+    },
+    "04001": {
+     "desc": "TE",
+     "felix": 35.0,
+     "sucursal": 50.0
+    },
+    "01050": {
+     "desc": "ADERESO RACH GAL",
+     "felix": 396.0,
+     "sucursal": 208.0
+    },
+    "04008": {
+     "desc": "MIRINDA",
+     "felix": 40.0,
+     "sucursal": 50.0
+    },
+    "04012": {
+     "desc": "ORAGE CRUSH",
+     "felix": 40.0,
+     "sucursal": 50.0
+    },
+    "01053": {
+     "desc": "TENEDORA PAQ 100 PZA",
+     "felix": 14.3,
+     "sucursal": 247.0
+    },
+    "01054": {
+     "desc": "BOLSA NEGRAS PZA",
+     "felix": 3.85,
+     "sucursal": 182.0
+    },
+    "01059": {
+     "desc": "GEL ANTIVATERIAL",
+     "felix": 356.4,
+     "sucursal": 0.0
+    },
+    "01102": {
+     "desc": "COMBO PAREJA 2 TOCINO + 2 PAPAS + 2 BEBIDA",
+     "felix": 470.0,
+     "sucursal": 380.0
+    },
+    "04016": {
+     "desc": "AROS DE CEBOLLA",
+     "felix": 70.0,
+     "sucursal": 130.0
+    }
+   },
+   "resumen": {
+    "prod_faltan": 43,
+    "prod_extra": 112,
+    "ins_faltan": 23,
+    "ins_extra": 9,
+    "precios_distintos": 38
+   }
+  }
+ },
+ "nota_importante": "La base de Felix es de COCINA/INSUMOS (sus 'productos' son insumos con costo) y REUSA los mismos codigos que las sucursales usan para su menu (ej. 01055 = JABON en Felix = TITI DOBLE QUESO en sucursal). Las 5 sucursales principales tienen el MISMO menu (233 productos). Cine Curto tiene menu propio. NO homologar menu hacia Felix."
+}
