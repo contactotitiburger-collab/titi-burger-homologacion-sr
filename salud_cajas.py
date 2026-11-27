@@ -22,10 +22,34 @@ def huella_tabla(cur, tabla, orden):
                for k, v in r.items() if k.lower() != "workspaceid"} for r in filas]
     return {"filas": len(filas), "huella": hashlib.sha256(json.dumps(limpio, sort_keys=True).encode()).hexdigest()[:16]}
 
-def revisar(nombre, cf):
+CRED = Path("/home/tito/.openclaw/credentials/sr_sql")
+
+def red_tailscale():
+    """Estado de cada nodo en la red (Online + cuando vence su llave). Distingue 'se cayo la red' de 'se cayo SQL'."""
+    import subprocess
+    try:
+        d = json.loads(subprocess.run(["tailscale", "status", "--json"], capture_output=True, text=True, timeout=15).stdout)
+        return {p["TailscaleIPs"][0]: {"nodo": p.get("HostName"), "en_linea": p.get("Online"), "llave_vence": p.get("KeyExpiry")}
+                for p in d.get("Peer", {}).values() if p.get("TailscaleIPs")}
+    except Exception as e:
+        return {"_error": str(e)[:100]}
+
+def revisar(nombre, cf, red=None):
     r = {"sucursal": nombre, "avisos": []}
+    ip = json.loads((CRED / f"{cf}.json").read_text())["server"]
+    n = (red or {}).get(ip)
+    if n:
+        r["red"] = n
+        if not n["en_linea"]: r["avisos"].append(("ROJO", "La compu no esta conectada a la red (Tailscale)"))
+        if n.get("llave_vence"):
+            dias = (datetime.datetime.fromisoformat(n["llave_vence"].replace("Z", "+00:00")).replace(tzinfo=None) - datetime.datetime.utcnow()).days
+            r["red"]["dias_para_vencer"] = dias
+            if dias < 30: r["avisos"].append(("ROJO" if dias < 7 else "AMARILLO", f"La llave de red vence en {dias} dias: desactivar el vencimiento en el panel de Tailscale"))
     t0 = time.time()
     cn = conn(cf); cur = cn.cursor(); r["ms_conexion"] = int((time.time() - t0) * 1000)
+    v = q(cur, "SELECT CAST(SERVERPROPERTY('ProductVersion') AS varchar(30)) v, (SELECT state_desc FROM sys.databases WHERE name=DB_NAME()) estado")[0]
+    r["version_sql"], r["estado_base"] = v["v"], v["estado"]
+    if r["estado_base"] != "ONLINE": r["avisos"].append(("ROJO", f"La base no esta en linea ({r['estado_base']})"))
     ahora_caja = q(cur, "SELECT GETDATE() a")[0]["a"]
     r["desfase_reloj_seg"] = int((ahora_caja - datetime.datetime.now()).total_seconds())
     r["tamano_mb"] = float(q(cur, "SELECT CAST(SUM(CAST(size AS bigint))*8/1024.0 AS decimal(10,1)) mb FROM sys.database_files WHERE type=0")[0]["mb"])
@@ -49,9 +73,9 @@ def main():
     previo = {}
     f_ult = OUT / "ultimo.json"
     if f_ult.exists(): previo = {x["sucursal"]: x for x in json.loads(f_ult.read_text()).get("sucursales", []) if "catalogo" in x}
-    res = []
+    res = []; red = red_tailscale()
     for nombre, cf in SUCS + [REF]:
-        try: r = revisar(nombre, cf)
+        try: r = revisar(nombre, cf, red)
         except Exception as e: r = {"sucursal": nombre, "error": str(e)[:150], "avisos": [("ROJO", "No se pudo leer la base")]}
         p = previo.get(nombre)
         if p and "catalogo" in r:
@@ -63,10 +87,11 @@ def main():
     f_ult.write_text(json.dumps(doc, ensure_ascii=False, indent=1, default=str))
     with (OUT / "historial.jsonl").open("a") as h:
         h.write(json.dumps({"generado": doc["generado"], "resumen": [{k: r.get(k) for k in ("sucursal", "ultimo_respaldo", "ultimo_ticket", "desfase_reloj_seg", "tamano_mb", "avisos")} for r in res]}, ensure_ascii=False, default=str) + "\n")
-    lineas = [f"# Salud de las cajas — {doc['generado']}", "", "| Sucursal | Último respaldo | Último ticket | Reloj | Tamaño | Avisos |", "|---|---|---|---|---|---|"]
+    lineas = [f"# Salud de las cajas — {doc['generado']}", "", "| Sucursal | Red | Llave de red | Último respaldo | Último ticket | Reloj | Tamaño | Avisos |", "|---|---|---|---|---|---|---|---|"]
     for r in res:
         av = "; ".join(f"{'🔴' if c == 'ROJO' else '🟠'} {m}" for c, m in r["avisos"]) or "✅"
-        lineas.append(f"| {r['sucursal']} | {r.get('ultimo_respaldo') or '—'} | {r.get('ultimo_ticket') or '—'} | {r.get('desfase_reloj_seg', '—')} s | {r.get('tamano_mb', '—')} MB | {av} |")
+        rd = r.get("red") or {}
+        lineas.append(f"| {r['sucursal']} | {'en línea' if rd.get('en_linea') else '—'} | {str(rd.get('dias_para_vencer', '—')) + ' días'} | {r.get('ultimo_respaldo') or '—'} | {r.get('ultimo_ticket') or '—'} | {r.get('desfase_reloj_seg', '—')} s | {r.get('tamano_mb', '—')} MB | {av} |")
     (OUT / "ultimo.md").write_text("\n".join(lineas) + "\n")
     print("\n".join(lineas))
 
