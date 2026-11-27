@@ -42,3 +42,7 @@ npm run preview
 ```
 
 Ver `~/.openclaw/skills/crear-sitio/SKILL.md` para el procedimiento completo.
+
+## Requisitos (27-nov-2026)
+
+- Node.js **22.23.4 o más nuevo** (Astro 7). Tailwind 4 va por `@tailwindcss/vite`; la config vieja se carga con `@config` en `global.css`.
