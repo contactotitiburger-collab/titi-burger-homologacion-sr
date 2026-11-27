@@ -1,101 +1,104 @@
 [
  {
   "id": 1,
-  "nombre": "Plan",
+  "nombre": "Conectar a Tito con todo el software",
   "color": [
    "#4FC3F7",
    "#1E90F0"
   ],
-  "descripcion": "Aquí se armó el plan de trabajo: se creó a Tito Lector, un equipo de 5 ayudantes digitales encargados de revisar cada sucursal sin tocar ni cambiar nada.",
+  "descripcion": "Conectar a Tito con las 6 carretas y la base de Félix, de la forma más profesional posible, sin poder cambiar nada.",
   "items": [
    {
-    "nombre": "Plan de trabajo definido y aprobado",
+    "nombre": "Conectar las 6 carretas y la compu de Félix a la red privada",
+    "hecho": true
+   },
+   {
+    "nombre": "Usuario de solo lectura en las 7 bases",
+    "hecho": true
+   },
+   {
+    "nombre": "Software ordenado y respaldado en GitHub",
+    "hecho": true
+   },
+   {
+    "nombre": "Página de avance con acceso para Rafael, Félix y Don Titi",
     "hecho": true
    }
   ]
  },
  {
   "id": 2,
-  "nombre": "Revisar sucursales",
+  "nombre": "Tito Lector lee todas las carretas",
   "color": [
    "#5EE6A8",
    "#22C58A"
   ],
-  "descripcion": "Los ayudantes entraron a cada sucursal, leyeron toda la información (menú, precios, inventario, ventas, usuarios) y la compararon entre todas. Ya se conectaron las 6 sucursales y la compu de Félix (la base de referencia); solo falta hacerle a Montecarlo la misma revisión a fondo que a las demás.",
+  "descripcion": "Los 5 ayudantes de Tito Lector leen todo lo de cada carreta (menú, precios, recetas, inventario, ventas, configuración) y entienden exactamente qué tiene cada una.",
   "items": [
    {
-    "nombre": "Ver qué sucursales están conectadas",
+    "nombre": "Crear a Tito Lector y sus 5 ayudantes",
     "hecho": true
    },
    {
-    "nombre": "Entrar a ver la información sin tocar nada",
+    "nombre": "Mapa de la información que guarda Soft Restaurant",
     "hecho": true
    },
    {
-    "nombre": "Mapa de qué información guarda cada sucursal",
-    "hecho": true
-   },
-   {
-    "nombre": "Revisar menú y precios de cada sucursal",
-    "hecho": true
-   },
-   {
-    "nombre": "Revisar inventario y recetas",
-    "hecho": true
-   },
-   {
-    "nombre": "Revisar ventas y cortes de caja",
-    "hecho": true
-   },
-   {
-    "nombre": "Revisar usuarios y configuración",
-    "hecho": true
-   },
-   {
-    "nombre": "Comparar las 5 sucursales conectadas entre sí",
-    "hecho": true
-   },
-   {
-    "nombre": "Conectar Montecarlo a la red y dejarla leíble",
-    "hecho": true
-   },
-   {
-    "nombre": "Revisar Montecarlo con los 5 ayudantes",
-    "hecho": true
-   },
-   {
-    "nombre": "Conectar la compu de Félix (la base de referencia)",
-    "hecho": true
-   },
-   {
-    "nombre": "Comparar las 6 sucursales contra la base de Felix",
+    "nombre": "Leer las 6 carretas y la base de Félix completas",
     "hecho": true
    }
   ]
  },
  {
   "id": 3,
+  "nombre": "Reporte de diferencias contra la base de Félix",
+  "color": [
+   "#FFD166",
+   "#F5B83D"
+  ],
+  "descripcion": "Con lo que leyeron los ayudantes, un reporte de qué tan distinta es cada carreta comparada con la de Félix, y qué le falta a la de Félix.",
+  "items": [
+   {
+    "nombre": "Comparar cada carreta contra la de Félix",
+    "hecho": true
+   },
+   {
+    "nombre": "Lista de 1,530 diferencias con su gravedad",
+    "hecho": true
+   },
+   {
+    "nombre": "Reporte en palabras simples de lo que le falta a la base de Félix",
+    "hecho": true
+   },
+   {
+    "nombre": "Rafael revisa y aprueba el reporte",
+    "hecho": false
+   }
+  ]
+ },
+ {
+  "id": 4,
   "nombre": "Arreglar la base de Félix",
   "color": [
    "#F48FB1",
    "#EC4F8A"
   ],
-  "descripcion": "Primero se deja perfecta la base de Félix: se completa lo que le falta (el menú de las sucursales, costos en $0, insumos sin nombre, precio de la Titi JR, códigos repetidos) y se comprueba que funcione perfecto antes de copiarla.",
+  "descripcion": "La base de Félix es la que se va a copiar, así que primero se deja perfecta: Félix dice cómo la quiere, se completa lo que falta y, si falta un producto, se le crea código nuevo.",
   "items": [
    {
-    "nombre": "Comparar cada sucursal contra la de Félix",
-    "hecho": true
-   },
-   {
-    "nombre": "Lista de lo que le falta a la base de Félix",
-    "hecho": true
-   },
-   {
-    "nombre": "Completar lo que le falta a la base de Félix (menú, costos, nombres, precios)",
+    "nombre": "Félix dice cómo quiere su base (menú, precios, paquetes)",
     "hecho": false
    },
    {
-    "nombre": "Comprobar que la base de Félix quede perfecta (lectores + tickets de prueba)",
+    "nombre": "Completar costos en $0, insumos sin nombre y precios (Titi JR)",
+    "hecho": false
+   },
+   {
+    "nombre": "Agregar el menú que le falta con códigos nuevos donde haga falta",
+    "hecho": false
+   },
+   {
+    "nombre": "Comprobar que quede perfecta (lectores y tickets de prueba)",
     "hecho": false
    },
    {
@@ -105,32 +108,59 @@
   ]
  },
  {
-  "id": 4,
-  "nombre": "Copiar a todas las sucursales",
+  "id": 5,
+  "nombre": "Usar Soft Restaurant a su máxima capacidad",
   "color": [
    "#B39DFF",
    "#7C4DFF"
   ],
-  "descripcion": "Con la base de Félix ya perfecta, se copia completa (copy paste) a cada sucursal. Antes se guarda todo lo de cada sucursal (respaldo completo: ventas, tickets y cortes). Una sucursal a la vez, con tu aprobación, y nunca en diciembre.",
+  "descripcion": "Antes de copiar, se investiga a fondo (agentes, guías, cómo lo usan los pros) para acomodar todo en su lugar: que un combo salga en menos de 10 clics, botones y grupos ordenados.",
   "items": [
    {
-    "nombre": "Respaldo completo de cada sucursal, guardado y probado",
+    "nombre": "Investigar agentes e información para sacarle todo a Soft Restaurant",
     "hecho": false
    },
    {
-    "nombre": "Igualar la versión de SQL en las 5 cajas con versión vieja (2014 → 2019) para poder pegar la copia",
+    "nombre": "Propuesta de acomodo: combos en menos clics, botones y grupos",
     "hecho": false
    },
    {
-    "nombre": "Probar la copia en una caja de prueba antes de hacerlo en vivo",
+    "nombre": "Félix y Rafael aprueban la propuesta",
     "hecho": false
    },
    {
-    "nombre": "Copiar la base a la primera sucursal",
+    "nombre": "Aplicarla en la base de Félix",
+    "hecho": false
+   }
+  ]
+ },
+ {
+  "id": 6,
+  "nombre": "Copiar la base de Félix a todas las carretas",
+  "color": [
+   "#80DEEA",
+   "#26A69A"
+  ],
+  "descripcion": "Copy paste de la base de Félix a cada carreta. Antes se guarda todo lo de cada una (respaldo completo). Primero una carreta, luego las demás, una por una, con aprobación y nunca en diciembre.",
+  "items": [
+   {
+    "nombre": "Respaldo completo de cada carreta, guardado y probado",
     "hecho": false
    },
    {
-    "nombre": "Revisar y ajustar lo propio de cada sucursal después de pegar (su almacén, impresoras, conexión a la nube)",
+    "nombre": "Subir el SQL de 5 cajas de la versión 2014 a la 2019 para poder pegar la copia",
+    "hecho": false
+   },
+   {
+    "nombre": "Probar la copia en una caja de prueba",
+    "hecho": false
+   },
+   {
+    "nombre": "Copiar a la primera carreta y revisarla",
+    "hecho": false
+   },
+   {
+    "nombre": "Ajustar lo propio de cada carreta (almacén, impresoras, nube)",
     "hecho": false
    },
    {
@@ -138,7 +168,72 @@
     "hecho": false
    },
    {
-    "nombre": "Revisión final contigo y Don Titi",
+    "nombre": "10 tickets de prueba y firma de Félix por carreta",
+    "hecho": false
+   },
+   {
+    "nombre": "Inventario global y reporte de mermas",
+    "hecho": false
+   }
+  ]
+ },
+ {
+  "id": 7,
+  "nombre": "Clases para Félix y Marco",
+  "color": [
+   "#FFAB91",
+   "#FF7043"
+  ],
+  "descripcion": "Con las bases ya regularizadas, muchas clases y mucho tiempo para enseñarle a Félix y a Marco a usar el software.",
+  "items": [
+   {
+    "nombre": "Preparar guías sencillas paso a paso",
+    "hecho": false
+   },
+   {
+    "nombre": "Clases a Félix y a Marco",
+    "hecho": false
+   }
+  ]
+ },
+ {
+  "id": 8,
+  "nombre": "Tito Operador (3 niveles de permiso)",
+  "color": [
+   "#90CAF9",
+   "#42A5F5"
+  ],
+  "descripcion": "Tito ayuda en la operación: consultas libres, cambios de catálogo e inventario con confirmación, y dinero o cierres de caja con confirmación de Félix o David.",
+  "items": [
+   {
+    "nombre": "Diseñar los 3 niveles de permiso",
+    "hecho": false
+   },
+   {
+    "nombre": "Nivel 1: consultas libres",
+    "hecho": false
+   },
+   {
+    "nombre": "Nivel 2: catálogo e inventario (confirma Félix o Nancy)",
+    "hecho": false
+   },
+   {
+    "nombre": "Nivel 3: dinero y cierres de caja (confirma Félix o David)",
+    "hecho": false
+   }
+  ]
+ },
+ {
+  "id": 9,
+  "nombre": "Soporte y seguimiento",
+  "color": [
+   "#CFD8DC",
+   "#90A4AE"
+  ],
+  "descripcion": "Acompañar unas semanas después de terminar para resolver dudas y afinar.",
+  "items": [
+   {
+    "nombre": "4 semanas de soporte",
     "hecho": false
    }
   ]

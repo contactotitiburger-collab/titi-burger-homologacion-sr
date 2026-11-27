@@ -207,12 +207,10 @@ if len(actividades_hoy) > 6:
 max_min_hoy = max((a["minutos"] for a in actividades_hoy), default=1)
 
 # ---------- que sigue (real, de lo que se sabe hoy) ----------
-que_sigue = [
-    {"estado": "pendiente", "texto": "Revisar Montecarlo a fondo con los ayudantes (igual que a las otras 5)", "quien": "Tito"},
-    {"estado": "pendiente", "texto": "Comparar cada sucursal contra la de Félix", "quien": "Tito"},
-    {"estado": "pendiente", "texto": "Corregir las diferencias, una sucursal a la vez", "quien": "Tito, con tu aprobación"},
-    {"estado": "pendiente", "texto": "Dejar las 6 sucursales exactamente iguales", "quien": "Tito"},
-]
+_pf_tmp = json.loads((BASE / "plan_fases.json").read_text(encoding="utf-8"))
+que_sigue = [{"estado": "pendiente", "texto": _x["n"], "quien": _x.get("quien", "Tito")}
+             for _a in _pf_tmp for _x in _a["items"] if not _x["hecho"]][:4] or \
+            [{"estado": "pendiente", "texto": "Todo el plan está terminado", "quien": "Tito"}]
 
 bloqueos = []
 
@@ -402,7 +400,7 @@ _COL = {"hecho": "#22C55E", "curso": "#1E90F0", "pendiente": "#C9CFD6"}
 _ESTTXT = {"hecho": "Terminada", "curso": "En curso", "pendiente": "Pendiente"}
 
 def _anillo_fase(pf, idx):
-    size, stroke = 56, 6
+    size, stroke = (56, 6) if len(plan_fases) <= 5 else (44, 5)
     r = (size - stroke) / 2
     circ = 2 * _math.pi * r
     col = _COL[pf["estado"]]
@@ -413,19 +411,21 @@ def _anillo_fase(pf, idx):
                 f'stroke-linecap="round" stroke-dasharray="{circ:.1f}" stroke-dashoffset="{off:.1f}" '
                 f'transform="rotate(-90 {size/2} {size/2})"/>')
     numcol = col if pf["pct"] > 0 else "#9DB2C2"
-    return (f'<div class="pf-dot" onclick="verFasePlan({idx})">'
+    return (f'<div class="pf-dot" style="width:{100.0/len(plan_fases):.2f}%" onclick="verFasePlan({idx})">'
             f'<svg width="{size}" height="{size}" viewBox="0 0 {size} {size}">'
             f'<circle cx="{size/2}" cy="{size/2}" r="{r}" fill="#fff" stroke="#E3EEF6" stroke-width="{stroke}"/>{arco}'
             f'<text x="50%" y="53%" text-anchor="middle" dominant-baseline="middle" '
-            f'style="font:600 13px Poppins,sans-serif;fill:{numcol};">{pf["pct"]}%</text>'
+            f'style="font:600 {12 if size > 50 else 10}px Poppins,sans-serif;fill:{numcol};">{pf["pct"]}%</text>'
             f'</svg><div class="pf-dot-lbl">{pf["etiqueta"]}</div></div>')
 
+_nf = len(plan_fases); _half = 50.0 / _nf
 dots_html = (
-    '<div class="pf-row">'
-    '<div class="pf-line-bg"></div>'
-    f'<div class="pf-line-fill" style="width:calc(80% * {_linea_fill:.4f});"></div>'
+    '<div class="pf-scroll">'
+    f'<div class="pf-row" style="min-width:{_nf*66}px">'
+    f'<div class="pf-line-bg" style="left:{_half:.2f}%;right:{_half:.2f}%"></div>'
+    f'<div class="pf-line-fill" style="left:{_half:.2f}%;width:calc({100 - 2*_half:.2f}% * {_linea_fill:.4f});"></div>'
     + "".join(_anillo_fase(pf, i) for i, pf in enumerate(plan_fases))
-    + '</div><div id="fase-resumen" class="pf-resumen"></div>'
+    + '</div></div><div id="fase-resumen" class="pf-resumen"></div>'
 )
 
 # Punto 2: desglose de la fase actual
@@ -457,6 +457,49 @@ for _pf in plan_fases:
              f'<span class="bit-area-badge" style="color:{_COL[_pf["estado"]]}">{_pf["pct"]}%</span></div>{_rows}</div>')
 bitacora_areas_html = _bit
 
+# ---- Bitacora de trabajo (linea del tiempo): lo hecho con horas reales -> lo que falta con horas estimadas
+from collections import OrderedDict as _OD
+_dias = _OD()
+for _f in sorted(filas, key=lambda r: (r["fecha"], r["hora_inicio"])):
+    _dias.setdefault(_f["fecha"], []).append(_f)
+_h_real = minutos_total / 60.0
+_h_falta = sum(x.get("est", 0) for a in plan_fases for x in a["items"] if not x["hecho"])
+_etapas_ok = sum(1 for a in plan_fases if a["estado"] == "hecho")
+_tl = (f'<div class="tl-stats">'
+       f'<div class="tl-stat"><span class="tl-num">{_h_real:.1f} h</span><span class="tl-lbl">trabajadas (reales)</span></div>'
+       f'<div class="tl-stat"><span class="tl-num tl-azul">~{_h_falta:.0f} h</span><span class="tl-lbl">faltan (estimado)</span></div>'
+       f'<div class="tl-stat"><span class="tl-num">{_etapas_ok} de {len(plan_fases)}</span><span class="tl-lbl">etapas terminadas</span></div></div>'
+       f'<p class="tl-nota">El estimado sale del ritmo real: el diagnóstico estaba presupuestado en 25 h y salió en unas 17 h. '
+       f'Contrato: {plan["horas_presupuestadas"]} h.</p>')
+_tl += '<div class="tl"><div class="tl-sec">Lo que ya se hizo</div>'
+for _fecha, _rs in _dias.items():
+    _m = sum(parse_min(r["duracion"]) for r in _rs)
+    _vistos = []
+    for r in _rs:
+        _t = TRADUCCION_HOY.get(r["tarea"], r["tarea"])
+        if _t not in _vistos:
+            _vistos.append(_t)
+    _lis = "".join(f"<li>{t}</li>" for t in _vistos)
+    _tl += (f'<div class="tl-nodo tl-hecho"><div class="tl-pin"></div><div class="tl-caja">'
+            f'<div class="tl-top"><span class="tl-fecha">{fmt_fecha_es(_fecha)}</span><span class="tl-horas">{fmt_dur(_m)}</span></div>'
+            f'<ul class="tl-lista">{_lis}</ul></div></div>')
+_tl += '<div class="tl-sec tl-sec-falta">Lo que falta para terminar</div>'
+for _a in plan_fases:
+    _pend = [x for x in _a["items"] if not x["hecho"]]
+    if not _pend:
+        continue
+    _clase = "tl-actual" if _a is fase_actual_plan else "tl-futuro"
+    _est = sum(x.get("est", 0) for x in _pend)
+    _hechos = [x for x in _a["items"] if x["hecho"]]
+    _lis = "".join(f'<li class="tl-ok">{x["n"]}</li>' for x in _hechos)
+    _lis += "".join(f'<li><span>{x["n"]}</span><em>~{x.get("est",0)} h · {x.get("quien","Tito")}</em></li>' for x in _pend)
+    _tag = '<span class="tl-tag">Ahora</span>' if _a is fase_actual_plan else ""
+    _tl += (f'<div class="tl-nodo {_clase}"><div class="tl-pin"></div><div class="tl-caja">'
+            f'<div class="tl-top"><span class="tl-fase">{_a["area"]}{_tag}</span><span class="tl-horas">~{_est:g} h</span></div>'
+            f'<p class="tl-desc">{_a.get("desc","")}</p><ul class="tl-lista tl-items">{_lis}</ul></div></div>')
+_tl += '</div>'
+bitacora_timeline_html = _tl
+
 plan_fases_js = json.dumps(
     [{"a": pf["area"], "p": pf["pct"], "e": _ESTTXT[pf["estado"]],
       "h": sum(1 for it in pf["items"] if it["hecho"]),
@@ -467,7 +510,7 @@ plan_fases_js = json.dumps(
 _tt = sum(len(pf["items"]) for pf in plan_fases)
 _th = sum(1 for pf in plan_fases for it in pf["items"] if it["hecho"])
 pct_plan_global = round(100 * _th / _tt) if _tt else 0
-frase_plan = "Ya terminamos de leer las 6 sucursales. Ahora vamos ordenando el cat\u00e1logo para que todas manejen el mismo men\u00fa y los mismos precios."
+frase_plan = f"Vamos en la etapa \u201c{fase_actual_plan['area']}\u201d. {fase_actual_plan.get('desc', '')}"
 ring_big = ring(pct_plan_global, 128, 12, "var(--blue)", "var(--track)", "var(--ink)", 32)
 
 html = f"""<!doctype html>
@@ -506,6 +549,7 @@ html = f"""<!doctype html>
   .resumen-item b {{ color:var(--ink); }}
   .resumen-punto {{ width:8px; height:8px; border-radius:50%; margin-top:6px; flex:0 0 8px; }}
   /* fila de fases (bolitas) */
+  .pf-scroll {{ overflow-x:auto; -webkit-overflow-scrolling:touch; margin:0 -6px; padding:0 6px 4px; }}
   .pf-row {{ position:relative; display:flex; justify-content:space-between; align-items:flex-start; padding:4px 0 0; margin-bottom:4px; }}
   .pf-line-bg {{ position:absolute; top:28px; left:10%; right:10%; height:3px; background:var(--track); border-radius:2px; z-index:0; }}
   .pf-line-fill {{ position:absolute; top:28px; left:10%; height:3px; background:linear-gradient(90deg,#22C55E,#1E90F0); border-radius:2px; z-index:0; transition:width .5s ease; }}
@@ -546,6 +590,43 @@ html = f"""<!doctype html>
   .menu-dropdown.show {{ display:block; }}
   .menu-dropdown a {{ display:flex; align-items:center; min-height:44px; padding:0 16px; font-size:14px; color:var(--ink); text-decoration:none; white-space:nowrap; cursor:pointer; }}
   .menu-dropdown a:hover {{ background:var(--bg); }}
+  /* bitacora: linea del tiempo */
+  .tl-wrap {{ max-width:720px; margin:0 auto; padding:0 16px 40px; }}
+  .tl-stats {{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:10px; }}
+  .tl-stat {{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:12px 10px; text-align:center; }}
+  .tl-num {{ display:block; font-size:20px; font-weight:700; color:var(--ink); }}
+  .tl-azul {{ color:var(--blue); }}
+  .tl-lbl {{ font-size:11px; color:var(--ink2); }}
+  .tl-nota {{ font-size:12px; color:var(--ink2); margin:0 0 18px; }}
+  .tl {{ position:relative; padding-left:26px; }}
+  .tl::before {{ content:""; position:absolute; left:8px; top:6px; bottom:6px; width:2px;
+                 background:linear-gradient(180deg,#22C55E 0%,#22C55E 45%,#1E90F0 55%,#C9CFD6 100%); }}
+  .tl-sec {{ font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; color:var(--ink2); margin:4px 0 10px -26px; padding-left:26px; }}
+  .tl-sec-falta {{ margin-top:22px; }}
+  .tl-nodo {{ position:relative; margin-bottom:12px; }}
+  .tl-pin {{ position:absolute; left:-24px; top:16px; width:14px; height:14px; border-radius:50%; background:#fff; border:3px solid #C9CFD6; }}
+  .tl-hecho .tl-pin {{ background:#22C55E; border-color:#22C55E; }}
+  .tl-actual .tl-pin {{ border-color:#1E90F0; box-shadow:0 0 0 0 rgba(30,144,240,.5); animation:tlpulso 2s infinite; }}
+  @keyframes tlpulso {{ 0% {{ box-shadow:0 0 0 0 rgba(30,144,240,.45); }} 70% {{ box-shadow:0 0 0 9px rgba(30,144,240,0); }} 100% {{ box-shadow:0 0 0 0 rgba(30,144,240,0); }} }}
+  .tl-caja {{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:12px 14px; }}
+  .tl-futuro .tl-caja {{ border-style:dashed; background:#FAFCFE; }}
+  .tl-actual .tl-caja {{ border-color:#BFDDF8; box-shadow:0 4px 14px rgba(30,144,240,.10); }}
+  .tl-top {{ display:flex; justify-content:space-between; align-items:baseline; gap:10px; }}
+  .tl-fecha, .tl-fase {{ font-size:14px; font-weight:600; }}
+  .tl-horas {{ font-size:13px; font-weight:600; color:var(--blue); white-space:nowrap; }}
+  .tl-hecho .tl-horas {{ color:#16A34A; }}
+  .tl-tag {{ margin-left:8px; font-size:11px; font-weight:600; color:#fff; background:#1E90F0; border-radius:999px; padding:2px 8px; vertical-align:middle; }}
+  .tl-desc {{ font-size:13px; color:var(--ink2); margin:6px 0 4px; }}
+  .tl-lista {{ margin:6px 0 0; padding-left:18px; font-size:13px; line-height:1.55; color:var(--ink); }}
+  .tl-items {{ list-style:none; padding-left:0; }}
+  .tl-items li {{ position:relative; display:flex; justify-content:space-between; gap:10px; padding:5px 0 5px 20px; border-top:1px solid #F0F4F8; }}
+  .tl-items li:first-child {{ border-top:none; }}
+  .tl-items li::before {{ content:"○"; color:#A0B4C4; position:absolute; left:0; top:5px; }}
+  .tl-items li span {{ flex:1; }}
+  .tl-items li em {{ font-style:normal; font-size:12px; color:var(--ink2); white-space:nowrap; }}
+  .tl-items li.tl-ok {{ color:#16A34A; }}
+  .tl-items li.tl-ok::before {{ content:"✓"; color:#22C55E; }}
+  @media (max-width:480px) {{ .tl-items li {{ flex-direction:column; gap:0; }} .tl-num {{ font-size:17px; }} }}
   /* bitacora overlay */
   #bitacora-overlay {{ display:none; position:fixed; inset:0; background:var(--bg); z-index:60; overflow-y:auto; }}
   #bitacora-overlay.show {{ display:block; }}
@@ -575,8 +656,8 @@ html = f"""<!doctype html>
     <h2>Bitácora de trabajo</h2>
     <div class="cerrar-btn" onclick="cerrarBitacora()">✕</div>
   </div>
-  <div class="objetivos-lista">
-    {objetivos_html}
+  <div class="tl-wrap">
+    {bitacora_timeline_html}
   </div>
 </div>
 
@@ -598,7 +679,7 @@ html = f"""<!doctype html>
 
     <div class="resumen-mini">
       <div class="resumen-item"><span class="resumen-punto" style="background:var(--blue)"></span>
-        <span><b>Hoy:</b> {horas_hoy_txt} en {len(actividades_hoy)} tareas</span></div>
+        <span><b>Hoy:</b> {horas_hoy_txt} en {len(actividades_hoy)} {'tarea' if len(actividades_hoy) == 1 else 'tareas'}</span></div>
       <div class="resumen-item"><span class="resumen-punto" style="background:var(--pendiente)"></span>
         <span><b>Sigue:</b> {que_sigue[0]['texto']}</span></div>
     </div>
