@@ -34,3 +34,8 @@ fecha,hora_inicio,hora_fin,duracion,tarea,resultado
 2026-11-25,10:39,10:43,4min,Agregar menu de 3 puntitos + bitacora de objetivos (verde/rojo) y doble clic para cerrar avisos,"OK - 6 objetivos (2 verdes 4 rojos) resumidos del plan, probado con Playwright"
 2026-11-25,10:43,10:52,9min,Arreglar CSV roto (comas sin escapar) y reestructurar objetivos en 3 niveles con horas reales,"OK - 0 filas mal formadas, probado con Playwright en los 3 niveles de detalle"
 2026-11-25,10:52,10:55,3min,Corregir hora de la cita con Felix (4:30-6pm en vez de 9-10:30am),"OK - duracion se mantuvo igual (1.5h), solo cambio el horario"
+2026-11-25,10:55,10:57,2min,Crear cuenta para Don Titi en la pagina de avance,OK - verificado 200 con la clave nueva
+2026-11-25,10:57,10:58,1min,Armar respaldo diario local del proyecto en la Z2 (aparte de GitHub),"OK - corre todas las noches 23:55, guarda 30 dias, primer respaldo ya hecho"
+2026-11-26,15:10,15:20,10min,Arreglar bug del aviso grande que no se cerraba al picarle 2 veces (dependia del doble clic nativo que falla en celular; ahora tocar la misma tarjeta otra vez lo cierra),OK - regenerado y subido a GitHub
+2026-11-26,15:20,15:24,4min,Crear cuenta de Marco Perez en la pagina de avance,OK - usuario marco con clave propia; servicio reiniciado
+2026-11-26,15:24,15:40,16min,Conectar la compu de Felix a la red Tailscale (guia paso a paso del login) y detectar su Soft Restaurant,"OK - desktop-bc8qefq 100.113.241.107 en la red; SQL Server 2019 instancia SOFTRESTAURANT puerto 56659; falta crear usuario de solo-lectura tito"
