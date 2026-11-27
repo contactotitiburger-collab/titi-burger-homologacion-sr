@@ -12,7 +12,7 @@
     "id": 2,
     "nombre": "Revisar sucursales",
     "color": ["#5EE6A8", "#22C58A"],
-    "descripcion": "Los 5 ayudantes entraron a cada sucursal, leyeron toda la información (menú, precios, inventario, ventas, usuarios) y la compararon entre todas. Así se dieron cuenta de que falta conectar la sucursal Montecarlo.",
+    "descripcion": "Los 5 ayudantes entraron a cada sucursal, leyeron toda la información (menú, precios, inventario, ventas, usuarios) y la compararon entre todas. Ya se conectó Montecarlo (la 6ª); falta leerla con los ayudantes y conectar la compu de Félix, que es la base de referencia.",
     "items": [
       {"nombre": "Ver qué sucursales están conectadas", "hecho": true},
       {"nombre": "Entrar a ver la información sin tocar nada", "hecho": true},
@@ -22,7 +22,9 @@
       {"nombre": "Revisar ventas y cortes de caja", "hecho": true},
       {"nombre": "Revisar usuarios y configuración", "hecho": true},
       {"nombre": "Comparar las 5 sucursales conectadas entre sí", "hecho": true},
-      {"nombre": "Revisar la sucursal Montecarlo (falta conectarla)", "hecho": false}
+      {"nombre": "Conectar Montecarlo a la red y dejarla leíble", "hecho": true},
+      {"nombre": "Revisar Montecarlo con los 5 ayudantes", "hecho": false},
+      {"nombre": "Conectar la compu de Félix (la base de referencia)", "hecho": false}
     ]
   },
   {
