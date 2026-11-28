@@ -1,12 +1,20 @@
 {
- "_nota": "Lo que frena o falta para el plan. Editar aqui (resuelto:true para quitarlo). 'frena' = etiqueta de la etapa en plan_fases.json. tipo: decision | dinero | tecnico | persona | seguridad",
+ "_nota": "Solo lo que frena pasos de PLAN.md (nada fuera del plan). Editar aqui; resuelto:true lo quita. frena = etiqueta en plan_fases.json. tipo: decision | persona | tecnico | dinero | seguridad",
  "frenos": [
-  {"texto": "Aprobar el reporte de diferencias y decidir si se le manda a Félix (14 preguntas)", "tipo": "decision", "quien": "Rafael", "frena": "Reporte", "resuelto": false},
-  {"texto": "Félix dice cómo quiere su base (menú, precios, paquetes)", "tipo": "persona", "quien": "Félix", "frena": "Base Félix", "resuelto": false},
-  {"texto": "Pagar al distribuidor para subir 4 carretas a Soft Restaurant 12 (referencia: $980 servidor + $680 por estación + IVA, falta cotizar el nuestro)", "tipo": "dinero", "quien": "Rafael y Don Titi", "frena": "Copiar", "resuelto": false},
-  {"texto": "Subir el SQL de Montejano de 2014 a 2019", "tipo": "tecnico", "quien": "Distribuidor con Tito", "frena": "Copiar", "resuelto": false},
-  {"texto": "Compu para Nancy: la propuesta la incluye pero no tiene precio ni fecha de compra", "tipo": "dinero", "quien": "Rafael y Don Titi", "frena": "Operador", "resuelto": false},
-  {"texto": "Quitar la llave de acceso (token API) de Tailscale", "tipo": "seguridad", "quien": "Rafael", "frena": "", "resuelto": false}
+  {
+   "texto": "Aprobar el reporte de diferencias y decidir si se le manda a Félix (14 preguntas)",
+   "tipo": "decision",
+   "quien": "Rafael",
+   "frena": "Reporte",
+   "resuelto": false
+  },
+  {
+   "texto": "Félix dice cómo quiere su base (menú, precios, paquetes)",
+   "tipo": "persona",
+   "quien": "Félix",
+   "frena": "Base Félix",
+   "resuelto": false
+  }
  ],
  "bien": [
   "Las 6 carretas y la base de Félix están conectadas y se leen en vivo",
