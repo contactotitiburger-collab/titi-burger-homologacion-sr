@@ -177,7 +177,9 @@ class H(http.server.SimpleHTTPRequestHandler):
                 for a in m.get("adjuntos", []):
                     mt = _meta(a["id"]) or {}
                     if mt.get("transcripcion"): a["transcripcion"] = mt["transcripcion"]
-            return self.json_resp({"yo": yo, "mensajes": ch})
+            fl = LECTOR / ".tito_escribiendo"
+            escr = fl.exists() and (time.time() - fl.stat().st_mtime) < 300
+            return self.json_resp({"yo": yo, "mensajes": ch, "escribiendo": escr})
         if self.path.split("?")[0] == "/api/yo":
             if not yo: return self.json_resp({"error": "sin sesion"}, 401)
             try: vis = json.loads(VIS_FILE.read_text(encoding="utf-8"))

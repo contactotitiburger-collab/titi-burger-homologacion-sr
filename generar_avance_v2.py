@@ -999,6 +999,11 @@ html = f"""<!doctype html>
   .pv-tools {{ display:flex; gap:6px; margin-top:6px; }}
   .pv-tools .fo-tool {{ flex:0 0 48px; min-width:48px; }}
   .pv-send {{ flex:1; width:auto !important; }}
+  .pv-escr {{ color:var(--ink2); font-style:italic; }}
+  .pv-dots i {{ font-style:normal; animation:pvdot 1.2s infinite; }}
+  .pv-dots i:nth-child(2) {{ animation-delay:.2s; }} .pv-dots i:nth-child(3) {{ animation-delay:.4s; }}
+  @keyframes pvdot {{ 0%,60%,100% {{ opacity:.2; }} 30% {{ opacity:1; }} }}
+  .pv-visto {{ align-self:flex-end; font-size:12px; color:var(--ink2); }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -1397,9 +1402,11 @@ async function cargarPriv() {{
   pintarPriv();
 }}
 function pintarPriv(forzar) {{
-  if (!PV) return; const f = JSON.stringify(PV.mensajes); if (!forzar && f === PV_FIRMA) return; PV_FIRMA = f;
+  if (!PV) return; const f = JSON.stringify(PV.mensajes) + PV.escribiendo; if (!forzar && f === PV_FIRMA) return; PV_FIRMA = f;
   const box = document.getElementById('pv-lista');
-  box.innerHTML = PV.mensajes.length ? PV.mensajes.map(m => '<div class="pv-m ' + (m.usuario === 'tito' ? 'pv-tito' : 'pv-yo') + '">' + _e(m.texto) + (m.adjuntos || []).map(adjHtml).join('') + '<small>' + (m.usuario === 'tito' ? 'Tito · ' : '') + _e(m.fecha) + '</small></div>').join('') : '<p class="tl-nota">Aquí hablas directo con Tito, como en la terminal. Solo tú lo ves.</p>';
+  const ultimo = PV.mensajes.length ? PV.mensajes[PV.mensajes.length - 1] : null;
+  box.innerHTML = (PV.mensajes.length ? PV.mensajes.map(m => '<div class="pv-m ' + (m.usuario === 'tito' ? 'pv-tito' : 'pv-yo') + '">' + _e(m.texto) + (m.adjuntos || []).map(adjHtml).join('') + '<small>' + (m.usuario === 'tito' ? 'Tito · ' : '') + _e(m.fecha) + '</small></div>').join('') : '<p class="tl-nota">Aquí hablas directo con Tito, como en la terminal. Solo tú lo ves.</p>')
+    + (PV.escribiendo ? '<div class="pv-m pv-tito pv-escr">Tito está escribiendo<span class="pv-dots"><i>.</i><i>.</i><i>.</i></span></div>' : (ultimo && ultimo.usuario !== 'tito' ? '<div class="pv-visto">Enviado ✓ · Tito te contesta en un momento</div>' : ''));
   if (document.getElementById('priv-overlay').classList.contains('show')) {{ const w = document.querySelector('.pv-wrap'); w.scrollTop = w.scrollHeight; localStorage.setItem('pv_visto', Math.max(0, ...PV.mensajes.map(m => m.id))); }}
 }}
 function abrirPriv() {{ document.getElementById('priv-overlay').classList.add('show'); document.getElementById('pv-badge').style.display = 'none'; pintarPriv(true); }}
@@ -1442,7 +1449,8 @@ async function pvEnviar() {{
   }} catch (e) {{ m.textContent = 'No se envió: ' + e.message; }}
 }}
 cargarPriv();
-setInterval(() => {{ if (!document.hidden) cargarPriv(); }}, 10000);
+setInterval(() => {{ if (!document.hidden && document.getElementById('priv-overlay').classList.contains('show')) cargarPriv(); }}, 3000);
+setInterval(() => {{ if (!document.hidden && !document.getElementById('priv-overlay').classList.contains('show')) cargarPriv(); }}, 10000);
 function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{
   document.getElementById('menu-dropdown').classList.remove('show');
