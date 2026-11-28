@@ -562,6 +562,32 @@ estado_panel_html = (
     + f'<h3>Lo que va bien</h3><ul class="es-lista es-ok">' + "".join(f"<li>{_html.escape(b)}</li>" for b in _bien) + '</ul>'
     + f'<h3>Lo que sigue</h3><ul class="es-lista">{_sig}</ul></div>')
 
+# ---- Regularización (Rafael 27-nov): todo lo que se agrega/cambia en las bases, base del manual ----
+_reg = json.loads((BASE / "regularizacion.json").read_text(encoding="utf-8"))
+_cam = _reg.get("cambios", [])
+_EST = [("aprobado", "Aprobado, falta aplicar", "#1E90F0"), ("aplicado", "Aplicado, falta verificar", "#F5B83D"), ("verificado", "Verificado en la base", "#16A34A")]
+_cnt = {e: sum(1 for c in _cam if c.get("estado") == e) for e, _, _ in _EST}
+_rg = (f'<div class="tl-stats">'
+       + "".join(f'<div class="tl-stat"><span class="tl-num" style="color:{col}">{_cnt[e]}</span><span class="tl-lbl">{t}</span></div>' for e, t, col in _EST)
+       + '</div><p class="tl-nota">Todo lo que se agrega, cambia o da de baja para dejar Soft Restaurant regularizado: qué, por qué, quién lo decidió y cómo se hizo. Al terminar, esta lista es la base del manual.</p>')
+_areas = {}
+for c in _cam:
+    _areas.setdefault(c.get("area", "Otros"), []).append(c)
+_rg += '<div class="rg-resumen">' + "".join(f'<span class="rg-chip">{_html.escape(a)}: {len(v)}</span>' for a, v in _areas.items()) + '</div>'
+for e, t, col in _EST:
+    _l = [c for c in _cam if c.get("estado") == e]
+    if not _l:
+        continue
+    _rg += f'<div class="rg-sec" style="color:{col}">{t}</div>'
+    for c in sorted(_l, key=lambda x: (x.get("area", ""), x.get("id", 0))):
+        _como = f'<div class="rg-l"><b>Cómo:</b> {_html.escape(c["como"])}</div>' if c.get("como") else ""
+        _rg += (f'<div class="rg-card" style="border-left-color:{col}"><div class="rg-top"><span class="rg-tipo">{_html.escape(c.get("tipo",""))} · {_html.escape(c.get("area",""))}</span>'
+                f'<span class="rg-base">{_html.escape(c.get("base",""))} · {fmt_fecha_es(c["fecha"])}</span></div>'
+                f'<div class="rg-que">{_html.escape(c["que"])}</div>'
+                f'<div class="rg-l">{_html.escape(c.get("detalle",""))}</div>'
+                f'<div class="rg-l"><b>Por qué:</b> {_html.escape(c.get("por_que",""))} <b>Decidió:</b> {_html.escape(c.get("decidio",""))}</div>{_como}</div>')
+regu_html = _rg
+
 plan_fases_js = json.dumps(
     [{"a": pf["area"], "p": pf["pct"], "e": _ESTTXT[pf["estado"]],
       "h": sum(1 for it in pf["items"] if it["hecho"]),
@@ -731,6 +757,17 @@ html = f"""<!doctype html>
   .es-tipo {{ color:#fff; font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; margin-top:1px; }}
   .es-quien {{ font-size:12px; color:var(--ink2); margin-top:2px; }}
   .es-ahora {{ font-size:11px; color:#F04E5E; font-weight:600; }}
+  #regu-overlay {{ display:none; position:fixed; inset:0; background:var(--bg); z-index:60; overflow-y:auto; }}
+  #regu-overlay.show {{ display:block; }}
+  .rg-resumen {{ display:flex; flex-wrap:wrap; gap:6px; margin:0 0 16px; }}
+  .rg-chip {{ font-size:12px; background:#fff; border:1px solid var(--border); border-radius:999px; padding:4px 10px; color:var(--ink2); }}
+  .rg-sec {{ font-size:12px; font-weight:600; letter-spacing:.08em; text-transform:uppercase; margin:18px 0 8px; }}
+  .rg-card {{ background:#fff; border:1px solid var(--border); border-left:4px solid; border-radius:12px; padding:12px 14px; margin-bottom:10px; }}
+  .rg-top {{ display:flex; justify-content:space-between; gap:10px; font-size:12px; color:var(--ink2); }}
+  .rg-tipo {{ font-weight:600; }}
+  .rg-que {{ font-size:15px; font-weight:600; color:var(--ink); margin:4px 0; }}
+  .rg-l {{ font-size:13px; color:var(--ink); margin-top:3px; line-height:1.5; }}
+  @media (max-width:480px) {{ .rg-top {{ flex-direction:column; gap:0; }} }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -738,6 +775,7 @@ html = f"""<!doctype html>
 <div class="menu-btn" onclick="toggleMenu()">⋮</div>
 <div class="menu-dropdown" id="menu-dropdown">
   <a onclick="abrirBitacora()">Bitácora de trabajo</a>
+  <a onclick="abrirRegu()">Regularización de Soft Restaurant</a>
 </div>
 
 <div id="bitacora-overlay">
@@ -748,6 +786,14 @@ html = f"""<!doctype html>
   <div class="tl-wrap">
     {bitacora_timeline_html}
   </div>
+</div>
+
+<div id="regu-overlay">
+  <div class="bitacora-header">
+    <h2>Regularización de Soft Restaurant</h2>
+    <div class="cerrar-btn" onclick="cerrarRegu()">✕</div>
+  </div>
+  <div class="tl-wrap">{regu_html}</div>
 </div>
 
 <div id="estado-overlay" onclick="if(event.target===this)cerrarEstado()"><div class="es-panel">{estado_panel_html}</div></div>
@@ -807,6 +853,8 @@ function verFasePlan(i) {{
 function abrirEstado() {{ document.getElementById('estado-overlay').classList.add('show'); }}
 function cerrarEstado() {{ document.getElementById('estado-overlay').classList.remove('show'); }}
 document.addEventListener('keydown', e => {{ if (e.key === 'Escape') cerrarEstado(); }});
+function abrirRegu() {{ document.getElementById('menu-dropdown').classList.remove('show'); document.getElementById('regu-overlay').classList.add('show'); }}
+function cerrarRegu() {{ document.getElementById('regu-overlay').classList.remove('show'); }}
 function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{
   document.getElementById('menu-dropdown').classList.remove('show');
