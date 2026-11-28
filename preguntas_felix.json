@@ -3,12 +3,28 @@
   "pregunta": "Para cancelar algo en caja, ¿se pide autorización?",
   "contexto": "Hoy cada sucursal tiene su propia regla. Si se pide, el cajero necesita la clave del encargado para cancelar.",
   "opciones": ["Sí, en todas las sucursales", "No, el cajero cancela solo", "Depende de la sucursal"]},
- {"id": "queso_crema", "tipo": "opcion", "para": "felix",
-  "pregunta": "El queso Philadelphia de tu base, ¿es el mismo que el queso crema en barra de 1.9 kg a $352?",
-  "contexto": "En los costos de Google Sheets aparece como «queso crema».",
-  "opciones": ["Sí, es el mismo", "No, es otro"]},
- {"id": "costos_faltan", "tipo": "campos", "para": "felix",
-  "pregunta": "¿Cuánto pagas por estos insumos?",
-  "contexto": "Están en $0 en tu base. Escribe el precio como viene en la factura, por ejemplo: $250 la caja de 24. Si no sabes alguno, déjalo en blanco.",
-  "campos": ["Filtros", "Surtido Coca Cola", "Surtido Pepsi", "Chile preparado", "Carne de Cine Curto", "Tiras de pollo"]}
+ {"id": "precios_compra", "tipo": "campos", "para": "felix",
+  "pregunta": "¿Cuánto te cuestan estos 4 insumos cuando los compras?",
+  "contexto": "En tu base están en $0, así que Soft Restaurant no sabe cuánto cuesta cada hamburguesa. Pon el precio tal como lo compras (la presentación que ya tienes dada de alta).",
+  "campos": [
+   {"nombre": "Filtros (001033) · precio de la caja de 10 piezas", "ayuda": "Ej. $85"},
+   {"nombre": "Tiras de pollo (005021) · precio del kilo (rinde 6 piezas)", "ayuda": "Ej. $140"},
+   {"nombre": "Orégano (006003) · precio del kilo", "ayuda": "Ej. $150"},
+   {"nombre": "Queso Philadelphia (005015) · presentación y precio", "ayuda": "Ej. barra de 1 kg a $200"}],
+  "atajos": ["No sé estos precios, los vemos en persona"]},
+ {"id": "que_son", "tipo": "campos", "para": "felix",
+  "pregunta": "¿Qué son estos 3 insumos y cuánto cuestan?",
+  "contexto": "Están dados de alta por pieza y en $0. No queda claro qué es una «pieza» de cada uno, y sin eso no se puede poner el costo.",
+  "campos": [
+   {"nombre": "Surtido Coca Cola (001045) · ¿qué trae y cuánto cuesta?", "ayuda": "Ej. paquete de 24 latas a $380"},
+   {"nombre": "Surtido Pepsi (002016) · ¿qué trae y cuánto cuesta?", "ayuda": "Ej. paquete de 24 latas a $350"},
+   {"nombre": "Carne de Cine Curto (005018) · ¿de cuántos gramos es cada pieza y cuánto cuesta?", "ayuda": "Ej. patty de 90 g a $12"}],
+  "atajos": ["No sé, lo vemos en persona"]},
+ {"id": "elaborados", "tipo": "campos", "para": "felix",
+  "pregunta": "Dedos de queso y chile preparado: ¿cuánto cuesta cada pieza?",
+  "contexto": "Los dos se hacen en cocina y están por pieza en $0. Si no sabes el costo, Tito lo puede calcular con la receta (ingredientes y cuánto rinde).",
+  "campos": [
+   {"nombre": "Dedos de queso (001043) · costo de 1 pieza", "ayuda": "Ej. $15"},
+   {"nombre": "Chile preparado (004012) · costo de 1 pieza", "ayuda": "Ej. $8"}],
+  "atajos": ["Que Tito lo calcule con la receta"]}
 ]

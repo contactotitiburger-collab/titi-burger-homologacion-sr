@@ -208,8 +208,10 @@ class H(http.server.SimpleHTTPRequestHandler):
             if not q: return self.json_resp({"error": "pregunta no existe"}, 400)
             if q["tipo"] == "opcion" and r not in q["opciones"]: return self.json_resp({"error": "opcion no valida"}, 400)
             if q["tipo"] == "campos":
-                if not isinstance(r, dict): return self.json_resp({"error": "datos mal formados"}, 400)
-                r = {k: str(r.get(k, ""))[:200].strip() for k in q["campos"]}
+                nombres = [c if isinstance(c, str) else c["nombre"] for c in q["campos"]]
+                if isinstance(r, str) and r in q.get("atajos", []): pass
+                elif not isinstance(r, dict): return self.json_resp({"error": "datos mal formados"}, 400)
+                else: r = {k: str(r.get(k, ""))[:200].strip() for k in nombres}
             if q["tipo"] == "texto": r = str(r or "")[:2000].strip()
             reg = {"id": q["id"], "respuesta": r, "usuario": yo, "fecha": time.strftime("%Y-%m-%d %H:%M")}
             with LOCK:

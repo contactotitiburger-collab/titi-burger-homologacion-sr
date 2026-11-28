@@ -806,6 +806,7 @@ html = f"""<!doctype html>
   .pq-campo input {{ width:100%; box-sizing:border-box; min-height:44px; padding:10px 12px; border:1.5px solid var(--border); border-radius:10px; font:inherit; font-size:15px; }}
   .pq-campo input:focus {{ outline:none; border-color:#1E90F0; }}
   .pq-guardar {{ min-height:46px; padding:0 20px; border:none; border-radius:12px; background:#1E90F0; color:#fff; font:inherit; font-weight:600; font-size:15px; cursor:pointer; }}
+  .pq-atajo {{ margin-top:8px; text-align:center; font-size:14px; color:var(--ink2); border-style:dashed; }}
   .pq-estado {{ font-size:13px; color:#16A34A; margin-top:8px; min-height:18px; }}
   .pq-estado.err {{ color:#F04E5E; }}
   .rp-nota {{ font-size:13px; color:var(--ink2); margin:-4px 0 10px; }}
@@ -1016,8 +1017,10 @@ function pintarPreg() {{
     if (q.tipo === 'opcion') {{
       cuerpo = q.opciones.map(o => '<button class="pq-op' + (v === o ? ' sel' : '') + '" data-q="' + _e(q.id) + '" data-o="' + _e(o) + '">' + (v === o ? '✓ ' : '') + _e(o) + '</button>').join('');
     }} else if (q.tipo === 'campos') {{
-      cuerpo = q.campos.map(c => '<label class="pq-campo"><span>' + _e(c) + '</span><input data-c="' + _e(c) + '" value="' + _e(v && v[c] ? v[c] : '') + '" placeholder="Ej. $250 la caja de 24"></label>').join('')
-        + '<button class="pq-guardar" data-g="' + _e(q.id) + '">Guardar</button>';
+      const vv = (v && typeof v === 'object') ? v : {{}};
+      cuerpo = q.campos.map(c0 => {{ const c = typeof c0 === 'string' ? {{nombre:c0}} : c0; return '<label class="pq-campo"><span>' + _e(c.nombre) + '</span><input data-c="' + _e(c.nombre) + '" value="' + _e(vv[c.nombre] || '') + '" placeholder="' + _e(c.ayuda || '') + '"></label>'; }}).join('')
+        + '<button class="pq-guardar" data-g="' + _e(q.id) + '">Guardar</button>'
+        + (q.atajos || []).map(o => '<button class="pq-op pq-atajo' + (v === o ? ' sel' : '') + '" data-q="' + _e(q.id) + '" data-o="' + _e(o) + '">' + (v === o ? '✓ ' : '') + _e(o) + '</button>').join('');
     }} else {{
       cuerpo = '<label class="pq-campo"><input data-c="_t" value="' + _e(v || '') + '"></label><button class="pq-guardar" data-g="' + _e(q.id) + '">Guardar</button>';
     }}
