@@ -6,14 +6,16 @@
    "tipo": "decision",
    "quien": "Rafael",
    "frena": "Reporte",
-   "resuelto": true
+   "resuelto": true,
+   "desde": "2026-11-27"
   },
   {
-   "texto": "Félix contesta lo que falta: cancelaciones y 6 costos (en «Preguntas para Félix»)",
+   "texto": "Félix contesta sus preguntas en «Preguntas para Félix» (cancelaciones y costos)",
    "tipo": "persona",
    "quien": "Félix",
    "frena": "Base Félix",
-   "resuelto": false
+   "resuelto": false,
+   "desde": "2026-11-27"
   }
  ],
  "bien": [

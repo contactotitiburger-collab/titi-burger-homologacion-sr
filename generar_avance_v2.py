@@ -5,7 +5,7 @@ los datos. Unica carga externa: Google Fonts (Poppins). Todos los numeros salen 
 registro_actividad.csv y fases.json -- nada inventado, y se verifican antes de
 escribir el archivo (ver verificar_numeros() mas abajo).
 """
-import csv, json, secrets
+import csv, json, secrets, time
 from pathlib import Path
 from datetime import datetime
 
@@ -547,6 +547,10 @@ def _fila_freno(x):
     t, c = _TIPO.get(x.get("tipo"), ("Pendiente", "#64748B"))
     _ahora = ' <span class="es-ahora">frena la etapa de ahora</span>' if x.get("frena") == _et_act else ""
     _donde = f' · frena: {_html.escape(_etq_area.get(x["frena"], x["frena"]))}' if x.get("frena") else ""
+    if x.get("desde"):
+        _dd = (date.today() - date.fromisoformat(x["desde"])).days
+        _cc = "#A0B4C4" if _dd <= 2 else ("#F5B83D" if _dd <= 5 else "#F04E5E")
+        _ahora += f' <span class="es-reloj" style="background:{_cc}">⏳ {"esperando desde hoy" if _dd == 0 else (str(_dd) + (" día" if _dd == 1 else " días") + " esperando")}</span>'
     return (f'<li class="es-freno"><span class="es-tipo" style="background:{c}">{t}</span>'
             f'<div><div>{_html.escape(x["texto"])}{_ahora}</div><div class="es-quien">Le toca a: {_html.escape(x.get("quien",""))}{"" if x.get("frena") == _et_act else _donde}</div></div></li>')
 _frenos.sort(key=lambda x: (x.get("frena") != _et_act, x.get("tipo") != "dinero"))
@@ -557,7 +561,7 @@ _sig = "".join(f"<li>{_html.escape(x['texto'])} <em>({_html.escape(x['quien'])})
 estado_panel_html = (
     f'<div class="es-head" style="background:{ESTADO_COLOR[estado_chip]}"><h2>{ESTADO_TXT[estado_chip]}</h2>'
     f'<div class="cerrar-btn es-x" onclick="cerrarEstado()">✕</div><p>{_cal}</p></div>'
-    f'<div class="es-body"><h3>¿Vamos a tiempo?</h3>'
+    f'<div class="es-body"><h3>Cómo vamos, en 3 partes</h3>@@SEMAFORO@@<h3>¿Vamos a tiempo?</h3>'
     + _barra("Tiempo que ya pasó del contrato", _pct_t, "#94A3B8")
     + _barra("Trabajo hecho, medido en horas", _pct_av, ESTADO_COLOR[estado_chip])
     + _barra("Horas del contrato ya usadas", _pct_hr, "#1E90F0")
@@ -603,6 +607,30 @@ reportes_html = "".join(
     f'<a class="rp-item" href="reportes/{_html.escape(r["id"])}.html"><div><div class="rp-tit">{_html.escape(r["titulo"])}</div>'
     f'<div class="rp-sub">Para {_html.escape(r["para"])} · {fmt_fecha_es(r["fecha"])}</div></div>'
     f'<span class="rp-est" data-rid="{_html.escape(r["id"])}">En revisión</span></a>' for r in _reps)
+
+# ---- "Te toca a ti" y "Lo nuevo desde tu ultima visita" (investigacion 27-nov: Linear, Rocketlane, ClickUp, Moxo) ----
+_ev = []
+for _f in filas:
+    _ev.append({"t": f'{_f["fecha"]} {_f.get("hora_fin") or "23:59"}', "i": "🕒", "x": "Tito trabajó " + fmt_dur(parse_min(_f["duracion"])) + ": " + TRADUCCION_HOY.get(_f["tarea"], _f["tarea"])})
+for _c in _cam:
+    _ev.append({"t": _c["fecha"] + " 12:00", "i": "🧾", "x": "Regularización: " + _c["que"] + " (" + {"aprobado": "por hacer", "aplicado": "hecho", "verificado": "listo"}.get(_c.get("estado"), "") + ")"})
+for _r in _reps:
+    _ev.append({"t": _r["fecha"] + " 18:00", "i": "📄", "x": "Reporte nuevo: " + _r["titulo"], "r": _r["id"]})
+_hoy_d2 = date.today()
+_frenos_js = [{"x": f["texto"], "q": f.get("quien", ""), "d": (_hoy_d2 - date.fromisoformat(f["desde"])).days if f.get("desde") else None} for f in _frenos]
+try:
+    _salud = json.loads(Path("/home/tito/.openclaw/scripts/.health_state.json").read_text())
+except Exception:
+    _salud = {}
+novedades_js = json.dumps({"ev": _ev, "frenos": _frenos_js, "reps": [{"id": r["id"], "t": r["titulo"], "para": r["para"]} for r in _reps]}, ensure_ascii=False)
+# Semaforo en 3 partes: calendario, cajas, pendientes de otros
+_esp = max([f["d"] for f in _frenos_js if f["d"] is not None] or [0])
+_cajas_ok = (_salud.get("clave", "x") == "") and (time.time() - _salud.get("ts", 0) < 3600)
+_sem = [("Calendario", "#22C55E" if _dif >= 0 else ("#F5B83D" if _dif >= -7 else "#F04E5E"), (f"+{_dif} días" if _dif >= 0 else f"{_dif} días"), "Verde = vamos a tiempo o adelantados · Ámbar = hasta 7 días atrasados · Rojo = más de 7."),
+        ("Cajas", "#22C55E" if _cajas_ok else ("#F04E5E" if _salud.get("clave") else "#A0B4C4"), ("6 de 6 en línea" if _cajas_ok else (_salud.get("clave") or "sin dato reciente")), "Lo revisa Tito cada 20 minutos. Rojo = alguna caja no responde."),
+        ("Pendientes de otros", "#22C55E" if not _frenos_js else ("#A0B4C4" if _esp <= 2 else ("#F5B83D" if _esp <= 5 else "#F04E5E")), ((f"{len(_frenos_js)} esperando · desde hoy" if _esp == 0 else f"{len(_frenos_js)} esperando · máx. {_esp} días") if _frenos_js else "nada esperando"), "Gris = hasta 2 días · Ámbar = 3 a 5 días · Rojo = más de 5 días esperando.")]
+semaforo_html = '<div class="sm-row">' + "".join(f'<details class="sm"><summary><span class="sm-dot" style="background:{c}"></span><span class="sm-n">{n}</span><span class="sm-v">{_html.escape(v)}</span></summary><p>{_html.escape(r)}</p></details>' for n, c, v, r in _sem) + '</div>'
+estado_panel_html = estado_panel_html.replace("@@SEMAFORO@@", semaforo_html)
 
 plan_fases_js = json.dumps(
     [{"a": pf["area"], "p": pf["pct"], "e": _ESTTXT[pf["estado"]],
@@ -859,6 +887,26 @@ html = f"""<!doctype html>
   .fo-a-file {{ display:flex; align-items:center; gap:8px; margin-top:8px; padding:10px 12px; border:1px solid var(--border); border-radius:10px; text-decoration:none; color:var(--ink); background:#fff; font-size:14px; }}
   .fo-trans {{ font-size:13px; color:var(--ink2); background:#FAFAF5; border-radius:8px; padding:6px 10px; margin-top:4px; font-style:italic; }}
   .fo-resp-btn {{ margin-top:8px; border:none; background:none; color:var(--blue); font:inherit; font-weight:600; font-size:14px; cursor:pointer; min-height:36px; padding:0; }}
+  .tt-card {{ border:1.5px solid #BFDDF8; }}
+  .tt-it {{ display:flex; align-items:center; gap:12px; padding:12px 0; border-top:1px solid var(--border); text-decoration:none; color:var(--ink); cursor:pointer; min-height:48px; }}
+  .tt-it:first-child {{ border-top:none; }}
+  .tt-ic {{ font-size:20px; width:28px; text-align:center; }}
+  .tt-x {{ flex:1; font-size:15px; }}
+  .tt-x small {{ display:block; color:var(--ink2); font-size:12px; }}
+  .tt-ok {{ color:#16A34A; font-weight:600; padding:6px 0; }}
+  .nv-desde {{ font-size:13px; color:var(--ink2); margin:0 0 6px; }}
+  .nv-it {{ display:flex; gap:10px; padding:8px 0; border-top:1px solid var(--border); font-size:14px; }}
+  .nv-it:first-child {{ border-top:none; }}
+  .nv-it small {{ color:var(--ink2); white-space:nowrap; }}
+  .sm-row {{ display:flex; flex-direction:column; gap:6px; margin-bottom:6px; }}
+  .sm {{ border:1px solid var(--border); border-radius:12px; background:#fff; }}
+  .sm summary {{ list-style:none; display:flex; align-items:center; gap:10px; padding:10px 12px; cursor:pointer; min-height:44px; }}
+  .sm summary::-webkit-details-marker {{ display:none; }}
+  .sm-dot {{ width:12px; height:12px; border-radius:50%; flex:0 0 12px; }}
+  .sm-n {{ font-weight:600; font-size:14px; }}
+  .sm-v {{ margin-left:auto; font-size:13px; color:var(--ink2); }}
+  .sm p {{ margin:0; padding:0 12px 10px 34px; font-size:12px; color:var(--ink2); }}
+  .es-reloj {{ display:inline-block; color:#fff; font-size:11px; font-weight:600; border-radius:999px; padding:1px 8px; margin-left:4px; }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -940,6 +988,17 @@ html = f"""<!doctype html>
       <div class="resumen-item"><span class="resumen-punto" style="background:var(--pendiente)"></span>
         <span><b>Sigue:</b> {que_sigue[0]['texto']}</span></div>
     </div>
+  </div>
+
+  <div class="card tt-card" id="tt-card" style="display:none">
+    <h2 style="margin:0 0 4px">Te toca a ti</h2>
+    <div id="tt-lista"></div>
+  </div>
+
+  <div class="card nv-card" id="nv-card" style="display:none">
+    <h2 style="margin:0 0 2px">Lo nuevo desde tu última visita</h2>
+    <p class="nv-desde" id="nv-desde"></p>
+    <div id="nv-lista"></div>
   </div>
 
   <div class="card" id="rp-card" style="{'' if _reps else 'display:none'}">
@@ -1162,6 +1221,42 @@ function abrirForo() {{ document.getElementById('foro-overlay').classList.add('s
 function cerrarForo() {{ document.getElementById('foro-overlay').classList.remove('show'); }}
 cargarForo();
 setInterval(() => {{ if (!document.hidden) {{ cargarForo(); cargarPreg(); }} }}, 20000);
+const NV = {novedades_js};
+const TNOM = {{felix:'Félix', rafael:'Rafael', tito:'Tito', dontiti:'Don Titi', marco:'Marco'}};
+function _ts(t) {{ return new Date(String(t).replace(' ', 'T')).getTime() / 1000; }}
+function _cuando(t) {{ const d = new Date(_ts(t) * 1000), h = new Date(); const dd = Math.round((new Date(h.toDateString()) - new Date(d.toDateString())) / 864e5);
+  const hr = d.toLocaleTimeString('es-MX', {{hour:'numeric', minute:'2-digit'}}); return dd === 0 ? 'hoy ' + hr : dd === 1 ? 'ayer ' + hr : d.toLocaleDateString('es-MX', {{weekday:'short', day:'numeric', month:'short'}}); }}
+async function cargarTuyo() {{
+  let yo, ant, pq = null, rp = null, fo = null;
+  try {{
+    const r = await fetch('/api/yo', {{credentials:'same-origin', cache:'no-store'}}); if (!r.ok) return; const d = await r.json(); yo = d.yo; ant = d.anterior;
+    [pq, rp, fo] = await Promise.all(['/api/preguntas', '/api/reportes', '/api/foro'].map(u => fetch(u, {{credentials:'same-origin', cache:'no-store'}}).then(x => x.ok ? x.json() : null).catch(() => null)));
+  }} catch (e) {{ return; }}
+  const nom = TNOM[yo] || yo, items = [];
+  // --- Te toca a ti ---
+  if (pq) {{ const f = pq.preguntas.filter(q => (q.para || 'felix') === yo && !pq.respuestas[q.id]).length; if (f) items.push({{i:'❓', x: f + (f === 1 ? ' pregunta por contestar' : ' preguntas por contestar'), s:'≈ ' + Math.max(1, f) + ' min · se contesta con un toque', go:"abrirPreg()"}}); }}
+  if (rp) NV.reps.forEach(r => {{ const e = (rp.estado || {{}})[r.id]; if (r.para.includes(nom) && ['rafael', 'felix', 'dontiti'].includes(yo) && !(e && e.aprobado.some(a => a.usuario === yo))) items.push({{i:'📄', x:'Revisar y aprobar: ' + r.t, s:'Ábrelo y aprueba o comenta', href:'reportes/' + r.id + '.html'}}); }});
+  NV.frenos.forEach(f => {{ if (f.q.includes(nom)) items.push({{i:'⏳', x:f.x, s: f.d != null ? 'Esperando hace ' + f.d + (f.d === 1 ? ' día' : ' días') : ''}}); }});
+  if (fo) fo.hilos.forEach(h => {{ const ult = h.respuestas.length ? h.respuestas[h.respuestas.length - 1] : null; if (h.usuario === yo && ult && ult.usuario !== yo) items.push({{i:'💬', x:'Te contestaron: «' + (h.texto || 'archivo').slice(0, 50) + '»', s:(TNOM[ult.usuario] || ult.usuario) + ' · ' + _cuando(ult.fecha), go:"abrirForo()"}}); }});
+  if (yo !== 'tito') {{
+    const c = document.getElementById('tt-card'); c.style.display = '';
+    document.getElementById('tt-lista').innerHTML = items.length ? items.map(t => (t.href ? '<a class="tt-it" href="' + t.href + '">' : '<div class="tt-it"' + (t.go ? ' onclick="' + t.go + '"' : '') + '>') + '<span class="tt-ic">' + t.i + '</span><span class="tt-x">' + _e(t.x) + (t.s ? '<small>' + _e(t.s) + '</small>' : '') + '</span>' + (t.href || t.go ? '<span class="pq-flecha">›</span>' : '') + (t.href ? '</a>' : '</div>')).join('') : '<div class="tt-ok">✔ Estás al día, ' + _e(nom) + '. No tienes nada pendiente.</div>';
+  }}
+  // --- Lo nuevo desde tu ultima visita ---
+  const ev = NV.ev.map(e => ({{t:_ts(e.t), i:e.i, x:e.x}}));
+  if (fo) fo.hilos.forEach(h => {{ if (h.usuario !== yo) ev.push({{t:_ts(h.fecha), i:'💬', x:(TNOM[h.usuario] || h.usuario) + ' preguntó: ' + (h.texto || 'archivo').slice(0, 60)}}); h.respuestas.forEach(r => {{ if (r.usuario !== yo) ev.push({{t:_ts(r.fecha), i:'💬', x:(TNOM[r.usuario] || r.usuario) + ' contestó: ' + (r.texto || 'archivo').slice(0, 60)}}); }}); }});
+  if (rp) Object.entries(rp.estado || {{}}).forEach(([id, e]) => {{ const r = NV.reps.find(x => x.id === id); const t = r ? r.t : id;
+    e.aprobado.forEach(a => {{ if (a.usuario !== yo) ev.push({{t:_ts(a.fecha), i:'✅', x:(TNOM[a.usuario] || a.usuario) + ' aprobó: ' + t}}); }});
+    e.comentarios.forEach(c => {{ if (c.usuario !== yo) ev.push({{t:_ts(c.fecha), i:'🗨️', x:(TNOM[c.usuario] || c.usuario) + ' comentó en: ' + t}}); }}); }});
+  if (pq) Object.values(pq.respuestas || {{}}).forEach(r => {{ if (r.usuario !== yo) ev.push({{t:_ts(r.fecha), i:'❓', x:(TNOM[r.usuario] || r.usuario) + ' contestó una pregunta'}}); }});
+  const nuevos = ev.filter(e => ant ? e.t > ant : true).sort((a, b) => b.t - a.t).slice(0, 6);
+  if (nuevos.length) {{
+    document.getElementById('nv-card').style.display = '';
+    document.getElementById('nv-desde').textContent = ant ? 'Desde ' + _cuando(new Date(ant * 1000).toISOString().slice(0, 16).replace('T', ' ')) : 'Bienvenido. Esto es lo más reciente:';
+    document.getElementById('nv-lista').innerHTML = nuevos.map(e => '<div class="nv-it"><span>' + e.i + '</span><span style="flex:1">' + _e(e.x) + '</span><small>' + _cuando(new Date(e.t * 1000 - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 16).replace('T', ' ')) + '</small></div>').join('');
+  }}
+}}
+cargarTuyo();
 function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{
   document.getElementById('menu-dropdown').classList.remove('show');

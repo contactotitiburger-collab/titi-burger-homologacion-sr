@@ -24,6 +24,7 @@ PREG_FILE = LECTOR / "preguntas_felix.json"
 RESP_FILE = LECTOR / "respuestas_felix.json"
 REP_FILE = LECTOR / "reportes.json"
 FORO_FILE = LECTOR / "foro.json"
+VIS_FILE = LECTOR / "visitas.json"   # ultima y anterior visita de cada persona (para "Lo nuevo desde tu ultima visita")
 ADJ_DIR = LECTOR / "foro_archivos"; ADJ_DIR.mkdir(exist_ok=True)   # fotos, audios y archivos del chat
 MAX_ADJ = 25 * 1024 * 1024
 import re as _re, subprocess as _sp, urllib.parse as _up, mimetypes as _mt
@@ -150,6 +151,12 @@ class H(http.server.SimpleHTTPRequestHandler):
             ult = {}
             for r in leer_respuestas(): ult[r["id"]] = r
             return self.json_resp({"yo": yo, "preguntas": preg, "respuestas": ult})
+        if self.path.split("?")[0] == "/api/yo":
+            if not yo: return self.json_resp({"error": "sin sesion"}, 401)
+            try: vis = json.loads(VIS_FILE.read_text(encoding="utf-8"))
+            except Exception: vis = {}
+            v = vis.get(yo, {})
+            return self.json_resp({"yo": yo, "anterior": v.get("anterior", 0)})
         if self.path.split("?")[0] == "/api/foro":
             if not yo: return self.json_resp({"error": "sin sesion"}, 401)
             try: foro = json.loads(FORO_FILE.read_text(encoding="utf-8"))
@@ -192,6 +199,15 @@ class H(http.server.SimpleHTTPRequestHandler):
             try: est = json.loads(REPEST_FILE.read_text(encoding="utf-8"))
             except Exception: est = {}
             return self.json_resp({"yo": yo, "estado": est})
+        if yo and (self.path.split("?")[0].endswith("/") or self.path.split("?")[0].endswith("index.html")):
+            ahora = time.time()
+            with LOCK:
+                try: vis = json.loads(VIS_FILE.read_text(encoding="utf-8"))
+                except Exception: vis = {}
+                v = vis.setdefault(yo, {})
+                if ahora - v.get("ultima", 0) > 1800: v["anterior"] = v.get("ultima", 0)   # visita nueva si pasaron 30 min
+                v["ultima"] = ahora
+                VIS_FILE.write_text(json.dumps(vis), encoding="utf-8")
         if yo: return super().do_GET()
         self.pagina_login()
     def do_POST(self):
