@@ -500,6 +500,68 @@ for _a in plan_fases:
 _tl += '</div>'
 bitacora_timeline_html = _tl
 
+# ---- Veredicto "¿cómo vamos?" (28-nov, Rafael): calendario + frenos de estado_proyecto.json ----
+import html as _html
+_est = json.loads((BASE / "estado_proyecto.json").read_text(encoding="utf-8"))
+_frenos = [x for x in _est.get("frenos", []) if not x.get("resuelto")]
+_dias_trab = max(1, (date.fromisoformat(plan["fin_trabajo"]) - _inicio).days)
+_trans = max(0, (_hoy_d - _inicio).days)
+_pct_t = round(100 * _trans / _dias_trab)
+_pct_av = round(100 * _h_real / (_h_real + _h_falta)) if (_h_real + _h_falta) else 0
+_pct_hr = round(100 * _h_real / plan["horas_presupuestadas"]) if plan["horas_presupuestadas"] else 0
+_dif = round(_pct_av / 100 * _dias_trab - _trans)
+_niv = ["vamos_muy_mal", "vamos_mal", "vamos_bien", "vamos_muy_bien"]
+_n = 3 if _dif >= 7 else 2 if _dif >= 0 else 1 if _dif >= -7 else 0
+_razones_mal = []
+_et_act = fase_actual_plan.get("etiqueta", "")
+_fr_act = [x for x in _frenos if x.get("frena") == _et_act]
+if _fr_act and _n == 3:
+    _n = 2; _razones_mal.append(f"La etapa de ahora (“{fase_actual_plan['area']}”) está esperando algo (ver abajo).")
+if _pct_hr - _pct_av > 15:
+    _n = max(0, _n - 1); _razones_mal.append(f"Se están gastando las horas más rápido que el trabajo: {_pct_hr}% de las horas para {_pct_av}% del trabajo.")
+estado_chip = _niv[_n]
+ESTADO_TXT.update({"vamos_muy_bien": "Vamos muy bien", "vamos_bien": "Vamos bien", "vamos_mal": "Vamos mal", "vamos_muy_mal": "Vamos muy mal"})
+ESTADO_COLOR.update({"vamos_muy_bien": "#16A34A", "vamos_bien": "#22C55E", "vamos_mal": "#F5B83D", "vamos_muy_mal": "#F04E5E"})
+if _dif > 0:
+    _cal = f"Vamos <b>{_dif} {'día' if _dif == 1 else 'días'} adelantados</b> al calendario."
+elif _dif == 0:
+    _cal = "Vamos <b>justo a tiempo</b> con el calendario."
+else:
+    _cal = f"Vamos <b>{-_dif} {'día' if _dif == -1 else 'días'} atrasados</b> al calendario."
+_bien = []
+if _etapas_ok:
+    _bien.append(f"{_etapas_ok} de {len(plan_fases)} etapas terminadas")
+if _pct_hr <= _pct_av:
+    _bien.append(f"Las horas alcanzan: {_pct_hr}% de las horas del contrato para {_pct_av}% del trabajo")
+_bien += _est.get("bien", [])
+_TIPO = {"decision": ("Decisión", "#1E90F0"), "dinero": ("Dinero", "#F04E5E"), "tecnico": ("Técnico", "#7C5CFA"),
+         "persona": ("Esperando a alguien", "#F5B83D"), "seguridad": ("Seguridad", "#64748B")}
+_etq_area = {pf.get("etiqueta"): pf["area"] for pf in plan_fases}
+def _fila_freno(x):
+    t, c = _TIPO.get(x.get("tipo"), ("Pendiente", "#64748B"))
+    _ahora = ' <span class="es-ahora">frena la etapa de ahora</span>' if x.get("frena") == _et_act else ""
+    _donde = f' · frena: {_html.escape(_etq_area.get(x["frena"], x["frena"]))}' if x.get("frena") else ""
+    return (f'<li class="es-freno"><span class="es-tipo" style="background:{c}">{t}</span>'
+            f'<div><div>{_html.escape(x["texto"])}{_ahora}</div><div class="es-quien">Quién: {_html.escape(x.get("quien",""))}{_donde}</div></div></li>')
+_frenos.sort(key=lambda x: (x.get("frena") != _et_act, x.get("tipo") != "dinero"))
+def _barra(lbl, v, col):
+    return (f'<div class="es-barra"><div class="es-bl"><span>{lbl}</span><b>{v}%</b></div>'
+            f'<div class="es-bt"><div style="width:{min(v,100)}%;background:{col}"></div></div></div>')
+_sig = "".join(f"<li>{_html.escape(x['texto'])} <em>({_html.escape(x['quien'])})</em></li>" for x in que_sigue[:3])
+estado_panel_html = (
+    f'<div class="es-head" style="background:{ESTADO_COLOR[estado_chip]}"><h2>{ESTADO_TXT[estado_chip]}</h2>'
+    f'<div class="cerrar-btn es-x" onclick="cerrarEstado()">✕</div><p>{_cal}</p></div>'
+    f'<div class="es-body"><h3>Conforme al calendario</h3>'
+    + _barra("Tiempo que ya pasó del contrato", _pct_t, "#94A3B8")
+    + _barra("Trabajo terminado", _pct_av, ESTADO_COLOR[estado_chip])
+    + _barra("Horas del contrato ya usadas", _pct_hr, "#1E90F0")
+    + f'<p class="es-nota">Del {fmt_fecha_es(plan["inicio"])} al {fmt_fecha_es(plan["fin_trabajo"])} ({_dias_trab} días de trabajo). '
+      f'Trabajo terminado = horas hechas ({_h_real:.0f} h) entre horas hechas más las que faltan (~{_h_falta:.0f} h).</p>'
+    + (f'<h3>Por qué no va mejor</h3><ul class="es-lista es-mal">' + "".join(f"<li>{r}</li>" for r in _razones_mal) + '</ul>' if _razones_mal else "")
+    + (f'<h3>Lo que falta o nos frena</h3><ul class="es-lista">' + "".join(_fila_freno(x) for x in _frenos) + '</ul>' if _frenos else '<h3>Lo que nos frena</h3><p>Nada. ✓</p>')
+    + f'<h3>Lo que va bien</h3><ul class="es-lista es-ok">' + "".join(f"<li>{_html.escape(b)}</li>" for b in _bien) + '</ul>'
+    + f'<h3>Lo que sigue</h3><ul class="es-lista">{_sig}</ul></div>')
+
 plan_fases_js = json.dumps(
     [{"a": pf["area"], "p": pf["pct"], "e": _ESTTXT[pf["estado"]],
       "h": sum(1 for it in pf["items"] if it["hecho"]),
@@ -642,6 +704,33 @@ html = f"""<!doctype html>
   .bit-dot {{ width:12px; height:12px; border-radius:50%; flex:0 0 12px; }}
   .bit-nom {{ flex:1; font-size:14px; color:var(--ink); }}
   .bit-pct {{ font-size:12px; color:var(--ink2); white-space:nowrap; }}
+  .chip-btn {{ cursor:pointer; box-shadow:0 2px 8px rgba(0,0,0,.15); transition:transform .15s; }}
+  .chip-btn:hover {{ transform:scale(1.05); }}
+  #estado-overlay {{ display:none; position:fixed; inset:0; background:rgba(15,23,42,.45); z-index:60; align-items:flex-end; justify-content:center; }}
+  #estado-overlay.show {{ display:flex; }}
+  .es-panel {{ background:#fff; width:100%; max-width:560px; max-height:90vh; overflow:auto; border-radius:22px 22px 0 0; animation:esUp .25s ease-out; }}
+  @media (min-width:640px) {{ #estado-overlay {{ align-items:center; }} .es-panel {{ border-radius:22px; }} }}
+  @keyframes esUp {{ from {{ transform:translateY(40px); opacity:0; }} to {{ transform:none; opacity:1; }} }}
+  .es-head {{ color:#fff; padding:24px 22px 18px; position:relative; }}
+  .es-head h2 {{ margin:0 0 6px; font-size:26px; color:#fff; }}
+  .es-head p {{ margin:0; font-size:15px; opacity:.95; }}
+  .es-x {{ position:absolute; top:14px; right:14px; color:#fff !important; background:rgba(255,255,255,.22) !important; border:none !important; }}
+  .es-body {{ padding:6px 22px 24px; }}
+  .es-body h3 {{ font-size:15px; margin:20px 0 10px; color:var(--ink); }}
+  .es-barra {{ margin-bottom:10px; }}
+  .es-bl {{ display:flex; justify-content:space-between; font-size:13px; color:var(--ink2); margin-bottom:4px; }}
+  .es-bt {{ height:10px; background:#EEF2F6; border-radius:99px; overflow:hidden; }}
+  .es-bt div {{ height:100%; border-radius:99px; }}
+  .es-nota {{ font-size:12px; color:var(--ink2); margin:6px 0 0; }}
+  .es-lista {{ list-style:none; padding:0; margin:0; }}
+  .es-lista li {{ font-size:14px; padding:9px 0; border-bottom:1px solid var(--border); color:var(--ink); }}
+  .es-lista em {{ color:var(--ink2); font-style:normal; font-size:12px; }}
+  .es-ok li::before {{ content:"✓ "; color:#16A34A; font-weight:700; }}
+  .es-mal li::before {{ content:"! "; color:#F04E5E; font-weight:700; }}
+  .es-freno {{ display:flex; gap:10px; align-items:flex-start; }}
+  .es-tipo {{ color:#fff; font-size:11px; font-weight:600; padding:3px 9px; border-radius:99px; white-space:nowrap; margin-top:1px; }}
+  .es-quien {{ font-size:12px; color:var(--ink2); margin-top:2px; }}
+  .es-ahora {{ font-size:11px; color:#F04E5E; font-weight:600; }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -661,6 +750,8 @@ html = f"""<!doctype html>
   </div>
 </div>
 
+<div id="estado-overlay" onclick="if(event.target===this)cerrarEstado()"><div class="es-panel">{estado_panel_html}</div></div>
+
 <div class="wrap">
 
   <div class="card">
@@ -673,7 +764,7 @@ html = f"""<!doctype html>
       {ring_big}
       <div class="vamos-texto">
         <p>{frase_plan}</p>
-        <span class="chip" style="background:{ESTADO_COLOR[estado_chip]}">{ESTADO_TXT[estado_chip]}</span>
+        <span class="chip chip-btn" role="button" tabindex="0" onclick="abrirEstado()" style="background:{ESTADO_COLOR[estado_chip]}">{ESTADO_TXT[estado_chip]} ›</span>
       </div>
     </div>
 
@@ -713,6 +804,9 @@ function verFasePlan(i) {{
   box.classList.add('show');
   box.dataset.open = String(i);
 }}
+function abrirEstado() {{ document.getElementById('estado-overlay').classList.add('show'); }}
+function cerrarEstado() {{ document.getElementById('estado-overlay').classList.remove('show'); }}
+document.addEventListener('keydown', e => {{ if (e.key === 'Escape') cerrarEstado(); }});
 function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{
   document.getElementById('menu-dropdown').classList.remove('show');
