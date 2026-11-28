@@ -1,0 +1,8 @@
+[
+ {"id": "msg_felix_interactivo_v2", "para": "rafael", "icono": "📲",
+  "texto": "Tito le va a mandar este WhatsApp a Félix. ¿Le doy?",
+  "sub": "Necesito el número de WhatsApp de Félix: escríbelo en el cuadro. Si quieres cambiar algo del mensaje, también ahí.",
+  "placeholder": "Ej. 686 123 4567 · o los cambios al mensaje",
+  "boton_si": "Sí, mándalo",
+  "mensaje": "Hola Félix, buenas. Soy Tito, el asistente de inteligencia artificial de Titi Burger 🍔. Rafael me pidió avisarte que la página del proyecto ya es interactiva: ahí vamos a ver todo lo de Soft Restaurant.\n\n🔗 {{LINK}}\n🔑 Entras con tu clave de siempre (si no la tienes, pídesela a Rafael).\n\nCómo funciona, rápido:\n1️⃣ Arriba te sale «Te toca a ti»: lo que necesitamos de ti.\n2️⃣ «Preguntas para ti»: preguntas de tu base; se contestan picando o poniendo el precio. Son 2 minutos.\n3️⃣ «Reportes para revisar»: los lees y le das Aprobar, o dejas un comentario.\n4️⃣ «Preguntas y respuestas»: si tienes una duda, escríbela o manda foto o audio, y yo te contesto ahí mismo.\n\nTambién te voy a empezar a mandar alertas por WhatsApp cuando haya algo que necesitemos de ti. Este número solo manda avisos: para contestar o preguntar, usa la página. ¡Gracias!"}
+]

@@ -5,7 +5,7 @@ los datos. Unica carga externa: Google Fonts (Poppins). Todos los numeros salen 
 registro_actividad.csv y fases.json -- nada inventado, y se verifican antes de
 escribir el archivo (ver verificar_numeros() mas abajo).
 """
-import csv, json, secrets, time
+import csv, json, secrets, time, re
 from pathlib import Path
 from datetime import datetime
 
@@ -269,6 +269,17 @@ def tarjeta_fase(fase):
     </div>"""
 
 
+def fila_hoy_tl(a):
+    return (f'<div class="hy-it"><div class="hy-time">{fmt_hora_12(a["inicio"])}</div><div class="hy-dot"></div>'
+            f'<div class="hy-box"><div class="hy-txt">{a["texto"]}</div><span class="hy-dur">{fmt_dur(a["minutos"])}</span></div></div>')
+
+
+_AV = {"Tito": ("T", "#1E90F0"), "Rafael": ("R", "#F97316"), "Félix": ("F", "#16A34A"), "Nancy": ("N", "#A855F7"), "Distribuidor": ("D", "#64748B"), "David": ("D", "#0EA5E9"), "Marco": ("M", "#DB2777")}
+def avatares(quien):
+    nombres = [n for n in _AV if n in quien] or ["Tito"]
+    return "".join(f'<span class="av" style="background:{_AV[n][1]}" title="{n}">{_AV[n][0]}</span>' for n in nombres)
+
+
 def fila_hoy(a, max_min=None):
     max_min = max_min or max_min_hoy
     ancho = max(6, min(100, round(100 * a["minutos"] / 480)))  # contra una jornada de 8 h
@@ -370,8 +381,9 @@ objetivos_html = "".join(render_objetivo_grande(c) for c in _categorias)
 
 pasos_html = "".join(paso_circulo(f, i == len(fases) - 1) for i, f in enumerate(fases))
 tarjetas_html = "".join(tarjeta_fase(f) for f in fases)
-hoy_html = "".join(fila_hoy(a) for a in actividades_hoy) if actividades_hoy else '<p class="sin-dato">Sin dato todavía.</p>'
-sigue_html = "".join(fila_sigue(i) for i in que_sigue[:4])
+hoy_html = ('<div class="hy-tl">' + "".join(fila_hoy_tl(a) for a in actividades_hoy) + '</div>') if actividades_hoy else '<p class="sin-dato">Hoy todavía no se registra trabajo.</p>'
+sigue_html = "".join(f'<div class="sg-it{" sg-next" if i == 0 else ""}"><span class="sg-n">{i + 1}</span><div class="sg-body"><div class="sg-txt">{it["texto"]}</div>'
+                     f'<div class="sg-who">{avatares(it["quien"])}<span>{it["quien"]}</span>{"<span class=sg-tag>Lo siguiente</span>" if i == 0 else ""}</div></div></div>' for i, it in enumerate(que_sigue[:4]))
 detalle_html = "".join(detalle_fase(f) for f in fases)
 
 if bloqueos:
@@ -441,10 +453,16 @@ for _it in fase_actual_plan["items"]:
     _ic = "✓" if _it["hecho"] else "○"
     _cls = "bd-done" if _it["hecho"] else "bd-pend"
     _bd_items += f'<div class="bd-item"><span class="bd-ic" style="color:{_c}">{_ic}</span><span class="{_cls}">{_it["n"]}</span></div>'
+_bd_items2 = "".join(
+    f'<div class="ep-it{" ep-ok" if _it["hecho"] else ""}"><span class="ep-ic">{"✓" if _it["hecho"] else ""}</span>'
+    f'<span class="ep-txt">{_it["n"]}</span>{"" if _it["hecho"] else avatares(_it.get("quien", "Tito"))}</div>' for _it in fase_actual_plan["items"])
+_hechos_f = sum(1 for _it in fase_actual_plan["items"] if _it["hecho"])
 breakdown_html = (
-    f'<div class="bd-head"><h2>En qué vamos ahorita</h2><span class="bd-badge">{fase_actual_plan["pct"]}% de esta etapa</span></div>'
-    f'<p class="bd-fase">{fase_actual_plan["area"]}</p>'
-    f'<div class="bd-list">{_bd_items}</div>'
+    f'<div class="ep-hero"><div class="ep-emoji">🔨</div><div class="ep-tt"><div class="ep-k">Manos a la obra · etapa {plan_fases.index(fase_actual_plan) + 1} de {len(plan_fases)}</div>'
+    f'<div class="ep-t">{fase_actual_plan["area"]}</div></div><div class="ep-pct">{fase_actual_plan["pct"]}%</div></div>'
+    f'<div class="ep-bar"><div style="width:{max(3, fase_actual_plan["pct"])}%"></div></div>'
+    f'<p class="ep-sub">{_hechos_f} de {len(fase_actual_plan["items"])} listos en esta etapa</p>'
+    f'<div class="ep-list">{_bd_items2}</div>'
 )
 
 # Punto 7: Bitácora por áreas (incluye pendientes con 0% · 0 min, en orden del plan)
@@ -622,7 +640,17 @@ try:
     _salud = json.loads(Path("/home/tito/.openclaw/scripts/.health_state.json").read_text())
 except Exception:
     _salud = {}
-novedades_js = json.dumps({"ev": _ev, "frenos": _frenos_js, "reps": [{"id": r["id"], "t": r["titulo"], "para": r["para"]} for r in _reps]}, ensure_ascii=False)
+try:
+    _pers = json.loads((BASE / "pendientes_personales.json").read_text(encoding="utf-8"))
+except Exception:
+    _pers = []
+try:
+    _url_pub = re.findall(r"https://[a-z0-9-]+\.trycloudflare\.com", Path("/home/tito/.openclaw/logs/cloudflared_avance.log").read_text(errors="ignore"))[-1]
+except Exception:
+    _url_pub = "(link de la página)"
+for _t in _pers:
+    _t["mensaje"] = _t.get("mensaje", "").replace("{{LINK}}", _url_pub)
+novedades_js = json.dumps({"pers": _pers, "ev": _ev, "frenos": _frenos_js, "reps": [{"id": r["id"], "t": r["titulo"], "para": r["para"]} for r in _reps]}, ensure_ascii=False)
 # Semaforo en 3 partes: calendario, cajas, pendientes de otros
 _esp = max([f["d"] for f in _frenos_js if f["d"] is not None] or [0])
 _cajas_ok = (_salud.get("clave", "x") == "") and (time.time() - _salud.get("ts", 0) < 3600)
@@ -649,7 +677,8 @@ html = f"""<!doctype html>
 <html lang="es"><head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Avance del proyecto — Titi Burger</title>
+<title>Así va el proyecto — Titi Burger</title>
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" href="/favicon.png"><meta name="theme-color" content="#EEF7FC"><meta name="apple-mobile-web-app-title" content="Titi Burger">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -907,6 +936,58 @@ html = f"""<!doctype html>
   .sm-v {{ margin-left:auto; font-size:13px; color:var(--ink2); }}
   .sm p {{ margin:0; padding:0 12px 10px 34px; font-size:12px; color:var(--ink2); }}
   .es-reloj {{ display:inline-block; color:#fff; font-size:11px; font-weight:600; border-radius:999px; padding:1px 8px; margin-left:4px; }}
+  .fo-top {{ display:flex; justify-content:space-between; align-items:center; gap:8px; }}
+  .fo-ok {{ font-size:12px; font-weight:600; color:#15803D; background:#E6F7EC; border-radius:999px; padding:2px 10px; white-space:nowrap; }}
+  .fo-pend {{ font-size:12px; font-weight:600; color:#9A6400; background:#FFF4DE; border-radius:999px; padding:2px 10px; white-space:nowrap; }}
+  .tt-msg {{ align-items:flex-start; cursor:default; }}
+  .tt-pre {{ white-space:pre-wrap; font:inherit; font-size:13px; background:#F4FAFE; border:1px solid var(--border); border-radius:10px; padding:10px; margin:8px 0; color:var(--ink); }}
+  .tt-btns {{ display:flex; flex-wrap:wrap; gap:6px; }}
+  .tt-b {{ min-height:40px; padding:0 12px; border:none; border-radius:10px; font:inherit; font-size:13px; font-weight:600; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; }}
+  .tt-b.azul {{ background:#1E90F0; color:#fff; }} .tt-b.verde {{ background:#22C55E; color:#fff; }} .tt-b.gris {{ background:#EEF2F6; color:var(--ink); }}
+  .ep-card {{ padding:0 !important; overflow:hidden; }}
+  .ep-hero {{ display:flex; align-items:center; gap:12px; padding:18px 18px 14px; background:linear-gradient(135deg,#1E90F0,#22C1C3); color:#fff; }}
+  .ep-emoji {{ font-size:30px; }}
+  .ep-tt {{ flex:1; }}
+  .ep-k {{ font-size:12px; opacity:.9; }}
+  .ep-t {{ font-size:18px; font-weight:700; line-height:1.25; }}
+  .ep-pct {{ font-size:26px; font-weight:700; }}
+  .ep-bar {{ height:8px; background:#E3EEF6; }}
+  .ep-bar div {{ height:100%; background:linear-gradient(90deg,#22C55E,#16A34A); border-radius:0 999px 999px 0; }}
+  .ep-sub {{ margin:12px 18px 4px; font-size:13px; color:var(--ink2); }}
+  .ep-list {{ padding:0 18px 14px; }}
+  .ep-it {{ display:flex; align-items:center; gap:12px; padding:11px 0; border-top:1px solid var(--border); font-size:15px; }}
+  .ep-it:first-child {{ border-top:none; }}
+  .ep-ic {{ width:24px; height:24px; flex:0 0 24px; border-radius:50%; border:2px solid #C9CFD6; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700; color:#fff; }}
+  .ep-ok .ep-ic {{ background:#22C55E; border-color:#22C55E; }}
+  .ep-ok .ep-txt {{ color:var(--ink2); }}
+  .ep-txt {{ flex:1; }}
+  .av {{ display:inline-flex; width:24px; height:24px; border-radius:50%; color:#fff; font-size:11px; font-weight:700; align-items:center; justify-content:center; margin-left:-6px; border:2px solid #fff; }}
+  .av:first-child {{ margin-left:0; }}
+  .hy-head {{ display:flex; justify-content:space-between; align-items:center; margin-bottom:12px; }}
+  .hy-head h2 {{ margin:0; }}
+  .hy-total {{ font-size:13px; font-weight:700; color:#fff; background:linear-gradient(135deg,#F97316,#F43F5E); border-radius:999px; padding:4px 12px; }}
+  .hy-tl {{ position:relative; }}
+  .hy-tl::before {{ content:""; position:absolute; left:70px; top:6px; bottom:6px; width:2px; background:#FBD5BF; }}
+  .hy-it {{ display:flex; align-items:flex-start; gap:10px; margin-bottom:12px; position:relative; }}
+  .hy-time {{ flex:0 0 58px; font-size:12px; color:var(--ink2); text-align:right; padding-top:10px; }}
+  .hy-dot {{ flex:0 0 12px; width:12px; height:12px; border-radius:50%; background:#F97316; margin-top:12px; box-shadow:0 0 0 4px #FFEDD5; z-index:1; }}
+  .hy-box {{ flex:1; background:#FFF8F1; border:1px solid #FDE7D3; border-radius:14px; padding:10px 12px; }}
+  .hy-txt {{ font-size:14px; line-height:1.45; }}
+  .hy-dur {{ display:inline-block; margin-top:6px; font-size:12px; font-weight:600; color:#C2410C; background:#FFEDD5; border-radius:999px; padding:1px 8px; }}
+  .sg-it {{ display:flex; gap:12px; padding:12px; border-radius:14px; margin-bottom:8px; border:1px solid var(--border); }}
+  .sg-next {{ background:linear-gradient(135deg,#EEF6FF,#F4FBF6); border-color:#BFDDF8; }}
+  .sg-n {{ flex:0 0 30px; height:30px; border-radius:50%; background:#EEF2F6; color:var(--ink2); font-weight:700; display:flex; align-items:center; justify-content:center; }}
+  .sg-next .sg-n {{ background:#1E90F0; color:#fff; }}
+  .sg-body {{ flex:1; }}
+  .sg-txt {{ font-size:15px; font-weight:500; }}
+  .sg-who {{ display:flex; align-items:center; gap:8px; margin-top:6px; font-size:12px; color:var(--ink2); flex-wrap:wrap; }}
+  .sg-tag {{ font-size:11px; font-weight:600; color:#1E90F0; background:#E7F1FB; border-radius:999px; padding:1px 8px; }}
+  footer {{ text-align:center; color:var(--ink2); font-size:13px; padding:10px 0 30px; line-height:1.6; }}
+  footer span {{ font-size:12px; opacity:.8; }}
+  .ft-burger {{ font-size:28px; }}
+  .tt-resp {{ width:100%; box-sizing:border-box; min-height:64px; border:1.5px solid var(--border); border-radius:10px; padding:8px 10px; font:inherit; font-size:14px; margin:4px 0 8px; }}
+  .tt-escribe {{ border-top:1px solid var(--border); padding-top:12px; margin-top:4px; }}
+  .tt-m {{ display:block; font-size:13px; color:#16A34A; margin-top:6px; }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -936,7 +1017,7 @@ html = f"""<!doctype html>
 
 <div id="preg-overlay">
   <div class="bitacora-header">
-    <h2>Preguntas para Félix</h2>
+    <h2 id="pq-h2">Preguntas para ti</h2>
     <div class="cerrar-btn" onclick="cerrarPreg()">✕</div>
   </div>
   <div class="tl-wrap"><p class="tl-nota">Pícale a tu respuesta o escríbela. Se guarda sola y Tito la ve al momento.</p><div id="pq-lista">Cargando…</div></div>
@@ -993,6 +1074,8 @@ html = f"""<!doctype html>
   <div class="card tt-card" id="tt-card" style="display:none">
     <h2 style="margin:0 0 4px">Te toca a ti</h2>
     <div id="tt-lista"></div>
+    <div class="tt-escribe" id="tt-escribe" style="display:none"><textarea class="tt-resp" id="tr-general" placeholder="¿Algo para Tito? Escríbele aquí"></textarea>
+      <button class="tt-b azul" data-id="general" onclick="ttResp(this, false)">Mandar a Tito</button><span class="tt-m" id="tm-general"></span></div>
   </div>
 
   <div class="card nv-card" id="nv-card" style="display:none">
@@ -1015,25 +1098,25 @@ html = f"""<!doctype html>
 
   <div class="card pq-card" id="pq-card" onclick="abrirPreg()" role="button" tabindex="0" style="display:none">
     <div class="pq-ico">?</div>
-    <div><div class="pq-tit">Preguntas para Félix</div><div class="pq-sub" id="pq-sub"></div></div>
+    <div><div class="pq-tit" id="pq-tit">Preguntas para ti</div><div class="pq-sub" id="pq-sub"></div></div>
     <div class="pq-flecha">›</div>
   </div>
 
-  <div class="card">
+  <div class="card ep-card">
     {breakdown_html}
   </div>
 
   <div class="card">
-    <div class="hoy-header"><h2 style="margin:0">Qué se hizo hoy</h2><span class="hoy-total">{horas_hoy_txt}</span></div>
+    <div class="hy-head"><h2>🔥 Lo que se hizo hoy</h2><span class="hy-total">{horas_hoy_txt}</span></div>
     {hoy_html}
   </div>
 
   <div class="card">
-    <h2>Qué sigue</h2>
+    <h2>🚀 Lo que sigue</h2>
     {sigue_html}
   </div>
 
-  <footer>Lo actualiza Tito · {datetime.now():%d-%m-%Y %H:%M}</footer>
+  <footer><div class="ft-burger">🍔</div>Hecho con cariño por Tito para la familia Titi Burger<br><span>Se actualizó el {datetime.now():%d-%m-%Y} a las {datetime.now():%H:%M}</span></footer>
 </div>
 
 <script>
@@ -1053,6 +1136,7 @@ document.addEventListener('keydown', e => {{ if (e.key === 'Escape') cerrarEstad
 function abrirRegu() {{ document.getElementById('menu-dropdown').classList.remove('show'); document.getElementById('regu-overlay').classList.add('show'); }}
 function cerrarRegu() {{ document.getElementById('regu-overlay').classList.remove('show'); }}
 let PQ = null;
+function _mis() {{ return PQ ? PQ.preguntas.filter(q => (q.para || 'felix') === PQ.yo || PQ.yo === 'rafael' || PQ.yo === 'tito') : []; }}
 function _e(t) {{ const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }}
 async function cargarPreg() {{
   try {{
@@ -1060,7 +1144,9 @@ async function cargarPreg() {{
     if (!r.ok) return;
     PQ = await r.json();
   }} catch (e) {{ return; }}
-  const tot = PQ.preguntas.length, hechas = PQ.preguntas.filter(q => PQ.respuestas[q.id]).length;
+  const _L = _mis(), tot = _L.length, hechas = _L.filter(q => PQ.respuestas[q.id]).length;
+  const _tt = (PQ.yo === 'rafael' || PQ.yo === 'tito') ? 'Preguntas para Félix y Marco' : 'Preguntas para ti';
+  document.getElementById('pq-tit').textContent = _tt; document.getElementById('pq-h2').textContent = _tt;
   const card = document.getElementById('pq-card');
   if (!tot) {{ card.style.display = 'none'; return; }}
   card.style.display = 'flex';
@@ -1070,7 +1156,8 @@ async function cargarPreg() {{
 }}
 function pintarPreg() {{
   const box = document.getElementById('pq-lista'); if (!PQ) return;
-  box.innerHTML = PQ.preguntas.map((q, i) => {{
+  const _L = _mis();
+  box.innerHTML = _L.map((q, i) => {{
     const r = PQ.respuestas[q.id]; const v = r ? r.respuesta : null;
     let cuerpo = '';
     if (q.tipo === 'opcion') {{
@@ -1084,7 +1171,7 @@ function pintarPreg() {{
       cuerpo = '<label class="pq-campo"><input data-c="_t" value="' + _e(v || '') + '"></label><button class="pq-guardar" data-g="' + _e(q.id) + '">Guardar</button>';
     }}
     const est = r ? '✓ Contestó ' + _e(({{felix:'Félix',rafael:'Rafael',tito:'Tito',dontiti:'Don Titi',marco:'Marco'}})[r.usuario] || r.usuario) + ' · ' + _e(r.fecha) : '';
-    return '<div class="pq' + (r ? ' pq-ok' : '') + '" id="pq-' + _e(q.id) + '"><div class="pq-n">Pregunta ' + (i + 1) + ' de ' + PQ.preguntas.length + '</div><div class="pq-p">' + _e(q.pregunta) + '</div><p class="pq-c">' + _e(q.contexto || '') + '</p>' + cuerpo + '<div class="pq-estado">' + est + '</div></div>';
+    return '<div class="pq' + (r ? ' pq-ok' : '') + '" id="pq-' + _e(q.id) + '"><div class="pq-n">Pregunta ' + (i + 1) + ' de ' + _L.length + ((PQ.yo === 'rafael' || PQ.yo === 'tito') ? ' · para ' + ((q.para || 'felix') === 'marco' ? 'Marco' : 'Félix') : '') + '</div><div class="pq-p">' + _e(q.pregunta) + '</div><p class="pq-c">' + _e(q.contexto || '') + '</p>' + cuerpo + '<div class="pq-estado">' + est + '</div></div>';
   }}).join('');
 }}
 async function responder(id, respuesta, el) {{
@@ -1152,7 +1239,7 @@ function pintarForo(forzar) {{
   if (!forzar && firma === FO_FIRMA) return;   // no repinta si nada cambió (no corta un audio que se está oyendo)
   FO_FIRMA = firma;
   const L = FORO.hilos.slice().reverse();
-  document.getElementById('fo-lista').innerHTML = L.length ? L.map(h => '<div class="fo-hilo ' + (h.respuestas.length ? 'contestada' : 'abierta') + '" id="fo-h' + h.id + '"><div class="fo-quien">' + _e(FNOM[h.usuario] || h.usuario) + ' · ' + _e(h.fecha) + '</div>'
+  document.getElementById('fo-lista').innerHTML = L.length ? L.map(h => '<div class="fo-hilo ' + (h.respuestas.length ? 'contestada' : 'abierta') + '" id="fo-h' + h.id + '"><div class="fo-top"><span class="fo-quien">' + _e(FNOM[h.usuario] || h.usuario) + ' · ' + _e(h.fecha) + '</span>' + (h.respuestas.length ? '<span class="fo-ok">✓ Contestada</span>' : '<span class="fo-pend">Esperando</span>') + '</div>'
     + (h.texto ? '<div class="fo-preg">' + _e(h.texto) + '</div>' : '') + (h.adjuntos || []).map(adjHtml).join('')
     + (h.respuestas.length ? h.respuestas.map(r => '<div class="fo-resp"><b>' + _e(FNOM[r.usuario] || r.usuario) + '</b> · <span class="fo-quien">' + _e(r.fecha) + '</span>' + (r.texto ? '<br>' + _e(r.texto) : '') + (r.adjuntos || []).map(adjHtml).join('') + '</div>').join('') : '<div class="fo-esp">Esperando respuesta de Tito</div>')
     + '<button class="fo-resp-btn" onclick="responderA(' + h.id + ')">↩︎ Responder</button></div>').join('')
@@ -1236,11 +1323,13 @@ async function cargarTuyo() {{
   // --- Te toca a ti ---
   if (pq) {{ const f = pq.preguntas.filter(q => (q.para || 'felix') === yo && !pq.respuestas[q.id]).length; if (f) items.push({{i:'❓', x: f + (f === 1 ? ' pregunta por contestar' : ' preguntas por contestar'), s:'≈ ' + Math.max(1, f) + ' min · se contesta con un toque', go:"abrirPreg()"}}); }}
   if (rp) NV.reps.forEach(r => {{ const e = (rp.estado || {{}})[r.id]; if (r.para.includes(nom) && ['rafael', 'felix', 'dontiti'].includes(yo) && !(e && e.aprobado.some(a => a.usuario === yo))) items.push({{i:'📄', x:'Revisar y aprobar: ' + r.t, s:'Ábrelo y aprueba o comenta', href:'reportes/' + r.id + '.html'}}); }});
+  (NV.pers || []).forEach(t => {{ const ya = fo && fo.hilos.some(h => h.ref === t.id && h.usuario === yo); if (t.para === yo && !ya) items.push({{i:t.icono, x:t.texto, s:t.sub, msg:t.mensaje, pid:t.id, ph:t.placeholder, si:t.boton_si}}); }});
   NV.frenos.forEach(f => {{ if (f.q.includes(nom)) items.push({{i:'⏳', x:f.x, s: f.d != null ? 'Esperando hace ' + f.d + (f.d === 1 ? ' día' : ' días') : ''}}); }});
   if (fo) fo.hilos.forEach(h => {{ const ult = h.respuestas.length ? h.respuestas[h.respuestas.length - 1] : null; if (h.usuario === yo && ult && ult.usuario !== yo) items.push({{i:'💬', x:'Te contestaron: «' + (h.texto || 'archivo').slice(0, 50) + '»', s:(TNOM[ult.usuario] || ult.usuario) + ' · ' + _cuando(ult.fecha), go:"abrirForo()"}}); }});
   if (yo !== 'tito') {{
     const c = document.getElementById('tt-card'); c.style.display = '';
-    document.getElementById('tt-lista').innerHTML = items.length ? items.map(t => (t.href ? '<a class="tt-it" href="' + t.href + '">' : '<div class="tt-it"' + (t.go ? ' onclick="' + t.go + '"' : '') + '>') + '<span class="tt-ic">' + t.i + '</span><span class="tt-x">' + _e(t.x) + (t.s ? '<small>' + _e(t.s) + '</small>' : '') + '</span>' + (t.href || t.go ? '<span class="pq-flecha">›</span>' : '') + (t.href ? '</a>' : '</div>')).join('') : '<div class="tt-ok">✔ Estás al día, ' + _e(nom) + '. No tienes nada pendiente.</div>';
+    document.getElementById('tt-escribe').style.display = '';
+    document.getElementById('tt-lista').innerHTML = items.length ? items.map(t => t.msg ? ('<div class="tt-it tt-msg"><span class="tt-ic">' + t.i + '</span><span class="tt-x">' + _e(t.x) + '<small>' + _e(t.s || '') + '</small><pre class="tt-pre">' + _e(t.msg) + '</pre><textarea class="tt-resp" id="tr-' + t.pid + '" placeholder="' + _e(t.ph || 'Escríbele a Tito') + '"></textarea><span class="tt-btns"><button class="tt-b verde" data-id="' + t.pid + '" data-si="' + _e(t.si || 'Sí, adelante') + '" onclick="ttResp(this, true)">' + _e(t.si || 'Sí, adelante') + '</button><button class="tt-b azul" data-id="' + t.pid + '" onclick="ttResp(this, false)">Mandar a Tito</button></span><span class="tt-m" id="tm-' + t.pid + '"></span></span></div>') : (t.href ? '<a class="tt-it" href="' + t.href + '">' : '<div class="tt-it"' + (t.go ? ' onclick="' + t.go + '"' : '') + '>') + '<span class="tt-ic">' + t.i + '</span><span class="tt-x">' + _e(t.x) + (t.s ? '<small>' + _e(t.s) + '</small>' : '') + '</span>' + (t.href || t.go ? '<span class="pq-flecha">›</span>' : '') + (t.href ? '</a>' : '</div>')).join('') : '<div class="tt-ok">✔ Estás al día, ' + _e(nom) + '. No tienes nada pendiente.</div>';
   }}
   // --- Lo nuevo desde tu ultima visita ---
   const ev = NV.ev.map(e => ({{t:_ts(e.t), i:e.i, x:e.x}}));
@@ -1256,6 +1345,21 @@ async function cargarTuyo() {{
     document.getElementById('nv-lista').innerHTML = nuevos.map(e => '<div class="nv-it"><span>' + e.i + '</span><span style="flex:1">' + _e(e.x) + '</span><small>' + _cuando(new Date(e.t * 1000 - new Date().getTimezoneOffset() * 6e4).toISOString().slice(0, 16).replace('T', ' ')) + '</small></div>').join('');
   }}
 }}
+function copiarMsg(id) {{ const t = document.getElementById('pre-' + id).innerText; (navigator.clipboard ? navigator.clipboard.writeText(t) : Promise.reject()).then(() => alert('Copiado. Pégalo en el WhatsApp de Félix.')).catch(() => {{ const r = document.createRange(); r.selectNode(document.getElementById('pre-' + id)); getSelection().removeAllRanges(); getSelection().addRange(r); }}); }}
+async function ttResp(btn, si) {{
+  const id = btn.dataset.id, ta = document.getElementById('tr-' + id), m = document.getElementById('tm-' + id);
+  let txt = ta.value.trim(); if (si) txt = '✅ ' + btn.dataset.si + (txt ? ' · ' + txt : '');
+  if (!txt) {{ m.textContent = 'Escribe algo primero.'; return; }}
+  const it = (NV.pers || []).find(x => x.id === id);
+  if (it) txt = 'Sobre «' + it.texto + '»: ' + txt;
+  m.textContent = 'Enviando…';
+  try {{
+    const r = await fetch('/api/foro', {{method:'POST', credentials:'same-origin', headers:{{'Content-Type':'application/json'}}, body: JSON.stringify({{accion:'preguntar', texto: txt, ref: it ? id : ''}})}});
+    const d = await r.json(); if (!r.ok) throw new Error(d.error || 'no se pudo');
+    ta.value = ''; m.textContent = '✓ Listo, Tito ya lo tiene. Te contesta en «Preguntas y respuestas».'; setTimeout(cargarTuyo, 1500); cargarForo();
+  }} catch (e) {{ m.textContent = 'No se envió: ' + e.message; }}
+}}
+function yaHecho(id) {{ localStorage.setItem('hecho_' + id, '1'); cargarTuyo(); }}
 cargarTuyo();
 function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{

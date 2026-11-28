@@ -81,7 +81,7 @@ cargar();
 
 def pagina(rid, titulo, para, version, fecha, cuerpo):
     return f"""<!doctype html><html lang="es"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>{E(titulo)} — Titi Burger</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<title>{E(titulo)} — Titi Burger</title><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" href="/favicon.png"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet"><style>{CSS}</style></head>
 <body data-rid="{E(rid)}"><div class="top"><div class="wrap" style="padding-bottom:0"><a class="volver" href="../">‹ Volver al avance</a>
 <h1>{E(titulo)}</h1><div class="meta"><span class="chip estado" id="estado">En revisión</span><span class="chip">Para: {E(para)}</span><span class="chip">Versión {E(version)}</span><span class="chip">{fecha_es(fecha)}</span></div></div></div>

@@ -24,6 +24,7 @@ PREG_FILE = LECTOR / "preguntas_felix.json"
 RESP_FILE = LECTOR / "respuestas_felix.json"
 REP_FILE = LECTOR / "reportes.json"
 FORO_FILE = LECTOR / "foro.json"
+MARCA = LECTOR / "marca"   # og.jpg (vista previa en WhatsApp) e iconos: publicos, sin clave"
 VIS_FILE = LECTOR / "visitas.json"   # ultima y anterior visita de cada persona (para "Lo nuevo desde tu ultima visita")
 ADJ_DIR = LECTOR / "foro_archivos"; ADJ_DIR.mkdir(exist_ok=True)   # fotos, audios y archivos del chat
 MAX_ADJ = 25 * 1024 * 1024
@@ -87,7 +88,15 @@ def leer_respuestas():
 
 LOGIN = """<!doctype html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Titi Burger - Avance</title><style>
+<title>Así va el proyecto — Titi Burger</title>
+<meta name="description" content="Avance del proyecto de Soft Restaurant de Titi Burger. Entra con tu clave.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Titi Burger">
+<meta property="og:title" content="Así va el proyecto — Titi Burger">
+<meta property="og:description" content="Avance de Soft Restaurant en las 6 sucursales. Entra con tu clave.">
+<meta property="og:image" content="__OGBASE__/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="__OGBASE__/og.jpg">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" href="/favicon.png"><meta name="theme-color" content="#1C1614">
+<meta name="apple-mobile-web-app-title" content="Titi Burger"><style>
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
 font-family:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;background:#FBFAF7;color:#211F1B;padding:20px}
@@ -116,9 +125,9 @@ __ERROR__
 <p class="hint">Puedes pegar la clave que te llego por WhatsApp. Una vez dentro, no te la vuelve a pedir.</p>
 </div></body></html>"""
 
-def login_html(error=""):
+def login_html(error="", base=""):
     err = '<p class="err">'+html.escape(error)+'</p>' if error else ''
-    return LOGIN.replace("__ERROR__", err)
+    return LOGIN.replace("__ERROR__", err).replace("__OGBASE__", base)
 
 class H(http.server.SimpleHTTPRequestHandler):
     timeout = 10
@@ -130,7 +139,8 @@ class H(http.server.SimpleHTTPRequestHandler):
             if p.startswith("sesion="): return p[7:]
         return ""
     def pagina_login(self, code=200, error=""):
-        b=login_html(error).encode()
+        host = self.headers.get("X-Forwarded-Host") or self.headers.get("Host") or ""
+        b=login_html(error, ("https://" if "trycloudflare" in host or "ts.net" in host else "http://") + host).encode()
         self.send_response(code)
         self.send_header("Content-Type","text/html; charset=utf-8")
         self.send_header("Content-Length",str(len(b)))
@@ -144,6 +154,13 @@ class H(http.server.SimpleHTTPRequestHandler):
         self.send_header("Cache-Control", "no-store")
         self.end_headers(); self.wfile.write(b)
     def do_GET(self):
+        ruta0 = self.path.split("?")[0]
+        if ruta0 in ("/og.jpg", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png", "/favicon.png", "/favicon.ico", "/icon-512.png"):
+            f = MARCA / {"/apple-touch-icon-precomposed.png": "apple-touch-icon.png", "/favicon.ico": "favicon.png"}.get(ruta0, ruta0.lstrip("/"))
+            if f.exists():
+                b = f.read_bytes(); self.send_response(200)
+                self.send_header("Content-Type", "image/jpeg" if f.suffix == ".jpg" else "image/png")
+                self.send_header("Content-Length", str(len(b))); self.send_header("Cache-Control", "public, max-age=86400"); self.end_headers(); self.wfile.write(b); return
         yo = sesion_usuario(self.token())
         if self.path.split("?")[0] == "/api/preguntas":
             if not yo: return self.json_resp({"error": "sin sesion"}, 401)
@@ -214,7 +231,6 @@ class H(http.server.SimpleHTTPRequestHandler):
         if self.path.split("?")[0] == "/api/responder":
             yo = sesion_usuario(self.token())
             if not yo: return self.json_resp({"error": "sin sesion"}, 401)
-            if yo not in ("felix", "rafael", "tito"): return self.json_resp({"error": "esta persona no contesta estas preguntas"}, 403)
             ln = int(self.headers.get("Content-Length", "0") or 0)
             if ln > 20000: return self.json_resp({"error": "muy largo"}, 413)
             try: d = json.loads(self.rfile.read(ln).decode("utf-8"))
@@ -222,6 +238,7 @@ class H(http.server.SimpleHTTPRequestHandler):
             preg = {q["id"]: q for q in json.loads(PREG_FILE.read_text(encoding="utf-8"))}
             q = preg.get(d.get("id")); r = d.get("respuesta")
             if not q: return self.json_resp({"error": "pregunta no existe"}, 400)
+            if q.get("para", "felix") != yo and yo not in ("rafael", "tito"): return self.json_resp({"error": "esta pregunta es para otra persona"}, 403)
             if q["tipo"] == "opcion" and r not in q["opciones"]: return self.json_resp({"error": "opcion no valida"}, 400)
             if q["tipo"] == "campos":
                 nombres = [c if isinstance(c, str) else c["nombre"] for c in q["campos"]]
@@ -284,7 +301,7 @@ class H(http.server.SimpleHTTPRequestHandler):
                     h["respuestas"].append({"usuario": yo, "fecha": ahora, "texto": txt, "adjuntos": adj})
                 else:
                     nid = max([x["id"] for x in foro] + [0]) + 1
-                    foro.append({"id": nid, "usuario": yo, "fecha": ahora, "texto": txt, "adjuntos": adj, "respuestas": []})
+                    foro.append({"id": nid, "usuario": yo, "fecha": ahora, "texto": txt, "adjuntos": adj, "respuestas": [], "ref": str(d.get("ref") or "")[:60]})
                 tmp = FORO_FILE.with_suffix(".tmp"); tmp.write_text(json.dumps(foro, ensure_ascii=False, indent=1), encoding="utf-8"); tmp.replace(FORO_FILE)
             return self.json_resp({"ok": True})
         if self.path.split("?")[0] == "/api/reporte":
