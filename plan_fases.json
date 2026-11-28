@@ -2,10 +2,10 @@
  {
   "area": "Conectar a Tito con todo el software",
   "etiqueta": "Conectar",
-  "desc": "Conectar a Tito con las 6 carretas y la base de Félix, de la forma más profesional posible, sin poder cambiar nada.",
+  "desc": "Conectar a Tito con las 6 sucursales y la base de Félix, de la forma más profesional posible, sin poder cambiar nada.",
   "items": [
    {
-    "n": "Conectar las 6 carretas y la compu de Félix a la red privada",
+    "n": "Conectar las 6 sucursales y la compu de Félix a la red privada",
     "hecho": true,
     "est": 0,
     "quien": "Tito"
@@ -31,9 +31,9 @@
   ]
  },
  {
-  "area": "Tito Lector lee todas las carretas",
+  "area": "Tito Lector lee todas las sucursales",
   "etiqueta": "Leer",
-  "desc": "Los 5 ayudantes de Tito Lector leen todo lo de cada carreta (menú, precios, recetas, inventario, ventas, configuración) y entienden exactamente qué tiene cada una.",
+  "desc": "Los 5 ayudantes de Tito Lector leen todo lo de cada sucursal (menú, precios, recetas, inventario, ventas, configuración) y entienden exactamente qué tiene cada una.",
   "items": [
    {
     "n": "Crear a Tito Lector y sus 5 ayudantes",
@@ -48,7 +48,7 @@
     "quien": "Tito"
    },
    {
-    "n": "Leer las 6 carretas y la base de Félix completas",
+    "n": "Leer las 6 sucursales y la base de Félix completas",
     "hecho": true,
     "est": 0,
     "quien": "Tito"
@@ -58,10 +58,10 @@
  {
   "area": "Reporte de diferencias contra la base de Félix",
   "etiqueta": "Reporte",
-  "desc": "Con lo que leyeron los ayudantes, un reporte de qué tan distinta es cada carreta comparada con la de Félix, y qué le falta a la de Félix.",
+  "desc": "Comparamos cada sucursal contra la base de Félix para ver qué le falta y qué es distinto.",
   "items": [
    {
-    "n": "Comparar cada carreta contra la de Félix",
+    "n": "Comparar cada sucursal contra la de Félix",
     "hecho": true,
     "est": 0,
     "quien": "Tito"
@@ -129,7 +129,7 @@
   "desc": "Antes de copiar, se investiga a fondo (agentes, guías, cómo lo usan los pros) para acomodar todo en su lugar: que un combo salga en menos de 10 clics, botones y grupos ordenados.",
   "items": [
    {
-    "n": "Investigar cómo sacarle todo a Soft Restaurant (hecho 27-nov: combos como producto compuesto, 4 a 6 clics)",
+    "n": "Investigar cómo sacarle todo a Soft Restaurant (listo: los combos se cobran en 4 a 6 toques)",
     "hecho": true,
     "est": 6,
     "quien": "Tito"
@@ -155,18 +155,18 @@
   ]
  },
  {
-  "area": "Copiar la base de Félix a todas las carretas",
+  "area": "Copiar la base de Félix a todas las sucursales",
   "etiqueta": "Copiar",
-  "desc": "Copy paste de la base de Félix a cada carreta. Antes se guarda todo lo de cada una (respaldo completo). Primero una carreta, luego las demás, una por una, con aprobación y nunca en diciembre.",
+  "desc": "Copiar la base de Félix a cada sucursal. Antes se guarda todo lo de cada una (respaldo completo). Primero una sucursal, luego las demás, una por una, con aprobación y nunca en diciembre.",
   "items": [
    {
-    "n": "Respaldo completo de cada carreta, guardado y probado",
+    "n": "Respaldo completo de cada sucursal, guardado y probado",
     "hecho": false,
     "est": 4,
     "quien": "Tito"
    },
    {
-    "n": "Subir Hacienda, Villas, San Marcos y Cine Curto a Soft Restaurant 12 con el distribuidor (trae SQL 2019) y el SQL de Montejano a 2019",
+    "n": "Actualizar el programa de caja en Hacienda, Villas, San Marcos, Cine Curto y Montejano con el distribuidor",
     "hecho": false,
     "est": 10,
     "quien": "Distribuidor con Tito"
@@ -178,13 +178,13 @@
     "quien": "Tito"
    },
    {
-    "n": "Copiar el catálogo de Félix a la primera carreta con la opción oficial de SR (Recuperar base de datos → catálogos)",
+    "n": "Copiar el catálogo de Félix a la primera sucursal con la herramienta oficial de Soft Restaurant",
     "hecho": false,
     "est": 4,
     "quien": "Tito con Félix"
    },
    {
-    "n": "Revisar lo propio de cada carreta (impresoras, folios, facturas) y avisar a Soporte de Integraciones por Uber, Rappi y DiDi",
+    "n": "Revisar impresoras, folios y facturas de cada sucursal (los pedidos de apps se capturan a mano: no hay conexión que cuidar)",
     "hecho": false,
     "est": 3,
     "quien": "Tito"
@@ -196,7 +196,7 @@
     "quien": "Tito con Félix"
    },
    {
-    "n": "10 tickets de prueba y firma de Félix por carreta",
+    "n": "10 tickets de prueba y firma de Félix por sucursal",
     "hecho": false,
     "est": 4,
     "quien": "Félix"

@@ -146,7 +146,13 @@ if _errores:
 
 # ---------- traduccion de tareas a espanol llano (todas las fechas, no solo hoy) ----------
 # mapeo tarea-del-csv -> texto simple para quien no es tecnico
+import textwrap as _tw
 TRADUCCION_HOY = {
+    "Plan de raíz con Rafael: copiar la base de Félix a todas las carretas, reporte para Félix, llaves de red sin vencimiento y bitácora nueva": "Plan con Rafael para copiar la base de Félix a todas las sucursales, reporte para Félix y conexiones que ya no caducan",
+    "Subir el software a GitHub, instalar skills y agente de revisión en la Z2, dejar la laptop en modo gamer y verificarla tras el reinicio": "Copia segura del sistema y ajustes en las computadoras de Tito",
+    "Rediseñar el dashboard de avance, arreglar el login y la captura de horas": "Mejoramos esta página de avance, la entrada con clave y el registro de horas",
+    "Repasar el plan, ordenar el software y subirlo a GitHub, dar accesos a Félix y Don Titi": "Repasamos el plan, guardamos una copia segura del sistema y dimos acceso a Félix y Don Titi",
+
     "Paso1 descubrimiento tailscale+SQL": "Revisamos qué sucursales están conectadas",
     "Paso2 probar oguzhanpisgin/mssql-readonly-mcp": "Probamos una primera forma de leer los datos (no funcionó)",
     "Paso2 instalar y probar RichardHan/mssql_mcp_server (git version pymssql)": "Conectamos la forma de leer la información sin poder cambiarla",
@@ -188,7 +194,7 @@ AGRUPABLES = {"Organizamos el panel de seguimiento", "Ajustes internos del siste
 
 actividades_hoy = []
 for f in filas_hoy:
-    texto = TRADUCCION_HOY.get(f["tarea"], f["tarea"][:40])
+    texto = TRADUCCION_HOY.get(f["tarea"], _tw.shorten(f["tarea"], 70, placeholder="…"))
     actividades_hoy.append({
         "texto": texto, "inicio": f["hora_inicio"], "minutos": parse_min(f["duracion"]),
     })
@@ -265,7 +271,7 @@ def tarjeta_fase(fase):
 
 def fila_hoy(a, max_min=None):
     max_min = max_min or max_min_hoy
-    ancho = max(8, round(100 * a["minutos"] / max_min))
+    ancho = max(6, min(100, round(100 * a["minutos"] / 480)))  # contra una jornada de 8 h
     return f"""<div class="hoy-fila">
       <div class="hoy-texto">{a['texto']}</div>
       <div class="hoy-datos">
@@ -436,7 +442,7 @@ for _it in fase_actual_plan["items"]:
     _cls = "bd-done" if _it["hecho"] else "bd-pend"
     _bd_items += f'<div class="bd-item"><span class="bd-ic" style="color:{_c}">{_ic}</span><span class="{_cls}">{_it["n"]}</span></div>'
 breakdown_html = (
-    f'<div class="bd-head"><h2>En qué vamos ahorita</h2><span class="bd-badge">{fase_actual_plan["pct"]}%</span></div>'
+    f'<div class="bd-head"><h2>En qué vamos ahorita</h2><span class="bd-badge">{fase_actual_plan["pct"]}% de esta etapa</span></div>'
     f'<p class="bd-fase">{fase_actual_plan["area"]}</p>'
     f'<div class="bd-list">{_bd_items}</div>'
 )
@@ -535,14 +541,14 @@ if _pct_hr <= _pct_av:
     _bien.append(f"Las horas alcanzan: {_pct_hr}% de las horas del contrato para {_pct_av}% del trabajo")
 _bien += _est.get("bien", [])
 _TIPO = {"decision": ("Decisión", "#1E90F0"), "dinero": ("Dinero", "#F04E5E"), "tecnico": ("Técnico", "#7C5CFA"),
-         "persona": ("Esperando a alguien", "#F5B83D"), "seguridad": ("Seguridad", "#64748B")}
+         "persona": ("Esperando", "#F5B83D"), "seguridad": ("Seguridad", "#64748B")}
 _etq_area = {pf.get("etiqueta"): pf["area"] for pf in plan_fases}
 def _fila_freno(x):
     t, c = _TIPO.get(x.get("tipo"), ("Pendiente", "#64748B"))
     _ahora = ' <span class="es-ahora">frena la etapa de ahora</span>' if x.get("frena") == _et_act else ""
     _donde = f' · frena: {_html.escape(_etq_area.get(x["frena"], x["frena"]))}' if x.get("frena") else ""
     return (f'<li class="es-freno"><span class="es-tipo" style="background:{c}">{t}</span>'
-            f'<div><div>{_html.escape(x["texto"])}{_ahora}</div><div class="es-quien">Quién: {_html.escape(x.get("quien",""))}{_donde}</div></div></li>')
+            f'<div><div>{_html.escape(x["texto"])}{_ahora}</div><div class="es-quien">Le toca a: {_html.escape(x.get("quien",""))}{"" if x.get("frena") == _et_act else _donde}</div></div></li>')
 _frenos.sort(key=lambda x: (x.get("frena") != _et_act, x.get("tipo") != "dinero"))
 def _barra(lbl, v, col):
     return (f'<div class="es-barra"><div class="es-bl"><span>{lbl}</span><b>{v}%</b></div>'
@@ -551,21 +557,21 @@ _sig = "".join(f"<li>{_html.escape(x['texto'])} <em>({_html.escape(x['quien'])})
 estado_panel_html = (
     f'<div class="es-head" style="background:{ESTADO_COLOR[estado_chip]}"><h2>{ESTADO_TXT[estado_chip]}</h2>'
     f'<div class="cerrar-btn es-x" onclick="cerrarEstado()">✕</div><p>{_cal}</p></div>'
-    f'<div class="es-body"><h3>Conforme al calendario</h3>'
+    f'<div class="es-body"><h3>¿Vamos a tiempo?</h3>'
     + _barra("Tiempo que ya pasó del contrato", _pct_t, "#94A3B8")
-    + _barra("Trabajo terminado", _pct_av, ESTADO_COLOR[estado_chip])
+    + _barra("Trabajo hecho, medido en horas", _pct_av, ESTADO_COLOR[estado_chip])
     + _barra("Horas del contrato ya usadas", _pct_hr, "#1E90F0")
     + f'<p class="es-nota">Del {fmt_fecha_es(plan["inicio"])} al {fmt_fecha_es(plan["fin_trabajo"])} ({_dias_trab} días de trabajo). '
-      f'Trabajo terminado = horas hechas ({_h_real:.0f} h) entre horas hechas más las que faltan (~{_h_falta:.0f} h).</p>'
+      f'Llevamos {_h_real:.0f} h de trabajo y faltan unas {_h_falta:.0f} h.</p>'
     + (f'<h3>Por qué no va mejor</h3><ul class="es-lista es-mal">' + "".join(f"<li>{r}</li>" for r in _razones_mal) + '</ul>' if _razones_mal else "")
     + (f'<h3>Lo que falta o nos frena</h3><ul class="es-lista">' + "".join(_fila_freno(x) for x in _frenos) + '</ul>' if _frenos else '<h3>Lo que nos frena</h3><p>Nada. ✓</p>')
     + f'<h3>Lo que va bien</h3><ul class="es-lista es-ok">' + "".join(f"<li>{_html.escape(b)}</li>" for b in _bien) + '</ul>'
-    + f'<h3>Lo que sigue</h3><ul class="es-lista">{_sig}</ul></div>')
+    + '</div>')
 
 # ---- Regularización (Rafael 27-nov): todo lo que se agrega/cambia en las bases, base del manual ----
 _reg = json.loads((BASE / "regularizacion.json").read_text(encoding="utf-8"))
 _cam = _reg.get("cambios", [])
-_EST = [("aprobado", "Aprobado, falta aplicar", "#1E90F0"), ("aplicado", "Aplicado, falta verificar", "#F5B83D"), ("verificado", "Verificado en la base", "#16A34A")]
+_EST = [("aprobado", "Por hacer", "#1E90F0"), ("aplicado", "Hecho, falta revisar", "#F5B83D"), ("verificado", "Listo", "#16A34A")]
 _cnt = {e: sum(1 for c in _cam if c.get("estado") == e) for e, _, _ in _EST}
 _rg = (f'<div class="tl-stats">'
        + "".join(f'<div class="tl-stat"><span class="tl-num" style="color:{col}">{_cnt[e]}</span><span class="tl-lbl">{t}</span></div>' for e, t, col in _EST)
@@ -608,7 +614,7 @@ plan_fases_js = json.dumps(
 _tt = sum(len(pf["items"]) for pf in plan_fases)
 _th = sum(1 for pf in plan_fases for it in pf["items"] if it["hecho"])
 pct_plan_global = round(100 * _th / _tt) if _tt else 0
-frase_plan = f"Vamos en la etapa \u201c{fase_actual_plan['area']}\u201d. {fase_actual_plan.get('desc', '')}"
+frase_plan = f"Ahorita: {fase_actual_plan['area']}."
 ring_big = ring(pct_plan_global, 128, 12, "var(--blue)", "var(--track)", "var(--ink)", 32)
 
 html = f"""<!doctype html>
@@ -808,11 +814,27 @@ html = f"""<!doctype html>
   .rp-sub {{ font-size:12px; color:var(--ink2); }}
   .rp-est {{ flex:0 0 auto; font-size:12px; font-weight:600; color:#fff; background:#F5B83D; border-radius:999px; padding:3px 10px; }}
   .rp-est.ok {{ background:#22C55E; }}
+  .card-top {{ position:relative; }}
+  .card-top h1 {{ padding-right:48px; }}
+  .marca {{ margin:0; font-size:13px; font-weight:600; color:var(--ink2); }}
+  .menu-btn {{ position:absolute !important; top:14px !important; right:14px !important; left:auto !important; width:40px !important; height:40px !important; box-shadow:none !important; }}
+  .menu-dropdown {{ position:absolute !important; top:62px !important; right:16px !important; left:auto !important; }}
+  .ring-wrap {{ display:flex; flex-direction:column; align-items:center; }}
+  .ring-cap {{ font-size:12px; color:var(--ink2); margin-top:2px; }}
+  .bitacora-header {{ position:sticky; top:0; z-index:2; background:var(--bg); }}
+  .pf-scroll {{ -webkit-mask-image:linear-gradient(90deg,#000 88%,transparent); mask-image:linear-gradient(90deg,#000 88%,transparent); }}
+  .tl-sec, .rg-sec, .pq-n {{ text-transform:none !important; letter-spacing:0 !important; font-size:13px !important; }}
+  .tl-lbl {{ line-height:1.3; }}
+  .chip-btn:hover {{ transform:none !important; }}
+  .pq-guardar {{ width:100%; }}
+  .es-freno {{ flex-direction:column; gap:4px !important; }}
+  .es-tipo {{ align-self:flex-start; }}
+  .es-ahora {{ display:inline-block; background:#FDECEE; border-radius:999px; padding:1px 8px; margin-left:4px; }}
+  @media (max-width:480px) {{ .vamos-texto p {{ text-align:left; }} }}
 </style></head>
 <body>
 <div class="topbar"></div>
 
-<div class="menu-btn" onclick="toggleMenu()">⋮</div>
 <div class="menu-dropdown" id="menu-dropdown">
   <a onclick="abrirBitacora()">Bitácora de trabajo</a>
   <a onclick="abrirRegu()">Regularización de Soft Restaurant</a>
@@ -848,14 +870,16 @@ html = f"""<!doctype html>
 
 <div class="wrap">
 
-  <div class="card">
-    <h1>Avance del proyecto — Titi Burger</h1>
+  <div class="card card-top">
+    <div class="menu-btn" onclick="toggleMenu()" role="button" aria-label="Más opciones" tabindex="0">⋮</div>
+    <p class="marca">Titi Burger</p>
+    <h1>Así va el proyecto</h1>
     <p class="actualizado">Actualizado hoy a las {ahora}</p>
 
     {dots_html}
 
     <div class="vamos-top">
-      {ring_big}
+      <div class="ring-wrap">{ring_big}<div class="ring-cap">del proyecto</div></div>
       <div class="vamos-texto">
         <p>{frase_plan}</p>
         <span class="chip chip-btn" role="button" tabindex="0" onclick="abrirEstado()" style="background:{ESTADO_COLOR[estado_chip]}">{ESTADO_TXT[estado_chip]} ›</span>
@@ -896,7 +920,7 @@ html = f"""<!doctype html>
     {sigue_html}
   </div>
 
-  <footer>Generado automáticamente por Tito · {datetime.now():%d-%m-%Y %H:%M}</footer>
+  <footer>Lo actualiza Tito · {datetime.now():%d-%m-%Y %H:%M}</footer>
 </div>
 
 <script>
@@ -939,7 +963,7 @@ function pintarPreg() {{
     if (q.tipo === 'opcion') {{
       cuerpo = q.opciones.map(o => '<button class="pq-op' + (v === o ? ' sel' : '') + '" data-q="' + _e(q.id) + '" data-o="' + _e(o) + '">' + (v === o ? '✓ ' : '') + _e(o) + '</button>').join('');
     }} else if (q.tipo === 'campos') {{
-      cuerpo = q.campos.map(c => '<label class="pq-campo"><span>' + _e(c) + '</span><input data-c="' + _e(c) + '" value="' + _e(v && v[c] ? v[c] : '') + '" placeholder="$"></label>').join('')
+      cuerpo = q.campos.map(c => '<label class="pq-campo"><span>' + _e(c) + '</span><input data-c="' + _e(c) + '" value="' + _e(v && v[c] ? v[c] : '') + '" placeholder="Ej. $250 la caja de 24"></label>').join('')
         + '<button class="pq-guardar" data-g="' + _e(q.id) + '">Guardar</button>';
     }} else {{
       cuerpo = '<label class="pq-campo"><input data-c="_t" value="' + _e(v || '') + '"></label><button class="pq-guardar" data-g="' + _e(q.id) + '">Guardar</button>';
@@ -986,6 +1010,10 @@ async function cargarRep() {{
   }} catch (e) {{}}
 }}
 cargarRep();
+function _push() {{ try {{ history.pushState({{o:1}}, ''); }} catch (e) {{}} }}
+window.addEventListener('popstate', () => document.querySelectorAll('#bitacora-overlay.show,#regu-overlay.show,#preg-overlay.show,#estado-overlay.show').forEach(e => e.classList.remove('show')));
+document.addEventListener('click', e => {{ if (e.target.closest('.chip-btn,#pq-card,.menu-dropdown a')) _push(); }}, true);
+window.addEventListener('load', () => {{ const d = document.querySelectorAll('.pf-dot')[{_idx_act}]; if (d) d.scrollIntoView({{inline:'center', block:'nearest'}}); }});
 function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{
   document.getElementById('menu-dropdown').classList.remove('show');

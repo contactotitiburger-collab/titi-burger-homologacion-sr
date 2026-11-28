@@ -2,14 +2,14 @@
  "_nota": "Solo lo que frena pasos de PLAN.md (nada fuera del plan). Editar aqui; resuelto:true lo quita. frena = etiqueta en plan_fases.json. tipo: decision | persona | tecnico | dinero | seguridad",
  "frenos": [
   {
-   "texto": "Aprobar el reporte de diferencias y decidir si se le manda a Félix (14 preguntas)",
+   "texto": "Aprobar el reporte de diferencias (está en «Reportes para revisar»)",
    "tipo": "decision",
    "quien": "Rafael",
    "frena": "Reporte",
    "resuelto": false
   },
   {
-   "texto": "Félix dice cómo quiere su base (menú, precios, paquetes)",
+   "texto": "Félix contesta lo que falta: cancelaciones y 6 costos (en «Preguntas para Félix»)",
    "tipo": "persona",
    "quien": "Félix",
    "frena": "Base Félix",
