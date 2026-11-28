@@ -588,6 +588,16 @@ for e, t, col in _EST:
                 f'<div class="rg-l"><b>Por qué:</b> {_html.escape(c.get("por_que",""))} <b>Decidió:</b> {_html.escape(c.get("decidio",""))}</div>{_como}</div>')
 regu_html = _rg
 
+# ---- Reportes para revisar (generar_reportes.py escribe reportes.json y las paginas en reportes/) ----
+try:
+    _reps = json.loads((BASE / "reportes.json").read_text(encoding="utf-8"))
+except Exception:
+    _reps = []
+reportes_html = "".join(
+    f'<a class="rp-item" href="reportes/{_html.escape(r["id"])}.html"><div><div class="rp-tit">{_html.escape(r["titulo"])}</div>'
+    f'<div class="rp-sub">Para {_html.escape(r["para"])} · {fmt_fecha_es(r["fecha"])}</div></div>'
+    f'<span class="rp-est" data-rid="{_html.escape(r["id"])}">En revisión</span></a>' for r in _reps)
+
 plan_fases_js = json.dumps(
     [{"a": pf["area"], "p": pf["pct"], "e": _ESTTXT[pf["estado"]],
       "h": sum(1 for it in pf["items"] if it["hecho"]),
@@ -792,6 +802,12 @@ html = f"""<!doctype html>
   .pq-guardar {{ min-height:46px; padding:0 20px; border:none; border-radius:12px; background:#1E90F0; color:#fff; font:inherit; font-weight:600; font-size:15px; cursor:pointer; }}
   .pq-estado {{ font-size:13px; color:#16A34A; margin-top:8px; min-height:18px; }}
   .pq-estado.err {{ color:#F04E5E; }}
+  .rp-nota {{ font-size:13px; color:var(--ink2); margin:-4px 0 10px; }}
+  .rp-item {{ display:flex; align-items:center; justify-content:space-between; gap:12px; padding:12px 0; border-top:1px solid var(--border); text-decoration:none; color:var(--ink); min-height:48px; }}
+  .rp-tit {{ font-weight:600; font-size:15px; }}
+  .rp-sub {{ font-size:12px; color:var(--ink2); }}
+  .rp-est {{ flex:0 0 auto; font-size:12px; font-weight:600; color:#fff; background:#F5B83D; border-radius:999px; padding:3px 10px; }}
+  .rp-est.ok {{ background:#22C55E; }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -852,6 +868,12 @@ html = f"""<!doctype html>
       <div class="resumen-item"><span class="resumen-punto" style="background:var(--pendiente)"></span>
         <span><b>Sigue:</b> {que_sigue[0]['texto']}</span></div>
     </div>
+  </div>
+
+  <div class="card" id="rp-card" style="{'' if _reps else 'display:none'}">
+    <h2 style="margin-top:0">Reportes para revisar</h2>
+    <p class="rp-nota">Ábrelos, apruébalos o deja un comentario ahí mismo.</p>
+    {reportes_html}
   </div>
 
   <div class="card pq-card" id="pq-card" onclick="abrirPreg()" role="button" tabindex="0" style="display:none">
@@ -952,6 +974,18 @@ document.addEventListener('click', e => {{
 function abrirPreg() {{ document.getElementById('preg-overlay').classList.add('show'); pintarPreg(); }}
 function cerrarPreg() {{ document.getElementById('preg-overlay').classList.remove('show'); }}
 cargarPreg();
+async function cargarRep() {{
+  try {{
+    const r = await fetch('/api/reportes', {{credentials:'same-origin', cache:'no-store'}}); if (!r.ok) return;
+    const d = await r.json();
+    document.querySelectorAll('.rp-est').forEach(el => {{
+      const e = (d.estado || {{}})[el.dataset.rid];
+      if (e && e.aprobado.length) {{ el.textContent = 'Aprobado'; el.classList.add('ok'); }}
+      else if (e && e.comentarios.length) {{ el.textContent = e.comentarios.length + ' comentario' + (e.comentarios.length > 1 ? 's' : ''); }}
+    }});
+  }} catch (e) {{}}
+}}
+cargarRep();
 function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{
   document.getElementById('menu-dropdown').classList.remove('show');

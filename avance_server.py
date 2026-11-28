@@ -21,7 +21,9 @@ import threading
 SES_FILE = CREDS_FILE.parent / "sesiones.json"     # sesiones guardadas: reiniciar el servicio ya no saca a nadie
 LECTOR = Path(DIRECTORIO).parent
 PREG_FILE = LECTOR / "preguntas_felix.json"
-RESP_FILE = LECTOR / "respuestas_felix.json"       # bitacora: cada respuesta se agrega, la ultima por pregunta gana
+RESP_FILE = LECTOR / "respuestas_felix.json"
+REP_FILE = LECTOR / "reportes.json"
+REPEST_FILE = LECTOR / "reportes_estado.json"   # aprobaciones y comentarios de cada reporte       # bitacora: cada respuesta se agrega, la ultima por pregunta gana
 LOCK = threading.Lock()
 try:
     SESIONES = {k: tuple(v) for k, v in json.loads(SES_FILE.read_text()).items()}
@@ -114,6 +116,11 @@ class H(http.server.SimpleHTTPRequestHandler):
             ult = {}
             for r in leer_respuestas(): ult[r["id"]] = r
             return self.json_resp({"yo": yo, "preguntas": preg, "respuestas": ult})
+        if self.path.split("?")[0] == "/api/reportes":
+            if not yo: return self.json_resp({"error": "sin sesion"}, 401)
+            try: est = json.loads(REPEST_FILE.read_text(encoding="utf-8"))
+            except Exception: est = {}
+            return self.json_resp({"yo": yo, "estado": est})
         if yo: return super().do_GET()
         self.pagina_login()
     def do_POST(self):
@@ -138,6 +145,28 @@ class H(http.server.SimpleHTTPRequestHandler):
                 todas = leer_respuestas(); todas.append(reg)
                 tmp = RESP_FILE.with_suffix(".tmp"); tmp.write_text(json.dumps(todas, ensure_ascii=False, indent=1), encoding="utf-8"); tmp.replace(RESP_FILE)
             return self.json_resp({"ok": True, "registro": reg})
+        if self.path.split("?")[0] == "/api/reporte":
+            yo = sesion_usuario(self.token())
+            if not yo: return self.json_resp({"error": "sin sesion"}, 401)
+            ln = int(self.headers.get("Content-Length", "0") or 0)
+            if ln > 20000: return self.json_resp({"error": "muy largo"}, 413)
+            try: d = json.loads(self.rfile.read(ln).decode("utf-8"))
+            except Exception: return self.json_resp({"error": "datos mal formados"}, 400)
+            ids = {r["id"] for r in json.loads(REP_FILE.read_text(encoding="utf-8"))}
+            rid = d.get("id"); acc = d.get("accion"); txt = str(d.get("texto") or "")[:3000].strip()
+            if rid not in ids or acc not in ("aprobar", "comentar"): return self.json_resp({"error": "reporte o accion no valida"}, 400)
+            if acc == "aprobar" and yo not in ("rafael", "felix", "dontiti"): return self.json_resp({"error": "esta persona no aprueba reportes"}, 403)
+            if acc == "comentar" and not txt: return self.json_resp({"error": "comentario vacio"}, 400)
+            ahora = time.strftime("%Y-%m-%d %H:%M")
+            with LOCK:
+                try: est = json.loads(REPEST_FILE.read_text(encoding="utf-8"))
+                except Exception: est = {}
+                e = est.setdefault(rid, {"aprobado": [], "comentarios": []})
+                if acc == "aprobar" and not any(a["usuario"] == yo for a in e["aprobado"]):
+                    e["aprobado"].append({"usuario": yo, "fecha": ahora})
+                if txt: e["comentarios"].append({"usuario": yo, "fecha": ahora, "texto": txt})
+                tmp = REPEST_FILE.with_suffix(".tmp"); tmp.write_text(json.dumps(est, ensure_ascii=False, indent=1), encoding="utf-8"); tmp.replace(REPEST_FILE)
+            return self.json_resp({"ok": True})
         if self.path.split("?")[0] != "/login":
             self.send_response(404); self.end_headers(); return
         ip=self.ip(); ahora=time.time()
