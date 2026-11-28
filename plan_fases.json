@@ -80,7 +80,7 @@
    },
    {
     "n": "Rafael revisa y aprueba el reporte",
-    "hecho": false,
+    "hecho": true,
     "est": 1,
     "quien": "Rafael"
    }
