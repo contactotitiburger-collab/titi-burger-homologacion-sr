@@ -843,6 +843,21 @@ html = f"""<!doctype html>
   .fo-resp {{ background:#F4FAFE; border-radius:10px; padding:10px 12px; margin-top:8px; font-size:14px; white-space:pre-wrap; }}
   .fo-resp b {{ color:var(--blue); }}
   .fo-esp {{ font-size:13px; color:#9A6400; }}
+  .fo-tools {{ display:flex; gap:8px; margin:0 0 10px; flex-wrap:wrap; }}
+  .fo-tool {{ flex:1; min-width:90px; min-height:44px; display:flex; align-items:center; justify-content:center; gap:4px; border:1.5px solid var(--border); border-radius:12px; background:#fff; font:inherit; font-size:14px; color:var(--ink); cursor:pointer; }}
+  .fo-tool.rec {{ border-color:#F04E5E; color:#F04E5E; background:#FDECEE; font-weight:600; }}
+  .fo-adjs {{ display:flex; flex-wrap:wrap; gap:6px; margin-bottom:8px; }}
+  .fo-chip {{ display:flex; align-items:center; gap:6px; background:#F4FAFE; border:1px solid var(--border); border-radius:10px; padding:4px 8px; font-size:12px; max-width:100%; }}
+  .fo-chip img {{ width:36px; height:36px; object-fit:cover; border-radius:6px; }}
+  .fo-chip button {{ border:none; background:none; color:var(--ink2); font-size:16px; cursor:pointer; min-width:28px; min-height:28px; }}
+  .fo-modo {{ background:#EEF5FF; border-radius:10px; padding:8px 10px; font-size:13px; margin-bottom:8px; display:flex; justify-content:space-between; gap:8px; align-items:center; }}
+  .fo-modo button {{ border:none; background:none; color:var(--blue); font-weight:600; cursor:pointer; }}
+  .fo-a-img {{ display:block; max-width:100%; max-height:320px; border-radius:10px; margin-top:8px; }}
+  .fo-a-aud, .fo-a-vid {{ width:100%; margin-top:8px; }}
+  .fo-a-vid {{ max-height:320px; border-radius:10px; background:#000; }}
+  .fo-a-file {{ display:flex; align-items:center; gap:8px; margin-top:8px; padding:10px 12px; border:1px solid var(--border); border-radius:10px; text-decoration:none; color:var(--ink); background:#fff; font-size:14px; }}
+  .fo-trans {{ font-size:13px; color:var(--ink2); background:#FAFAF5; border-radius:8px; padding:6px 10px; margin-top:4px; font-style:italic; }}
+  .fo-resp-btn {{ margin-top:8px; border:none; background:none; color:var(--blue); font:inherit; font-weight:600; font-size:14px; cursor:pointer; min-height:36px; padding:0; }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -884,9 +899,16 @@ html = f"""<!doctype html>
     <div class="cerrar-btn" onclick="cerrarForo()">✕</div>
   </div>
   <div class="tl-wrap">
-    <div class="pq"><div class="pq-p">Haz tu pregunta</div><p class="pq-c">Sobre el proyecto, Soft Restaurant o lo que veas en esta página. Tito la lee y contesta aquí mismo; Rafael también puede contestar.</p>
-      <textarea id="fo-txt" class="fo-txt" placeholder="Escribe tu pregunta"></textarea>
-      <button class="pq-guardar" onclick="preguntarForo()">Enviar pregunta</button><div class="pq-estado" id="fo-msg"></div></div>
+    <div class="pq fo-comp"><div class="pq-p" id="fo-tit">Haz tu pregunta</div><p class="pq-c" id="fo-ayuda">Sobre el proyecto, Soft Restaurant o lo que veas en esta página. Puedes mandar fotos, audios y archivos. Tito contesta aquí mismo.</p>
+      <div id="fo-modo" class="fo-modo" style="display:none"></div>
+      <textarea id="fo-txt" class="fo-txt" placeholder="Escribe tu mensaje"></textarea>
+      <div id="fo-adj" class="fo-adjs"></div>
+      <div class="fo-tools">
+        <label class="fo-tool">📷 Foto<input type="file" accept="image/*,video/*" multiple hidden onchange="subirArchivos(this)"></label>
+        <button type="button" class="fo-tool" id="fo-rec" onclick="grabar()">🎤 Audio</button>
+        <label class="fo-tool">📎 Archivo<input type="file" multiple hidden onchange="subirArchivos(this)"></label>
+      </div>
+      <button class="pq-guardar" id="fo-enviar" onclick="enviarForo()">Enviar</button><div class="pq-estado" id="fo-msg"></div></div>
     <div id="fo-lista"></div>
   </div>
 </div>
@@ -1053,24 +1075,87 @@ async function cargarForo() {{
   document.getElementById('fo-sub').textContent = tot ? (tot + (tot === 1 ? ' pregunta' : ' preguntas') + (ab ? ' · ' + ab + ' esperando respuesta' : ' · todas contestadas')) : '¿Tienes una duda? Pregúntale a Tito aquí';
   pintarForo();
 }}
-function pintarForo() {{
+let FO_ADJ = [], FO_RESP = null, FO_FIRMA = '';
+function _tam(n) {{ return n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; }}
+function adjHtml(a) {{
+  const u = '/api/archivo/' + encodeURIComponent(a.id);
+  if (a.kind === 'imagen') return '<a href="' + u + '" target="_blank" rel="noopener"><img class="fo-a-img" loading="lazy" src="' + u + '?t=1" alt="' + _e(a.nombre) + '"></a>';
+  if (a.kind === 'audio') return '<audio class="fo-a-aud" controls preload="none" src="' + u + '"></audio>' + (a.transcripcion ? '<div class="fo-trans">🗣️ ' + _e(a.transcripcion) + '</div>' : '<div class="fo-trans">Transcribiendo el audio…</div>');
+  if (a.kind === 'video') return '<video class="fo-a-vid" controls preload="metadata" playsinline src="' + u + '"></video>';
+  return '<a class="fo-a-file" href="' + u + '" target="_blank" rel="noopener">📄 <span>' + _e(a.nombre) + '</span> <small style="color:var(--ink2)">' + _tam(a.tam) + '</small></a>';
+}}
+function pintarForo(forzar) {{
   if (!FORO) return;
+  const firma = JSON.stringify(FORO.hilos);
+  if (!forzar && firma === FO_FIRMA) return;   // no repinta si nada cambió (no corta un audio que se está oyendo)
+  FO_FIRMA = firma;
   const L = FORO.hilos.slice().reverse();
-  document.getElementById('fo-lista').innerHTML = L.length ? L.map(h => '<div class="fo-hilo ' + (h.respuestas.length ? 'contestada' : 'abierta') + '"><div class="fo-quien">' + _e(FNOM[h.usuario] || h.usuario) + ' · ' + _e(h.fecha) + '</div><div class="fo-preg">' + _e(h.texto) + '</div>'
-    + (h.respuestas.length ? h.respuestas.map(r => '<div class="fo-resp"><b>' + _e(FNOM[r.usuario] || r.usuario) + '</b> · <span class="fo-quien">' + _e(r.fecha) + '</span><br>' + _e(r.texto) + '</div>').join('') : '<div class="fo-esp">Esperando respuesta de Tito</div>') + '</div>').join('')
+  document.getElementById('fo-lista').innerHTML = L.length ? L.map(h => '<div class="fo-hilo ' + (h.respuestas.length ? 'contestada' : 'abierta') + '" id="fo-h' + h.id + '"><div class="fo-quien">' + _e(FNOM[h.usuario] || h.usuario) + ' · ' + _e(h.fecha) + '</div>'
+    + (h.texto ? '<div class="fo-preg">' + _e(h.texto) + '</div>' : '') + (h.adjuntos || []).map(adjHtml).join('')
+    + (h.respuestas.length ? h.respuestas.map(r => '<div class="fo-resp"><b>' + _e(FNOM[r.usuario] || r.usuario) + '</b> · <span class="fo-quien">' + _e(r.fecha) + '</span>' + (r.texto ? '<br>' + _e(r.texto) : '') + (r.adjuntos || []).map(adjHtml).join('') + '</div>').join('') : '<div class="fo-esp">Esperando respuesta de Tito</div>')
+    + '<button class="fo-resp-btn" onclick="responderA(' + h.id + ')">↩︎ Responder</button></div>').join('')
     : '<p class="tl-nota">Todavía no hay preguntas. ¡Sé el primero!</p>';
 }}
-async function preguntarForo() {{
+function pintarAdj() {{
+  document.getElementById('fo-adj').innerHTML = FO_ADJ.map((a, i) => '<span class="fo-chip">' + (a.preview ? '<img src="' + a.preview + '" alt="">' : (a.kind === 'audio' ? '🎤' : a.kind === 'video' ? '🎬' : '📄')) + '<span>' + (a.id ? _e(a.nombre) : 'Subiendo…') + '</span><button onclick="quitarAdj(' + i + ')" aria-label="Quitar">×</button></span>').join('');
+}}
+function quitarAdj(i) {{ FO_ADJ.splice(i, 1); pintarAdj(); }}
+async function subirUno(blob, nombre) {{
+  const item = {{nombre, kind: (blob.type || '').startsWith('image') ? 'imagen' : (blob.type || '').startsWith('audio') ? 'audio' : (blob.type || '').startsWith('video') ? 'video' : 'archivo'}};
+  if (item.kind === 'imagen') item.preview = URL.createObjectURL(blob);
+  FO_ADJ.push(item); pintarAdj();
+  const m = document.getElementById('fo-msg'); m.className = 'pq-estado'; m.textContent = 'Subiendo ' + nombre + '…';
+  try {{
+    if (blob.size > 25 * 1048576) throw new Error('pesa más de 25 MB');
+    const r = await fetch('/api/subir', {{method:'POST', credentials:'same-origin', headers:{{'Content-Type': blob.type || 'application/octet-stream', 'X-Nombre': encodeURIComponent(nombre)}}, body: blob}});
+    const d = await r.json(); if (!r.ok) throw new Error(d.error || 'no se pudo subir');
+    Object.assign(item, d.adjunto); m.textContent = 'Listo: ' + nombre;
+  }} catch (e) {{ FO_ADJ.splice(FO_ADJ.indexOf(item), 1); m.className = 'pq-estado err'; m.textContent = 'No se subió ' + nombre + ': ' + e.message; }}
+  pintarAdj();
+}}
+async function subirArchivos(inp) {{ for (const f of [...inp.files]) await subirUno(f, f.name); inp.value = ''; }}
+let REC = null, REC_T = null;
+async function grabar() {{
+  const b = document.getElementById('fo-rec');
+  if (REC) {{ REC.stop(); return; }}
+  if (!navigator.mediaDevices || !window.MediaRecorder) {{ document.getElementById('fo-msg').textContent = 'Este navegador no deja grabar audio. Usa 📎 Archivo para mandar una nota de voz.'; return; }}
+  try {{
+    const st = await navigator.mediaDevices.getUserMedia({{audio:true}});
+    const tipo = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm'].find(t => MediaRecorder.isTypeSupported(t)) || '';
+    const partes = []; REC = new MediaRecorder(st, tipo ? {{mimeType: tipo}} : undefined);
+    REC.ondataavailable = e => e.data.size && partes.push(e.data);
+    REC.onstop = async () => {{
+      clearInterval(REC_T); st.getTracks().forEach(t => t.stop());
+      const mt = (REC.mimeType || 'audio/webm').split(';')[0]; REC = null; b.classList.remove('rec'); b.textContent = '🎤 Audio';
+      const blob = new Blob(partes, {{type: mt}}); const ext = mt.includes('mp4') ? '.m4a' : '.webm';
+      await subirUno(blob, 'audio-' + new Date().toTimeString().slice(0, 5).replace(':', '') + ext);
+    }};
+    REC.start(); const t0 = Date.now(); b.classList.add('rec');
+    const tick = () => {{ const s = Math.round((Date.now() - t0) / 1000); b.textContent = '⏺ ' + Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0') + ' · toca para terminar'; }};
+    tick(); REC_T = setInterval(tick, 500);
+  }} catch (e) {{ document.getElementById('fo-msg').className = 'pq-estado err'; document.getElementById('fo-msg').textContent = 'No se pudo usar el micrófono: dale permiso al navegador.'; }}
+}}
+function responderA(id) {{
+  FO_RESP = id; const h = FORO.hilos.find(x => x.id === id);
+  const md = document.getElementById('fo-modo'); md.style.display = 'flex';
+  md.innerHTML = '<span>Respondiendo a ' + _e(FNOM[h.usuario] || h.usuario) + ': «' + _e((h.texto || 'archivo').slice(0, 60)) + '»</span><button onclick="cancelarResp()">Cancelar</button>';
+  document.getElementById('fo-tit').textContent = 'Tu respuesta';
+  document.querySelector('#foro-overlay .fo-comp').scrollIntoView({{behavior:'smooth', block:'start'}}); document.getElementById('fo-txt').focus();
+}}
+function cancelarResp() {{ FO_RESP = null; document.getElementById('fo-modo').style.display = 'none'; document.getElementById('fo-tit').textContent = 'Haz tu pregunta'; }}
+async function enviarForo() {{
   const t = document.getElementById('fo-txt'), m = document.getElementById('fo-msg');
-  if (!t.value.trim()) {{ m.className = 'pq-estado err'; m.textContent = 'Escribe tu pregunta primero.'; return; }}
+  if (FO_ADJ.some(a => !a.id)) {{ m.className = 'pq-estado err'; m.textContent = 'Espera a que terminen de subir los archivos.'; return; }}
+  if (!t.value.trim() && !FO_ADJ.length) {{ m.className = 'pq-estado err'; m.textContent = 'Escribe algo o agrega una foto, audio o archivo.'; return; }}
   m.className = 'pq-estado'; m.textContent = 'Enviando…';
   try {{
-    const r = await fetch('/api/foro', {{method:'POST', credentials:'same-origin', headers:{{'Content-Type':'application/json'}}, body: JSON.stringify({{accion:'preguntar', texto:t.value}})}});
+    const body = {{accion: FO_RESP ? 'responder' : 'preguntar', id: FO_RESP, texto: t.value, adjuntos: FO_ADJ.map(a => a.id)}};
+    const r = await fetch('/api/foro', {{method:'POST', credentials:'same-origin', headers:{{'Content-Type':'application/json'}}, body: JSON.stringify(body)}});
     const d = await r.json(); if (!r.ok) throw new Error(d.error || 'No se pudo enviar');
-    t.value = ''; m.textContent = 'Listo: tu pregunta quedó guardada. Tito te contesta aquí.'; cargarForo();
+    t.value = ''; FO_ADJ = []; pintarAdj(); cancelarResp(); m.textContent = 'Listo: quedó guardado. Tito te contesta aquí.'; cargarForo();
   }} catch (e) {{ m.className = 'pq-estado err'; m.textContent = 'No se envió: ' + e.message; }}
 }}
-function abrirForo() {{ document.getElementById('foro-overlay').classList.add('show'); pintarForo(); }}
+function abrirForo() {{ document.getElementById('foro-overlay').classList.add('show'); pintarForo(true); }}
 function cerrarForo() {{ document.getElementById('foro-overlay').classList.remove('show'); }}
 cargarForo();
 setInterval(() => {{ if (!document.hidden) {{ cargarForo(); cargarPreg(); }} }}, 20000);
