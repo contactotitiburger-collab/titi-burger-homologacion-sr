@@ -1,0 +1,14 @@
+[
+ {"id": "cancelaciones", "tipo": "opcion", "para": "felix",
+  "pregunta": "Para cancelar algo en caja, ¿se pide autorización?",
+  "contexto": "Hoy cada sucursal tiene su propia regla. Si se pide, el cajero necesita la clave del encargado para cancelar.",
+  "opciones": ["Sí, en todas las sucursales", "No, el cajero cancela solo", "Depende de la sucursal"]},
+ {"id": "queso_crema", "tipo": "opcion", "para": "felix",
+  "pregunta": "El queso Philadelphia de tu base, ¿es el mismo que el queso crema en barra de 1.9 kg a $352?",
+  "contexto": "En los costos de Google Sheets aparece como «queso crema».",
+  "opciones": ["Sí, es el mismo", "No, es otro"]},
+ {"id": "costos_faltan", "tipo": "campos", "para": "felix",
+  "pregunta": "¿Cuánto pagas por estos insumos?",
+  "contexto": "Están en $0 en tu base. Escribe el precio como viene en la factura, por ejemplo: $250 la caja de 24. Si no sabes alguno, déjalo en blanco.",
+  "campos": ["Filtros", "Surtido Coca Cola", "Surtido Pepsi", "Chile preparado", "Carne de Cine Curto", "Tiras de pollo"]}
+]

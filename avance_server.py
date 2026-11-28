@@ -17,16 +17,36 @@ SESION_DURACION = 30*24*3600   # 30 dias logueado
 
 USUARIOS = json.loads(CREDS_FILE.read_text())
 CLAVES = set(USUARIOS.values())    # cualquier clave valida entra (sin pedir usuario)
-SESIONES = {}
+import threading
+SES_FILE = CREDS_FILE.parent / "sesiones.json"     # sesiones guardadas: reiniciar el servicio ya no saca a nadie
+LECTOR = Path(DIRECTORIO).parent
+PREG_FILE = LECTOR / "preguntas_felix.json"
+RESP_FILE = LECTOR / "respuestas_felix.json"       # bitacora: cada respuesta se agrega, la ultima por pregunta gana
+LOCK = threading.Lock()
+try:
+    SESIONES = {k: tuple(v) for k, v in json.loads(SES_FILE.read_text()).items()}
+except Exception:
+    SESIONES = {}
 intentos = defaultdict(list)
 bloqueado = {}
 
-def nueva_sesion():
-    t = secrets.token_urlsafe(24); SESIONES[t] = time.time()+SESION_DURACION; return t
-def sesion_ok(tok):
-    exp = SESIONES.get(tok)
-    if exp and exp > time.time(): return True
-    SESIONES.pop(tok, None); return False
+def _guardar_ses():
+    tmp = SES_FILE.with_suffix(".tmp"); tmp.write_text(json.dumps(SESIONES)); os.chmod(tmp, 0o600); tmp.replace(SES_FILE)
+def nueva_sesion(usuario):
+    t = secrets.token_urlsafe(24)
+    with LOCK:
+        SESIONES[t] = (time.time()+SESION_DURACION, usuario); _guardar_ses()
+    return t
+def sesion_usuario(tok):
+    v = SESIONES.get(tok)
+    if v and v[0] > time.time(): return v[1]
+    if v: SESIONES.pop(tok, None)
+    return None
+def sesion_ok(tok): return sesion_usuario(tok) is not None
+
+def leer_respuestas():
+    try: return json.loads(RESP_FILE.read_text(encoding="utf-8"))
+    except Exception: return []
 
 LOGIN = """<!doctype html><html lang="es"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -79,10 +99,45 @@ class H(http.server.SimpleHTTPRequestHandler):
         self.send_header("Content-Length",str(len(b)))
         self.send_header("Cache-Control","no-store")
         self.end_headers(); self.wfile.write(b)
+    def json_resp(self, obj, code=200):
+        b = json.dumps(obj, ensure_ascii=False).encode()
+        self.send_response(code)
+        self.send_header("Content-Type", "application/json; charset=utf-8")
+        self.send_header("Content-Length", str(len(b)))
+        self.send_header("Cache-Control", "no-store")
+        self.end_headers(); self.wfile.write(b)
     def do_GET(self):
-        if sesion_ok(self.token()): return super().do_GET()
+        yo = sesion_usuario(self.token())
+        if self.path.split("?")[0] == "/api/preguntas":
+            if not yo: return self.json_resp({"error": "sin sesion"}, 401)
+            preg = json.loads(PREG_FILE.read_text(encoding="utf-8"))
+            ult = {}
+            for r in leer_respuestas(): ult[r["id"]] = r
+            return self.json_resp({"yo": yo, "preguntas": preg, "respuestas": ult})
+        if yo: return super().do_GET()
         self.pagina_login()
     def do_POST(self):
+        if self.path.split("?")[0] == "/api/responder":
+            yo = sesion_usuario(self.token())
+            if not yo: return self.json_resp({"error": "sin sesion"}, 401)
+            if yo not in ("felix", "rafael", "tito"): return self.json_resp({"error": "esta persona no contesta estas preguntas"}, 403)
+            ln = int(self.headers.get("Content-Length", "0") or 0)
+            if ln > 20000: return self.json_resp({"error": "muy largo"}, 413)
+            try: d = json.loads(self.rfile.read(ln).decode("utf-8"))
+            except Exception: return self.json_resp({"error": "datos mal formados"}, 400)
+            preg = {q["id"]: q for q in json.loads(PREG_FILE.read_text(encoding="utf-8"))}
+            q = preg.get(d.get("id")); r = d.get("respuesta")
+            if not q: return self.json_resp({"error": "pregunta no existe"}, 400)
+            if q["tipo"] == "opcion" and r not in q["opciones"]: return self.json_resp({"error": "opcion no valida"}, 400)
+            if q["tipo"] == "campos":
+                if not isinstance(r, dict): return self.json_resp({"error": "datos mal formados"}, 400)
+                r = {k: str(r.get(k, ""))[:200].strip() for k in q["campos"]}
+            if q["tipo"] == "texto": r = str(r or "")[:2000].strip()
+            reg = {"id": q["id"], "respuesta": r, "usuario": yo, "fecha": time.strftime("%Y-%m-%d %H:%M")}
+            with LOCK:
+                todas = leer_respuestas(); todas.append(reg)
+                tmp = RESP_FILE.with_suffix(".tmp"); tmp.write_text(json.dumps(todas, ensure_ascii=False, indent=1), encoding="utf-8"); tmp.replace(RESP_FILE)
+            return self.json_resp({"ok": True, "registro": reg})
         if self.path.split("?")[0] != "/login":
             self.send_response(404); self.end_headers(); return
         ip=self.ip(); ahora=time.time()
@@ -93,7 +148,8 @@ class H(http.server.SimpleHTTPRequestHandler):
         clave=(datos.get("clave",[""])[0]).strip()
         if clave in CLAVES:
             intentos.pop(ip,None); bloqueado.pop(ip,None)
-            tok=nueva_sesion()
+            usuario = next((u for u, k in USUARIOS.items() if k == clave), "desconocido")
+            tok=nueva_sesion(usuario)
             self.send_response(303)
             self.send_header("Set-Cookie","sesion=%s; Path=/; HttpOnly; Secure; SameSite=Lax" % (tok,))
             self.send_header("Location","/")

@@ -582,7 +582,7 @@ for e, t, col in _EST:
     for c in sorted(_l, key=lambda x: (x.get("area", ""), x.get("id", 0))):
         _como = f'<div class="rg-l"><b>Cómo:</b> {_html.escape(c["como"])}</div>' if c.get("como") else ""
         _rg += (f'<div class="rg-card" style="border-left-color:{col}"><div class="rg-top"><span class="rg-tipo">{_html.escape(c.get("tipo",""))} · {_html.escape(c.get("area",""))}</span>'
-                f'<span class="rg-base">{_html.escape(c.get("base",""))} · {fmt_fecha_es(c["fecha"])}</span></div>'
+                f'<span class="rg-base">{_html.escape("Base de Félix" if c.get("base")=="Félix" else "Sucursal "+c.get("base",""))} · {fmt_fecha_es(c["fecha"])}</span></div>'
                 f'<div class="rg-que">{_html.escape(c["que"])}</div>'
                 f'<div class="rg-l">{_html.escape(c.get("detalle",""))}</div>'
                 f'<div class="rg-l"><b>Por qué:</b> {_html.escape(c.get("por_que",""))} <b>Decidió:</b> {_html.escape(c.get("decidio",""))}</div>{_como}</div>')
@@ -768,6 +768,30 @@ html = f"""<!doctype html>
   .rg-que {{ font-size:15px; font-weight:600; color:var(--ink); margin:4px 0; }}
   .rg-l {{ font-size:13px; color:var(--ink); margin-top:3px; line-height:1.5; }}
   @media (max-width:480px) {{ .rg-top {{ flex-direction:column; gap:0; }} }}
+  .pq-card {{ display:flex; align-items:center; gap:14px; cursor:pointer; border:1.5px solid #BFDDF8; }}
+  .pq-card.pq-listo {{ border-color:var(--border); }}
+  .pq-ico {{ width:40px; height:40px; flex:0 0 40px; border-radius:50%; background:#1E90F0; color:#fff; font-weight:700; font-size:20px; display:flex; align-items:center; justify-content:center; }}
+  .pq-listo .pq-ico {{ background:#22C55E; }}
+  .pq-tit {{ font-weight:600; font-size:16px; color:var(--ink); }}
+  .pq-sub {{ font-size:13px; color:var(--ink2); }}
+  .pq-flecha {{ margin-left:auto; font-size:26px; color:var(--ink2); }}
+  #preg-overlay {{ display:none; position:fixed; inset:0; background:var(--bg); z-index:60; overflow-y:auto; }}
+  #preg-overlay.show {{ display:block; }}
+  .pq {{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:16px; margin-bottom:14px; }}
+  .pq.pq-ok {{ border-left:4px solid #22C55E; }}
+  .pq-n {{ font-size:12px; font-weight:600; color:var(--ink2); letter-spacing:.06em; text-transform:uppercase; }}
+  .pq-p {{ font-size:16px; font-weight:600; color:var(--ink); margin:4px 0 6px; }}
+  .pq-c {{ font-size:13px; color:var(--ink2); margin:0 0 12px; line-height:1.5; }}
+  .pq-op {{ display:block; width:100%; text-align:left; min-height:48px; padding:12px 14px; margin-bottom:8px; border:1.5px solid var(--border); border-radius:12px; background:#fff; font:inherit; font-size:15px; color:var(--ink); cursor:pointer; }}
+  .pq-op:hover {{ border-color:#1E90F0; }}
+  .pq-op.sel {{ border-color:#22C55E; background:#F0FBF3; font-weight:600; }}
+  .pq-campo {{ display:block; margin-bottom:10px; }}
+  .pq-campo span {{ display:block; font-size:13px; color:var(--ink2); margin-bottom:4px; }}
+  .pq-campo input {{ width:100%; box-sizing:border-box; min-height:44px; padding:10px 12px; border:1.5px solid var(--border); border-radius:10px; font:inherit; font-size:15px; }}
+  .pq-campo input:focus {{ outline:none; border-color:#1E90F0; }}
+  .pq-guardar {{ min-height:46px; padding:0 20px; border:none; border-radius:12px; background:#1E90F0; color:#fff; font:inherit; font-weight:600; font-size:15px; cursor:pointer; }}
+  .pq-estado {{ font-size:13px; color:#16A34A; margin-top:8px; min-height:18px; }}
+  .pq-estado.err {{ color:#F04E5E; }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -796,6 +820,14 @@ html = f"""<!doctype html>
   <div class="tl-wrap">{regu_html}</div>
 </div>
 
+<div id="preg-overlay">
+  <div class="bitacora-header">
+    <h2>Preguntas para Félix</h2>
+    <div class="cerrar-btn" onclick="cerrarPreg()">✕</div>
+  </div>
+  <div class="tl-wrap"><p class="tl-nota">Pícale a tu respuesta o escríbela. Se guarda sola y Tito la ve al momento.</p><div id="pq-lista">Cargando…</div></div>
+</div>
+
 <div id="estado-overlay" onclick="if(event.target===this)cerrarEstado()"><div class="es-panel">{estado_panel_html}</div></div>
 
 <div class="wrap">
@@ -820,6 +852,12 @@ html = f"""<!doctype html>
       <div class="resumen-item"><span class="resumen-punto" style="background:var(--pendiente)"></span>
         <span><b>Sigue:</b> {que_sigue[0]['texto']}</span></div>
     </div>
+  </div>
+
+  <div class="card pq-card" id="pq-card" onclick="abrirPreg()" role="button" tabindex="0" style="display:none">
+    <div class="pq-ico">?</div>
+    <div><div class="pq-tit">Preguntas para Félix</div><div class="pq-sub" id="pq-sub"></div></div>
+    <div class="pq-flecha">›</div>
   </div>
 
   <div class="card">
@@ -855,6 +893,65 @@ function cerrarEstado() {{ document.getElementById('estado-overlay').classList.r
 document.addEventListener('keydown', e => {{ if (e.key === 'Escape') cerrarEstado(); }});
 function abrirRegu() {{ document.getElementById('menu-dropdown').classList.remove('show'); document.getElementById('regu-overlay').classList.add('show'); }}
 function cerrarRegu() {{ document.getElementById('regu-overlay').classList.remove('show'); }}
+let PQ = null;
+function _e(t) {{ const d = document.createElement('div'); d.textContent = t == null ? '' : String(t); return d.innerHTML; }}
+async function cargarPreg() {{
+  try {{
+    const r = await fetch('/api/preguntas', {{credentials:'same-origin', cache:'no-store'}});
+    if (!r.ok) return;
+    PQ = await r.json();
+  }} catch (e) {{ return; }}
+  const tot = PQ.preguntas.length, hechas = PQ.preguntas.filter(q => PQ.respuestas[q.id]).length;
+  const card = document.getElementById('pq-card');
+  if (!tot) {{ card.style.display = 'none'; return; }}
+  card.style.display = 'flex';
+  card.classList.toggle('pq-listo', hechas === tot);
+  document.getElementById('pq-sub').textContent = hechas === tot ? 'Todas contestadas (' + tot + ')' : (tot - hechas) + ' de ' + tot + ' por contestar · toma 2 minutos';
+  pintarPreg();
+}}
+function pintarPreg() {{
+  const box = document.getElementById('pq-lista'); if (!PQ) return;
+  box.innerHTML = PQ.preguntas.map((q, i) => {{
+    const r = PQ.respuestas[q.id]; const v = r ? r.respuesta : null;
+    let cuerpo = '';
+    if (q.tipo === 'opcion') {{
+      cuerpo = q.opciones.map(o => '<button class="pq-op' + (v === o ? ' sel' : '') + '" data-q="' + _e(q.id) + '" data-o="' + _e(o) + '">' + (v === o ? '✓ ' : '') + _e(o) + '</button>').join('');
+    }} else if (q.tipo === 'campos') {{
+      cuerpo = q.campos.map(c => '<label class="pq-campo"><span>' + _e(c) + '</span><input data-c="' + _e(c) + '" value="' + _e(v && v[c] ? v[c] : '') + '" placeholder="$"></label>').join('')
+        + '<button class="pq-guardar" data-g="' + _e(q.id) + '">Guardar</button>';
+    }} else {{
+      cuerpo = '<label class="pq-campo"><input data-c="_t" value="' + _e(v || '') + '"></label><button class="pq-guardar" data-g="' + _e(q.id) + '">Guardar</button>';
+    }}
+    const est = r ? '✓ Contestó ' + _e(({{felix:'Félix',rafael:'Rafael',tito:'Tito',dontiti:'Don Titi',marco:'Marco'}})[r.usuario] || r.usuario) + ' · ' + _e(r.fecha) : '';
+    return '<div class="pq' + (r ? ' pq-ok' : '') + '" id="pq-' + _e(q.id) + '"><div class="pq-n">Pregunta ' + (i + 1) + ' de ' + PQ.preguntas.length + '</div><div class="pq-p">' + _e(q.pregunta) + '</div><p class="pq-c">' + _e(q.contexto || '') + '</p>' + cuerpo + '<div class="pq-estado">' + est + '</div></div>';
+  }}).join('');
+}}
+async function responder(id, respuesta, el) {{
+  const est = document.querySelector('#pq-' + CSS.escape(id) + ' .pq-estado');
+  est.classList.remove('err'); est.textContent = 'Guardando…';
+  try {{
+    const r = await fetch('/api/responder', {{method:'POST', credentials:'same-origin', headers:{{'Content-Type':'application/json'}}, body: JSON.stringify({{id, respuesta}})}});
+    const d = await r.json();
+    if (!r.ok) throw new Error(d.error || 'No se pudo guardar');
+    PQ.respuestas[id] = d.registro;
+    await cargarPreg();
+  }} catch (e) {{ est.classList.add('err'); est.textContent = 'No se guardó: ' + e.message + '. Intenta otra vez.'; }}
+}}
+document.addEventListener('click', e => {{
+  const b = e.target.closest('.pq-op');
+  if (b) return responder(b.dataset.q, b.dataset.o, b);
+  const g = e.target.closest('.pq-guardar');
+  if (g) {{
+    const q = PQ.preguntas.find(x => x.id === g.dataset.g);
+    const ins = document.querySelectorAll('#pq-' + CSS.escape(q.id) + ' input');
+    let val;
+    if (q.tipo === 'campos') {{ val = {{}}; ins.forEach(i => val[i.dataset.c] = i.value); }} else {{ val = ins[0].value; }}
+    responder(q.id, val, g);
+  }}
+}});
+function abrirPreg() {{ document.getElementById('preg-overlay').classList.add('show'); pintarPreg(); }}
+function cerrarPreg() {{ document.getElementById('preg-overlay').classList.remove('show'); }}
+cargarPreg();
 function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{
   document.getElementById('menu-dropdown').classList.remove('show');
