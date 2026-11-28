@@ -23,6 +23,7 @@ LECTOR = Path(DIRECTORIO).parent
 PREG_FILE = LECTOR / "preguntas_felix.json"
 RESP_FILE = LECTOR / "respuestas_felix.json"
 REP_FILE = LECTOR / "reportes.json"
+FORO_FILE = LECTOR / "foro.json"   # preguntas y respuestas (foro); Tito contesta con responder_foro.py
 REPEST_FILE = LECTOR / "reportes_estado.json"   # aprobaciones y comentarios de cada reporte       # bitacora: cada respuesta se agrega, la ultima por pregunta gana
 LOCK = threading.Lock()
 try:
@@ -116,6 +117,11 @@ class H(http.server.SimpleHTTPRequestHandler):
             ult = {}
             for r in leer_respuestas(): ult[r["id"]] = r
             return self.json_resp({"yo": yo, "preguntas": preg, "respuestas": ult})
+        if self.path.split("?")[0] == "/api/foro":
+            if not yo: return self.json_resp({"error": "sin sesion"}, 401)
+            try: foro = json.loads(FORO_FILE.read_text(encoding="utf-8"))
+            except Exception: foro = []
+            return self.json_resp({"yo": yo, "hilos": foro})
         if self.path.split("?")[0] == "/api/reportes":
             if not yo: return self.json_resp({"error": "sin sesion"}, 401)
             try: est = json.loads(REPEST_FILE.read_text(encoding="utf-8"))
@@ -145,6 +151,28 @@ class H(http.server.SimpleHTTPRequestHandler):
                 todas = leer_respuestas(); todas.append(reg)
                 tmp = RESP_FILE.with_suffix(".tmp"); tmp.write_text(json.dumps(todas, ensure_ascii=False, indent=1), encoding="utf-8"); tmp.replace(RESP_FILE)
             return self.json_resp({"ok": True, "registro": reg})
+        if self.path.split("?")[0] == "/api/foro":
+            yo = sesion_usuario(self.token())
+            if not yo: return self.json_resp({"error": "sin sesion"}, 401)
+            ln = int(self.headers.get("Content-Length", "0") or 0)
+            if ln > 20000: return self.json_resp({"error": "muy largo"}, 413)
+            try: d = json.loads(self.rfile.read(ln).decode("utf-8"))
+            except Exception: return self.json_resp({"error": "datos mal formados"}, 400)
+            txt = str(d.get("texto") or "")[:3000].strip()
+            if not txt: return self.json_resp({"error": "escribe tu pregunta"}, 400)
+            ahora = time.strftime("%Y-%m-%d %H:%M")
+            with LOCK:
+                try: foro = json.loads(FORO_FILE.read_text(encoding="utf-8"))
+                except Exception: foro = []
+                if d.get("accion") == "responder":
+                    h = next((x for x in foro if x["id"] == d.get("id")), None)
+                    if not h: return self.json_resp({"error": "esa pregunta no existe"}, 400)
+                    h["respuestas"].append({"usuario": yo, "fecha": ahora, "texto": txt})
+                else:
+                    nid = max([x["id"] for x in foro] + [0]) + 1
+                    foro.append({"id": nid, "usuario": yo, "fecha": ahora, "texto": txt, "respuestas": []})
+                tmp = FORO_FILE.with_suffix(".tmp"); tmp.write_text(json.dumps(foro, ensure_ascii=False, indent=1), encoding="utf-8"); tmp.replace(FORO_FILE)
+            return self.json_resp({"ok": True})
         if self.path.split("?")[0] == "/api/reporte":
             yo = sesion_usuario(self.token())
             if not yo: return self.json_resp({"error": "sin sesion"}, 401)

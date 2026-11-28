@@ -831,6 +831,18 @@ html = f"""<!doctype html>
   .es-tipo {{ align-self:flex-start; }}
   .es-ahora {{ display:inline-block; background:#FDECEE; border-radius:999px; padding:1px 8px; margin-left:4px; }}
   @media (max-width:480px) {{ .vamos-texto p {{ text-align:left; }} }}
+  .fo-ico {{ background:#7C5CFA !important; font-size:18px; }}
+  #foro-overlay {{ display:none; position:fixed; inset:0; background:var(--bg); z-index:60; overflow-y:auto; }}
+  #foro-overlay.show {{ display:block; }}
+  .fo-txt {{ width:100%; box-sizing:border-box; min-height:90px; border:1.5px solid var(--border); border-radius:12px; padding:10px 12px; font:inherit; font-size:15px; margin-bottom:10px; }}
+  .fo-hilo {{ background:#fff; border:1px solid var(--border); border-radius:14px; padding:14px 16px; margin-bottom:12px; }}
+  .fo-hilo.abierta {{ border-left:4px solid #F5B83D; }}
+  .fo-hilo.contestada {{ border-left:4px solid #22C55E; }}
+  .fo-quien {{ font-size:12px; color:var(--ink2); }}
+  .fo-preg {{ font-size:15px; font-weight:600; color:var(--ink); margin:4px 0 8px; white-space:pre-wrap; }}
+  .fo-resp {{ background:#F4FAFE; border-radius:10px; padding:10px 12px; margin-top:8px; font-size:14px; white-space:pre-wrap; }}
+  .fo-resp b {{ color:var(--blue); }}
+  .fo-esp {{ font-size:13px; color:#9A6400; }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -866,6 +878,19 @@ html = f"""<!doctype html>
   <div class="tl-wrap"><p class="tl-nota">Pícale a tu respuesta o escríbela. Se guarda sola y Tito la ve al momento.</p><div id="pq-lista">Cargando…</div></div>
 </div>
 
+<div id="foro-overlay">
+  <div class="bitacora-header">
+    <h2>Preguntas y respuestas</h2>
+    <div class="cerrar-btn" onclick="cerrarForo()">✕</div>
+  </div>
+  <div class="tl-wrap">
+    <div class="pq"><div class="pq-p">Haz tu pregunta</div><p class="pq-c">Sobre el proyecto, Soft Restaurant o lo que veas en esta página. Tito la lee y contesta aquí mismo; Rafael también puede contestar.</p>
+      <textarea id="fo-txt" class="fo-txt" placeholder="Escribe tu pregunta"></textarea>
+      <button class="pq-guardar" onclick="preguntarForo()">Enviar pregunta</button><div class="pq-estado" id="fo-msg"></div></div>
+    <div id="fo-lista"></div>
+  </div>
+</div>
+
 <div id="estado-overlay" onclick="if(event.target===this)cerrarEstado()"><div class="es-panel">{estado_panel_html}</div></div>
 
 <div class="wrap">
@@ -898,6 +923,12 @@ html = f"""<!doctype html>
     <h2 style="margin-top:0">Reportes para revisar</h2>
     <p class="rp-nota">Ábrelos, apruébalos o deja un comentario ahí mismo.</p>
     {reportes_html}
+  </div>
+
+  <div class="card pq-card fo-card" id="fo-card" onclick="abrirForo()" role="button" tabindex="0">
+    <div class="pq-ico fo-ico">💬</div>
+    <div><div class="pq-tit">Preguntas y respuestas</div><div class="pq-sub" id="fo-sub">¿Tienes una duda? Pregúntale a Tito aquí</div></div>
+    <div class="pq-flecha">›</div>
   </div>
 
   <div class="card pq-card" id="pq-card" onclick="abrirPreg()" role="button" tabindex="0" style="display:none">
@@ -986,7 +1017,7 @@ async function responder(id, respuesta, el) {{
 document.addEventListener('click', e => {{
   const b = e.target.closest('.pq-op');
   if (b) return responder(b.dataset.q, b.dataset.o, b);
-  const g = e.target.closest('.pq-guardar');
+  const g = e.target.closest('.pq-guardar[data-g]');
   if (g) {{
     const q = PQ.preguntas.find(x => x.id === g.dataset.g);
     const ins = document.querySelectorAll('#pq-' + CSS.escape(q.id) + ' input');
@@ -1011,9 +1042,38 @@ async function cargarRep() {{
 }}
 cargarRep();
 function _push() {{ try {{ history.pushState({{o:1}}, ''); }} catch (e) {{}} }}
-window.addEventListener('popstate', () => document.querySelectorAll('#bitacora-overlay.show,#regu-overlay.show,#preg-overlay.show,#estado-overlay.show').forEach(e => e.classList.remove('show')));
-document.addEventListener('click', e => {{ if (e.target.closest('.chip-btn,#pq-card,.menu-dropdown a')) _push(); }}, true);
+window.addEventListener('popstate', () => document.querySelectorAll('#bitacora-overlay.show,#regu-overlay.show,#preg-overlay.show,#estado-overlay.show,#foro-overlay.show').forEach(e => e.classList.remove('show')));
+document.addEventListener('click', e => {{ if (e.target.closest('.chip-btn,#pq-card,#fo-card,.menu-dropdown a')) _push(); }}, true);
 window.addEventListener('load', () => {{ const d = document.querySelectorAll('.pf-dot')[{_idx_act}]; if (d) d.scrollIntoView({{inline:'center', block:'nearest'}}); }});
+const FNOM = {{felix:'Félix', rafael:'Rafael', tito:'Tito', dontiti:'Don Titi', marco:'Marco'}};
+let FORO = null;
+async function cargarForo() {{
+  try {{ const r = await fetch('/api/foro', {{credentials:'same-origin', cache:'no-store'}}); if (!r.ok) return; FORO = await r.json(); }} catch (e) {{ return; }}
+  const ab = FORO.hilos.filter(h => !h.respuestas.length).length, tot = FORO.hilos.length;
+  document.getElementById('fo-sub').textContent = tot ? (tot + (tot === 1 ? ' pregunta' : ' preguntas') + (ab ? ' · ' + ab + ' esperando respuesta' : ' · todas contestadas')) : '¿Tienes una duda? Pregúntale a Tito aquí';
+  pintarForo();
+}}
+function pintarForo() {{
+  if (!FORO) return;
+  const L = FORO.hilos.slice().reverse();
+  document.getElementById('fo-lista').innerHTML = L.length ? L.map(h => '<div class="fo-hilo ' + (h.respuestas.length ? 'contestada' : 'abierta') + '"><div class="fo-quien">' + _e(FNOM[h.usuario] || h.usuario) + ' · ' + _e(h.fecha) + '</div><div class="fo-preg">' + _e(h.texto) + '</div>'
+    + (h.respuestas.length ? h.respuestas.map(r => '<div class="fo-resp"><b>' + _e(FNOM[r.usuario] || r.usuario) + '</b> · <span class="fo-quien">' + _e(r.fecha) + '</span><br>' + _e(r.texto) + '</div>').join('') : '<div class="fo-esp">Esperando respuesta de Tito</div>') + '</div>').join('')
+    : '<p class="tl-nota">Todavía no hay preguntas. ¡Sé el primero!</p>';
+}}
+async function preguntarForo() {{
+  const t = document.getElementById('fo-txt'), m = document.getElementById('fo-msg');
+  if (!t.value.trim()) {{ m.className = 'pq-estado err'; m.textContent = 'Escribe tu pregunta primero.'; return; }}
+  m.className = 'pq-estado'; m.textContent = 'Enviando…';
+  try {{
+    const r = await fetch('/api/foro', {{method:'POST', credentials:'same-origin', headers:{{'Content-Type':'application/json'}}, body: JSON.stringify({{accion:'preguntar', texto:t.value}})}});
+    const d = await r.json(); if (!r.ok) throw new Error(d.error || 'No se pudo enviar');
+    t.value = ''; m.textContent = 'Listo: tu pregunta quedó guardada. Tito te contesta aquí.'; cargarForo();
+  }} catch (e) {{ m.className = 'pq-estado err'; m.textContent = 'No se envió: ' + e.message; }}
+}}
+function abrirForo() {{ document.getElementById('foro-overlay').classList.add('show'); pintarForo(); }}
+function cerrarForo() {{ document.getElementById('foro-overlay').classList.remove('show'); }}
+cargarForo();
+setInterval(() => {{ if (!document.hidden) {{ cargarForo(); cargarPreg(); }} }}, 20000);
 function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{
   document.getElementById('menu-dropdown').classList.remove('show');
