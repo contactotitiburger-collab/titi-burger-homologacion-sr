@@ -381,9 +381,8 @@ objetivos_html = "".join(render_objetivo_grande(c) for c in _categorias)
 
 pasos_html = "".join(paso_circulo(f, i == len(fases) - 1) for i, f in enumerate(fases))
 tarjetas_html = "".join(tarjeta_fase(f) for f in fases)
-hoy_html = ('<div class="hy-tl">' + "".join(fila_hoy_tl(a) for a in actividades_hoy) + '</div>') if actividades_hoy else '<p class="sin-dato">Hoy todavía no se registra trabajo.</p>'
-sigue_html = "".join(f'<div class="sg-it{" sg-next" if i == 0 else ""}"><span class="sg-n">{i + 1}</span><div class="sg-body"><div class="sg-txt">{it["texto"]}</div>'
-                     f'<div class="sg-who">{avatares(it["quien"])}<span>{it["quien"]}</span>{"<span class=sg-tag>Lo siguiente</span>" if i == 0 else ""}</div></div></div>' for i, it in enumerate(que_sigue[:4]))
+hoy_html = "".join(fila_hoy(a) for a in actividades_hoy) if actividades_hoy else '<p class="sin-dato">Sin dato todavía.</p>'
+sigue_html = "".join(fila_sigue(i) for i in que_sigue[:4])
 detalle_html = "".join(detalle_fase(f) for f in fases)
 
 if bloqueos:
@@ -453,16 +452,10 @@ for _it in fase_actual_plan["items"]:
     _ic = "✓" if _it["hecho"] else "○"
     _cls = "bd-done" if _it["hecho"] else "bd-pend"
     _bd_items += f'<div class="bd-item"><span class="bd-ic" style="color:{_c}">{_ic}</span><span class="{_cls}">{_it["n"]}</span></div>'
-_bd_items2 = "".join(
-    f'<div class="ep-it{" ep-ok" if _it["hecho"] else ""}"><span class="ep-ic">{"✓" if _it["hecho"] else ""}</span>'
-    f'<span class="ep-txt">{_it["n"]}</span>{"" if _it["hecho"] else avatares(_it.get("quien", "Tito"))}</div>' for _it in fase_actual_plan["items"])
-_hechos_f = sum(1 for _it in fase_actual_plan["items"] if _it["hecho"])
 breakdown_html = (
-    f'<div class="ep-hero"><div class="ep-emoji">🔨</div><div class="ep-tt"><div class="ep-k">Manos a la obra · etapa {plan_fases.index(fase_actual_plan) + 1} de {len(plan_fases)}</div>'
-    f'<div class="ep-t">{fase_actual_plan["area"]}</div></div><div class="ep-pct">{fase_actual_plan["pct"]}%</div></div>'
-    f'<div class="ep-bar"><div style="width:{max(3, fase_actual_plan["pct"])}%"></div></div>'
-    f'<p class="ep-sub">{_hechos_f} de {len(fase_actual_plan["items"])} listos en esta etapa</p>'
-    f'<div class="ep-list">{_bd_items2}</div>'
+    f'<div class="bd-head"><h2>En qué vamos ahorita</h2><span class="bd-badge">{fase_actual_plan["pct"]}% de esta etapa</span></div>'
+    f'<p class="bd-fase">{fase_actual_plan["area"]}</p>'
+    f'<div class="bd-list">{_bd_items}</div>'
 )
 
 # Punto 7: Bitácora por áreas (incluye pendientes con 0% · 0 min, en orden del plan)
@@ -1102,21 +1095,21 @@ html = f"""<!doctype html>
     <div class="pq-flecha">›</div>
   </div>
 
-  <div class="card ep-card">
+  <div class="card">
     {breakdown_html}
   </div>
 
   <div class="card">
-    <div class="hy-head"><h2>🔥 Lo que se hizo hoy</h2><span class="hy-total">{horas_hoy_txt}</span></div>
+    <div class="hoy-header"><h2 style="margin:0">Qué se hizo hoy</h2><span class="hoy-total">{horas_hoy_txt}</span></div>
     {hoy_html}
   </div>
 
   <div class="card">
-    <h2>🚀 Lo que sigue</h2>
+    <h2>Qué sigue</h2>
     {sigue_html}
   </div>
 
-  <footer><div class="ft-burger">🍔</div>Hecho con cariño por Tito para la familia Titi Burger<br><span>Se actualizó el {datetime.now():%d-%m-%Y} a las {datetime.now():%H:%M}</span></footer>
+  <footer>Lo actualiza Tito · {datetime.now():%d-%m-%Y %H:%M}</footer>
 </div>
 
 <script>
