@@ -43,6 +43,7 @@ details .det{padding:0 12px 12px}
 .regla .d{display:block;font-family:ui-monospace,Menlo,monospace;font-size:26px;font-weight:700;color:var(--blue)}.regla .l{font-size:12px;color:var(--ink2)}
 .paso{display:flex;gap:12px;margin:12px 0}.paso .num{flex:0 0 30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
 .nota{font-size:13px;color:var(--ink2)}
+.acomodo{margin:6px 0 8px;padding-left:22px}.acomodo li{padding:4px 0;font-size:14px}
 .tabla tr.fam td{background:#F4FAFE;font-weight:600;color:var(--ink2);font-size:12px;padding:6px}.tabla td.cods{white-space:nowrap}.codtab{table-layout:fixed}.mentab{table-layout:fixed}.mentab th:nth-child(2){width:62px}.mentab th:nth-child(3){width:58px}.mentab td:first-child{word-break:break-word}.codtab th:nth-child(1){width:70px}.codtab th:nth-child(3){width:54px}.codtab td:nth-child(2){word-break:break-word}.ejtab{table-layout:fixed}.ejtab td,.ejtab th{padding:7px 3px;word-break:break-word}.codtab td.cods .cod{font-size:11.5px}.codtab td,.codtab th{padding:7px 4px}details .det{padding:0 6px 10px}
 .aprob textarea{width:100%;min-height:80px;border:1.5px solid var(--border);border-radius:12px;padding:10px;font:inherit;font-size:15px}
 .btn{min-height:46px;padding:0 18px;border:none;border-radius:12px;font:inherit;font-weight:600;font-size:15px;cursor:pointer}
@@ -289,14 +290,57 @@ def reporte_menu():
 <p class="nota">Precios leídos de las 7 cajas el 27 de noviembre de 2026 por la noche.</p>"""
     return pagina("menu", "Menú completo con precios, para armar tu base", "Félix y Rafael", "1", "2026-11-27", cuerpo)
 
+# ======================= REPORTE 5: ACOMODO DE LA CAJA (paso 5 del plan) =======================
+def reporte_acomodo():
+    P = json.loads((DAT / "codigos_propuesta.json").read_text(encoding="utf-8"))
+    F = P["sucursales"]; VEN = ("HAMB", "COMBO", "EXTRA", "BEBIDA", "BONELESS")
+    caja = [x for x in F if x["canal"] == "CAJA" and x["fam"] in VEN]
+    tot = sum(x["lineas"] for x in caja) or 1
+    top = sorted(caja, key=lambda x: -x["lineas"])[:12]; pct_top = round(100 * sum(x["lineas"] for x in top) / tot)
+    g01 = [x for x in F if x["grupo"] == "01"]; g01_caja = sum(1 for x in g01 if x["canal"] == "CAJA")
+    filas_top = [[str(i + 1), E(x["desc"]), E(FAM_N[x["fam"]]), num(x["lineas"])] for i, x in enumerate(top)]
+    grupos = []
+    for fam in VEN:
+        xs = sorted([x for x in caja if x["fam"] == fam], key=lambda x: -x["lineas"])
+        if xs: grupos.append(("Caja", FAM_N[fam], xs))
+    for can in ("DIDI", "UBER", "RAPPI"):
+        xs = sorted([x for x in F if x["canal"] == can and x["fam"] in VEN], key=lambda x: -x["lineas"])
+        grupos.append((CAN_N[can], "Todo lo de " + CAN_N[can], xs))
+    det = ""
+    for canal, nom, xs in grupos:
+        vivos = [x for x in xs if x["lineas"] > 0 and not x["repetido"]] + [x for x in xs if x["repetido"] and x["lineas"] > 0]
+        quitar = [x for x in xs if x["lineas"] == 0]
+        li = "".join(f'<li>{E(x["desc"])} <span class="nota">· {num(x["lineas"])}</span>{" <span class=\"tag t-rep\">Repetido</span>" if x["repetido"] else ""}</li>' for x in vivos)
+        lq = ("<p class='nota'>Sin ventas, se proponen quitar: " + ", ".join(E(x["desc"]) for x in quitar) + "</p>") if quitar else ""
+        det += f'<details><summary>{E(nom)} · {len(vivos)} botones</summary><div class="det"><p class="nota">En este orden, el más vendido primero.</p><ol class="acomodo">{li}</ol>{lq}</div></details>'
+    cuerpo = f"""
+<div class="card"><p class="lead"><b>Propuesta para cobrar más rápido: cada grupo con pocos botones y lo más vendido primero.</b> Hoy el grupo «TITI BURGER» tiene {len(g01)} botones y solo {g01_caja} son de caja; los demás son versiones de Uber, DiDi y Rappi revueltas. Así el cajero tiene que buscar entre todo.</p></div>
+<div class="kpis"><div class="kpi"><b>{pct_top}%</b><span>de lo que se cobra en caja son estos 12 productos</span></div>
+<div class="kpi"><b>{len(g01)}</b><span>botones hoy en el grupo TITI BURGER</span></div>
+<div class="kpi"><b>{g01_caja}</b><span>de esos son de caja</span></div></div>
+<div class="card"><h2>Los 12 que más se cobran en caja</h2><p class="nota">Renglones vendidos en Montejano desde 2021. Estos deben quedar a un toque.</p>{tabla(["#", "Producto", "Familia", "Ventas"], filas_top, nums=(3,))}</div>
+<div class="card"><h2>Cómo quedaría la pantalla de la caja</h2>
+<div class="paso"><div class="num">1</div><div><b>Grupos separados:</b> Hamburguesas, Combos, Extras, Bebidas y Boneless para la caja; y aparte un grupo para DiDi, uno para Uber y uno para Rappi. El cajero de mostrador ya no ve los productos de apps.</div></div>
+<div class="paso"><div class="num">2</div><div><b>Lo más vendido primero</b> dentro de cada grupo (lista abajo).</div></div>
+<div class="paso"><div class="num">3</div><div><b>Combos en 3 toques:</b> Combos → el combo → la bebida. Las papas van incluidas solas y la bebida se pide a fuerza (Soft Restaurant lo permite con «producto compuesto», como se investigó). Así no se olvida cobrar ni descontar nada.</div></div>
+<div class="paso"><div class="num">4</div><div><b>Quitar lo que estorba:</b> los repetidos y los que nunca se han vendido.</div></div></div>
+<div class="card"><h2>Botones de cada grupo, en orden</h2>{det}</div>
+<div class="card"><h2>Lo que falta para hacerlo</h2><ul>
+<li>Que Félix y Rafael aprueben esta propuesta (aquí abajo).</li>
+<li>Se arma primero en la base de prueba, junto con los códigos nuevos, y Félix lo cala antes de tocar cualquier caja.</li>
+<li>No se cambian precios ni descripciones con esto: solo el orden y los grupos.</li></ul></div>
+<p class="nota">Pendiente de confirmar en la caja: cómo se cobran hoy los combos (cuántos toques). El orden sale de las ventas de Montejano; las otras 4 sucursales normales tienen el mismo menú.</p>"""
+    return pagina("acomodo", "Propuesta: acomodo de la caja para cobrar más rápido", "Félix y Rafael", "1", "2026-11-27", cuerpo)
+
 REPORTES = [("diferencias", "Diferencias de cada sucursal contra la base de Félix", reporte_diferencias),
             ("codigos", "Códigos de productos: cómo están y cómo quedarían", reporte_codigos),
             ("apps", "Pedidos de apps: cómo capturarlos mejor sin gastar", reporte_apps),
-            ("menu", "Menú completo con precios, para armar tu base", reporte_menu)]
+            ("menu", "Menú completo con precios, para armar tu base", reporte_menu),
+            ("acomodo", "Propuesta: acomodo de la caja para cobrar más rápido", reporte_acomodo)]
 if __name__ == "__main__":
     idx = []
     for rid, tit, fn in REPORTES:
         (OUT / f"{rid}.html").write_text(fn(), encoding="utf-8")
-        idx.append({"id": rid, "titulo": tit, "para": "Félix y Rafael" if rid == "menu" else "Rafael y Félix", "fecha": "2026-11-27"})
+        idx.append({"id": rid, "titulo": tit, "para": "Félix y Rafael" if rid in ("menu", "acomodo") else "Rafael y Félix", "fecha": "2026-11-27"})
     (BASE / "reportes.json").write_text(json.dumps(idx, ensure_ascii=False, indent=1), encoding="utf-8")
     print("ok:", [r["id"] for r in idx])

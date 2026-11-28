@@ -981,6 +981,24 @@ html = f"""<!doctype html>
   .tt-resp {{ width:100%; box-sizing:border-box; min-height:64px; border:1.5px solid var(--border); border-radius:10px; padding:8px 10px; font:inherit; font-size:14px; margin:4px 0 8px; }}
   .tt-escribe {{ border-top:1px solid var(--border); padding-top:12px; margin-top:4px; }}
   .tt-m {{ display:block; font-size:13px; color:#16A34A; margin-top:6px; }}
+  .tt-enviar {{ width:100%; justify-content:center; margin-top:2px; }}
+  .pv-fab {{ position:fixed; right:16px; bottom:18px; z-index:50; min-height:52px; padding:0 18px; border:none; border-radius:999px; background:#1E90F0; color:#fff; font:inherit; font-weight:600; font-size:15px; box-shadow:0 6px 18px rgba(20,60,100,.25); cursor:pointer; }}
+  .pv-badge {{ display:inline-block; margin-left:6px; min-width:20px; height:20px; border-radius:999px; background:#F04E5E; font-size:12px; line-height:20px; }}
+  #priv-overlay {{ display:none; position:fixed; inset:0; background:var(--bg); z-index:70; flex-direction:column; }}
+  #priv-overlay.show {{ display:flex; }}
+  .pv-solo {{ font-size:12px; font-weight:500; color:var(--ink2); }}
+  .pv-wrap {{ flex:1; overflow-y:auto; }}
+  .pv-lista {{ max-width:720px; margin:0 auto; padding:4px 14px 10px; display:flex; flex-direction:column; gap:8px; }}
+  .pv-m {{ max-width:85%; padding:9px 12px; border-radius:16px; font-size:15px; line-height:1.45; white-space:pre-wrap; word-break:break-word; }}
+  .pv-m small {{ display:block; font-size:11px; color:var(--ink2); margin-top:4px; }}
+  .pv-yo {{ align-self:flex-end; background:#1E90F0; color:#fff; border-bottom-right-radius:4px; }}
+  .pv-yo small {{ color:#DCEBFA; }}
+  .pv-tito {{ align-self:flex-start; background:#fff; border:1px solid var(--border); border-bottom-left-radius:4px; }}
+  .pv-comp {{ border-top:1px solid var(--border); background:#fff; padding:10px 12px calc(10px + env(safe-area-inset-bottom)); }}
+  .pv-txt {{ width:100%; box-sizing:border-box; min-height:52px; max-height:140px; border:1.5px solid var(--border); border-radius:12px; padding:9px 11px; font:inherit; font-size:15px; }}
+  .pv-tools {{ display:flex; gap:6px; margin-top:6px; }}
+  .pv-tools .fo-tool {{ flex:0 0 48px; min-width:48px; }}
+  .pv-send {{ flex:1; width:auto !important; }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -1036,6 +1054,23 @@ html = f"""<!doctype html>
   </div>
 </div>
 
+<button class="pv-fab" id="pv-fab" style="display:none" onclick="abrirPriv()" aria-label="Chat con Tito">💬 Tito<span class="pv-badge" id="pv-badge" style="display:none"></span></button>
+<div id="priv-overlay">
+  <div class="bitacora-header"><h2>Chat con Tito <small class="pv-solo">solo tú lo ves</small></h2><div class="cerrar-btn" onclick="cerrarPriv()">✕</div></div>
+  <div class="pv-wrap"><div id="pv-lista" class="pv-lista"></div></div>
+  <div class="pv-comp">
+    <div id="pv-adj" class="fo-adjs"></div>
+    <textarea id="pv-txt" class="pv-txt" placeholder="Escríbele a Tito"></textarea>
+    <div class="pv-tools">
+      <label class="fo-tool">📷<input type="file" accept="image/*,video/*" multiple hidden onchange="pvSubir(this)"></label>
+      <button type="button" class="fo-tool" id="pv-rec" onclick="pvGrabar()">🎤</button>
+      <label class="fo-tool">📎<input type="file" multiple hidden onchange="pvSubir(this)"></label>
+      <button class="pq-guardar pv-send" onclick="pvEnviar()">Enviar</button>
+    </div>
+    <div class="pq-estado" id="pv-msg"></div>
+  </div>
+</div>
+
 <div id="estado-overlay" onclick="if(event.target===this)cerrarEstado()"><div class="es-panel">{estado_panel_html}</div></div>
 
 <div class="wrap">
@@ -1067,8 +1102,7 @@ html = f"""<!doctype html>
   <div class="card tt-card" id="tt-card" style="display:none">
     <h2 style="margin:0 0 4px">Te toca a ti</h2>
     <div id="tt-lista"></div>
-    <div class="tt-escribe" id="tt-escribe" style="display:none"><textarea class="tt-resp" id="tr-general" placeholder="¿Algo para Tito? Escríbele aquí"></textarea>
-      <button class="tt-b azul" data-id="general" onclick="ttResp(this, false)">Mandar a Tito</button><span class="tt-m" id="tm-general"></span></div>
+
   </div>
 
   <div class="card nv-card" id="nv-card" style="display:none">
@@ -1206,8 +1240,8 @@ async function cargarRep() {{
 }}
 cargarRep();
 function _push() {{ try {{ history.pushState({{o:1}}, ''); }} catch (e) {{}} }}
-window.addEventListener('popstate', () => document.querySelectorAll('#bitacora-overlay.show,#regu-overlay.show,#preg-overlay.show,#estado-overlay.show,#foro-overlay.show').forEach(e => e.classList.remove('show')));
-document.addEventListener('click', e => {{ if (e.target.closest('.chip-btn,#pq-card,#fo-card,.menu-dropdown a')) _push(); }}, true);
+window.addEventListener('popstate', () => document.querySelectorAll('#bitacora-overlay.show,#regu-overlay.show,#preg-overlay.show,#estado-overlay.show,#foro-overlay.show,#priv-overlay.show').forEach(e => e.classList.remove('show')));
+document.addEventListener('click', e => {{ if (e.target.closest('.chip-btn,#pq-card,#fo-card,#pv-fab,.menu-dropdown a')) _push(); }}, true);
 window.addEventListener('load', () => {{ const d = document.querySelectorAll('.pf-dot')[{_idx_act}]; if (d) d.scrollIntoView({{inline:'center', block:'nearest'}}); }});
 const FNOM = {{felix:'Félix', rafael:'Rafael', tito:'Tito', dontiti:'Don Titi', marco:'Marco'}};
 let FORO = null;
@@ -1316,13 +1350,13 @@ async function cargarTuyo() {{
   // --- Te toca a ti ---
   if (pq) {{ const f = pq.preguntas.filter(q => (q.para || 'felix') === yo && !pq.respuestas[q.id]).length; if (f) items.push({{i:'❓', x: f + (f === 1 ? ' pregunta por contestar' : ' preguntas por contestar'), s:'≈ ' + Math.max(1, f) + ' min · se contesta con un toque', go:"abrirPreg()"}}); }}
   if (rp) NV.reps.forEach(r => {{ const e = (rp.estado || {{}})[r.id]; if (r.para.includes(nom) && ['rafael', 'felix', 'dontiti'].includes(yo) && !(e && e.aprobado.some(a => a.usuario === yo))) items.push({{i:'📄', x:'Revisar y aprobar: ' + r.t, s:'Ábrelo y aprueba o comenta', href:'reportes/' + r.id + '.html'}}); }});
-  (NV.pers || []).forEach(t => {{ const ya = fo && fo.hilos.some(h => h.ref === t.id && h.usuario === yo); if (t.para === yo && !ya) items.push({{i:t.icono, x:t.texto, s:t.sub, msg:t.mensaje, pid:t.id, ph:t.placeholder, si:t.boton_si}}); }});
+  let pv = null; if (yo === 'rafael') {{ try {{ const r = await fetch('/api/privado', {{credentials:'same-origin', cache:'no-store'}}); if (r.ok) pv = await r.json(); }} catch (e) {{}} }}
+  (NV.pers || []).forEach(t => {{ const ya = (pv && pv.mensajes.some(m => m.ref === t.id && m.usuario === yo)) || (fo && fo.hilos.some(h => h.ref === t.id && h.usuario === yo)); if (t.para === yo && !ya) items.push({{i:t.icono, x:t.texto, s:t.sub, msg:t.mensaje, pid:t.id, ph:t.placeholder, si:t.boton_si}}); }});
   NV.frenos.forEach(f => {{ if (f.q.includes(nom)) items.push({{i:'⏳', x:f.x, s: f.d != null ? 'Esperando hace ' + f.d + (f.d === 1 ? ' día' : ' días') : ''}}); }});
   if (fo) fo.hilos.forEach(h => {{ const ult = h.respuestas.length ? h.respuestas[h.respuestas.length - 1] : null; if (h.usuario === yo && ult && ult.usuario !== yo) items.push({{i:'💬', x:'Te contestaron: «' + (h.texto || 'archivo').slice(0, 50) + '»', s:(TNOM[ult.usuario] || ult.usuario) + ' · ' + _cuando(ult.fecha), go:"abrirForo()"}}); }});
   if (yo !== 'tito') {{
     const c = document.getElementById('tt-card'); c.style.display = '';
-    document.getElementById('tt-escribe').style.display = '';
-    document.getElementById('tt-lista').innerHTML = items.length ? items.map(t => t.msg ? ('<div class="tt-it tt-msg"><span class="tt-ic">' + t.i + '</span><span class="tt-x">' + _e(t.x) + '<small>' + _e(t.s || '') + '</small><pre class="tt-pre">' + _e(t.msg) + '</pre><textarea class="tt-resp" id="tr-' + t.pid + '" placeholder="' + _e(t.ph || 'Escríbele a Tito') + '"></textarea><span class="tt-btns"><button class="tt-b verde" data-id="' + t.pid + '" data-si="' + _e(t.si || 'Sí, adelante') + '" onclick="ttResp(this, true)">' + _e(t.si || 'Sí, adelante') + '</button><button class="tt-b azul" data-id="' + t.pid + '" onclick="ttResp(this, false)">Mandar a Tito</button></span><span class="tt-m" id="tm-' + t.pid + '"></span></span></div>') : (t.href ? '<a class="tt-it" href="' + t.href + '">' : '<div class="tt-it"' + (t.go ? ' onclick="' + t.go + '"' : '') + '>') + '<span class="tt-ic">' + t.i + '</span><span class="tt-x">' + _e(t.x) + (t.s ? '<small>' + _e(t.s) + '</small>' : '') + '</span>' + (t.href || t.go ? '<span class="pq-flecha">›</span>' : '') + (t.href ? '</a>' : '</div>')).join('') : '<div class="tt-ok">✔ Estás al día, ' + _e(nom) + '. No tienes nada pendiente.</div>';
+    document.getElementById('tt-lista').innerHTML = items.length ? items.map(t => t.msg ? ('<div class="tt-it tt-msg"><span class="tt-ic">' + t.i + '</span><span class="tt-x">' + _e(t.x) + '<small>' + _e(t.s || '') + '</small><pre class="tt-pre">' + _e(t.msg) + '</pre><textarea class="tt-resp" id="tr-' + t.pid + '" placeholder="' + _e(t.ph || 'Escríbele a Tito') + '"></textarea><button class="tt-b azul tt-enviar" data-id="' + t.pid + '" onclick="ttResp(this, false)">Enviar a Tito</button><span class="tt-m" id="tm-' + t.pid + '"></span></span></div>') : (t.href ? '<a class="tt-it" href="' + t.href + '">' : '<div class="tt-it"' + (t.go ? ' onclick="' + t.go + '"' : '') + '>') + '<span class="tt-ic">' + t.i + '</span><span class="tt-x">' + _e(t.x) + (t.s ? '<small>' + _e(t.s) + '</small>' : '') + '</span>' + (t.href || t.go ? '<span class="pq-flecha">›</span>' : '') + (t.href ? '</a>' : '</div>')).join('') : '<div class="tt-ok">✔ Estás al día, ' + _e(nom) + '. No tienes nada pendiente.</div>';
   }}
   // --- Lo nuevo desde tu ultima visita ---
   const ev = NV.ev.map(e => ({{t:_ts(e.t), i:e.i, x:e.x}}));
@@ -1347,13 +1381,68 @@ async function ttResp(btn, si) {{
   if (it) txt = 'Sobre «' + it.texto + '»: ' + txt;
   m.textContent = 'Enviando…';
   try {{
-    const r = await fetch('/api/foro', {{method:'POST', credentials:'same-origin', headers:{{'Content-Type':'application/json'}}, body: JSON.stringify({{accion:'preguntar', texto: txt, ref: it ? id : ''}})}});
+    const r = await fetch('/api/privado', {{method:'POST', credentials:'same-origin', headers:{{'Content-Type':'application/json'}}, body: JSON.stringify({{texto: txt, ref: it ? id : ''}})}});
     const d = await r.json(); if (!r.ok) throw new Error(d.error || 'no se pudo');
-    ta.value = ''; m.textContent = '✓ Listo, Tito ya lo tiene. Te contesta en «Preguntas y respuestas».'; setTimeout(cargarTuyo, 1500); cargarForo();
+    ta.value = ''; m.textContent = '✓ Listo, Tito ya lo tiene. Te contesta en tu chat con Tito.'; setTimeout(cargarTuyo, 1500); cargarPriv();
   }} catch (e) {{ m.textContent = 'No se envió: ' + e.message; }}
 }}
 function yaHecho(id) {{ localStorage.setItem('hecho_' + id, '1'); cargarTuyo(); }}
 cargarTuyo();
+let PV = null, PV_FIRMA = '', PV_ADJ = [], PV_REC = null, PV_T = null;
+async function cargarPriv() {{
+  try {{ const r = await fetch('/api/privado', {{credentials:'same-origin', cache:'no-store'}}); if (!r.ok) return; PV = await r.json(); }} catch (e) {{ return; }}
+  document.getElementById('pv-fab').style.display = '';
+  const vistos = +(localStorage.getItem('pv_visto') || 0), nuevos = PV.mensajes.filter(m => m.usuario === 'tito' && m.id > vistos).length;
+  const b = document.getElementById('pv-badge'); b.style.display = nuevos && !document.getElementById('priv-overlay').classList.contains('show') ? '' : 'none'; b.textContent = nuevos;
+  pintarPriv();
+}}
+function pintarPriv(forzar) {{
+  if (!PV) return; const f = JSON.stringify(PV.mensajes); if (!forzar && f === PV_FIRMA) return; PV_FIRMA = f;
+  const box = document.getElementById('pv-lista');
+  box.innerHTML = PV.mensajes.length ? PV.mensajes.map(m => '<div class="pv-m ' + (m.usuario === 'tito' ? 'pv-tito' : 'pv-yo') + '">' + _e(m.texto) + (m.adjuntos || []).map(adjHtml).join('') + '<small>' + (m.usuario === 'tito' ? 'Tito · ' : '') + _e(m.fecha) + '</small></div>').join('') : '<p class="tl-nota">Aquí hablas directo con Tito, como en la terminal. Solo tú lo ves.</p>';
+  if (document.getElementById('priv-overlay').classList.contains('show')) {{ const w = document.querySelector('.pv-wrap'); w.scrollTop = w.scrollHeight; localStorage.setItem('pv_visto', Math.max(0, ...PV.mensajes.map(m => m.id))); }}
+}}
+function abrirPriv() {{ document.getElementById('priv-overlay').classList.add('show'); document.getElementById('pv-badge').style.display = 'none'; pintarPriv(true); }}
+function cerrarPriv() {{ document.getElementById('priv-overlay').classList.remove('show'); }}
+function pvPintarAdj() {{ document.getElementById('pv-adj').innerHTML = PV_ADJ.map((a, i) => '<span class="fo-chip">' + (a.preview ? '<img src="' + a.preview + '" alt="">' : (a.kind === 'audio' ? '🎤' : '📄')) + '<span>' + (a.id ? _e(a.nombre) : 'Subiendo…') + '</span><button onclick="PV_ADJ.splice(' + i + ',1);pvPintarAdj()" aria-label="Quitar">×</button></span>').join(''); }}
+async function pvSubirUno(blob, nombre) {{
+  const it = {{nombre, kind: (blob.type || '').startsWith('image') ? 'imagen' : (blob.type || '').startsWith('audio') ? 'audio' : 'archivo'}};
+  if (it.kind === 'imagen') it.preview = URL.createObjectURL(blob);
+  PV_ADJ.push(it); pvPintarAdj(); const m = document.getElementById('pv-msg');
+  try {{
+    const r = await fetch('/api/subir', {{method:'POST', credentials:'same-origin', headers:{{'Content-Type': blob.type || 'application/octet-stream', 'X-Nombre': encodeURIComponent(nombre)}}, body: blob}});
+    const d = await r.json(); if (!r.ok) throw new Error(d.error || 'no se pudo subir'); Object.assign(it, d.adjunto); m.textContent = '';
+  }} catch (e) {{ PV_ADJ.splice(PV_ADJ.indexOf(it), 1); m.textContent = 'No se subió ' + nombre + ': ' + e.message; }}
+  pvPintarAdj();
+}}
+async function pvSubir(inp) {{ for (const f of [...inp.files]) await pvSubirUno(f, f.name); inp.value = ''; }}
+async function pvGrabar() {{
+  const b = document.getElementById('pv-rec');
+  if (PV_REC) {{ PV_REC.stop(); return; }}
+  try {{
+    const st = await navigator.mediaDevices.getUserMedia({{audio:true}});
+    const tipo = ['audio/webm;codecs=opus', 'audio/mp4', 'audio/webm'].find(t => MediaRecorder.isTypeSupported(t)) || '';
+    const partes = []; PV_REC = new MediaRecorder(st, tipo ? {{mimeType: tipo}} : undefined);
+    PV_REC.ondataavailable = e => e.data.size && partes.push(e.data);
+    PV_REC.onstop = async () => {{ clearInterval(PV_T); st.getTracks().forEach(t => t.stop()); const mt = (PV_REC.mimeType || 'audio/webm').split(';')[0]; PV_REC = null; b.classList.remove('rec'); b.textContent = '🎤';
+      await pvSubirUno(new Blob(partes, {{type: mt}}), 'audio-' + new Date().toTimeString().slice(0, 5).replace(':', '') + (mt.includes('mp4') ? '.m4a' : '.webm')); }};
+    PV_REC.start(); const t0 = Date.now(); b.classList.add('rec');
+    PV_T = setInterval(() => {{ const s = Math.round((Date.now() - t0) / 1000); b.textContent = '⏺ ' + s + 's'; }}, 500);
+  }} catch (e) {{ document.getElementById('pv-msg').textContent = 'No se pudo usar el micrófono: dale permiso al navegador.'; }}
+}}
+async function pvEnviar() {{
+  const t = document.getElementById('pv-txt'), m = document.getElementById('pv-msg');
+  if (PV_ADJ.some(a => !a.id)) {{ m.textContent = 'Espera a que terminen de subir.'; return; }}
+  if (!t.value.trim() && !PV_ADJ.length) return;
+  m.textContent = 'Enviando…';
+  try {{
+    const r = await fetch('/api/privado', {{method:'POST', credentials:'same-origin', headers:{{'Content-Type':'application/json'}}, body: JSON.stringify({{texto: t.value, adjuntos: PV_ADJ.map(a => a.id)}})}});
+    const d = await r.json(); if (!r.ok) throw new Error(d.error || 'no se pudo');
+    t.value = ''; PV_ADJ = []; pvPintarAdj(); m.textContent = ''; await cargarPriv(); pintarPriv(true);
+  }} catch (e) {{ m.textContent = 'No se envió: ' + e.message; }}
+}}
+cargarPriv();
+setInterval(() => {{ if (!document.hidden) cargarPriv(); }}, 10000);
 function toggleMenu() {{ document.getElementById('menu-dropdown').classList.toggle('show'); }}
 function abrirBitacora() {{
   document.getElementById('menu-dropdown').classList.remove('show');

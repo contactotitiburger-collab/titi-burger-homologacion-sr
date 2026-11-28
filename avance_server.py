@@ -24,6 +24,7 @@ PREG_FILE = LECTOR / "preguntas_felix.json"
 RESP_FILE = LECTOR / "respuestas_felix.json"
 REP_FILE = LECTOR / "reportes.json"
 FORO_FILE = LECTOR / "foro.json"
+PRIV_FILE = LECTOR / "chat_rafael.json"   # chat privado Rafael <-> Tito (solo la cuenta de Rafael lo ve)
 MARCA = LECTOR / "marca"   # og.jpg (vista previa en WhatsApp) e iconos: publicos, sin clave"
 VIS_FILE = LECTOR / "visitas.json"   # ultima y anterior visita de cada persona (para "Lo nuevo desde tu ultima visita")
 ADJ_DIR = LECTOR / "foro_archivos"; ADJ_DIR.mkdir(exist_ok=True)   # fotos, audios y archivos del chat
@@ -168,6 +169,15 @@ class H(http.server.SimpleHTTPRequestHandler):
             ult = {}
             for r in leer_respuestas(): ult[r["id"]] = r
             return self.json_resp({"yo": yo, "preguntas": preg, "respuestas": ult})
+        if self.path.split("?")[0] == "/api/privado":
+            if yo not in ("rafael", "tito"): return self.json_resp({"error": "no disponible"}, 404)
+            try: ch = json.loads(PRIV_FILE.read_text(encoding="utf-8"))
+            except Exception: ch = []
+            for m in ch:
+                for a in m.get("adjuntos", []):
+                    mt = _meta(a["id"]) or {}
+                    if mt.get("transcripcion"): a["transcripcion"] = mt["transcripcion"]
+            return self.json_resp({"yo": yo, "mensajes": ch})
         if self.path.split("?")[0] == "/api/yo":
             if not yo: return self.json_resp({"error": "sin sesion"}, 401)
             try: vis = json.loads(VIS_FILE.read_text(encoding="utf-8"))
@@ -278,6 +288,25 @@ class H(http.server.SimpleHTTPRequestHandler):
             if kind == "audio": threading.Thread(target=_transcribir, args=(aid, ruta), daemon=True).start()
             if kind == "imagen": threading.Thread(target=_miniatura, args=(aid, ruta), daemon=True).start()
             return self.json_resp({"ok": True, "adjunto": {"id": aid, "nombre": nombre, "kind": kind, "tam": m["tam"]}})
+        if self.path.split("?")[0] == "/api/privado":
+            yo = sesion_usuario(self.token())
+            if yo != "rafael": return self.json_resp({"error": "no disponible"}, 404)
+            ln = int(self.headers.get("Content-Length", "0") or 0)
+            if ln > 20000: return self.json_resp({"error": "muy largo"}, 413)
+            try: d = json.loads(self.rfile.read(ln).decode("utf-8"))
+            except Exception: return self.json_resp({"error": "datos mal formados"}, 400)
+            txt = str(d.get("texto") or "")[:5000].strip()
+            adj = []
+            for aid in (d.get("adjuntos") or [])[:10]:
+                m = _meta(str(aid)) if _re.fullmatch(r"[0-9a-f]{16}", str(aid)) else None
+                if m and m["usuario"] == yo: adj.append({"id": m["id"], "nombre": m["nombre"], "kind": m["kind"], "tam": m["tam"]})
+            if not txt and not adj: return self.json_resp({"error": "escribe algo"}, 400)
+            with LOCK:
+                try: ch = json.loads(PRIV_FILE.read_text(encoding="utf-8"))
+                except Exception: ch = []
+                ch.append({"id": max([x["id"] for x in ch] + [0]) + 1, "usuario": yo, "fecha": time.strftime("%Y-%m-%d %H:%M"), "texto": txt, "adjuntos": adj, "ref": str(d.get("ref") or "")[:60]})
+                tmp = PRIV_FILE.with_suffix(".tmp"); tmp.write_text(json.dumps(ch, ensure_ascii=False, indent=1), encoding="utf-8"); tmp.replace(PRIV_FILE)
+            return self.json_resp({"ok": True})
         if self.path.split("?")[0] == "/api/foro":
             yo = sesion_usuario(self.token())
             if not yo: return self.json_resp({"error": "sin sesion"}, 401)
