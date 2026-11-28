@@ -43,7 +43,7 @@ details .det{padding:0 12px 12px}
 .regla .d{display:block;font-family:ui-monospace,Menlo,monospace;font-size:26px;font-weight:700;color:var(--blue)}.regla .l{font-size:12px;color:var(--ink2)}
 .paso{display:flex;gap:12px;margin:12px 0}.paso .num{flex:0 0 30px;height:30px;border-radius:50%;background:var(--blue);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center}
 .nota{font-size:13px;color:var(--ink2)}
-.tabla tr.fam td{background:#F4FAFE;font-weight:600;color:var(--ink2);font-size:12px;padding:6px}.tabla td.cods{white-space:nowrap}.codtab{table-layout:fixed}.codtab th:nth-child(1){width:70px}.codtab th:nth-child(3){width:54px}.codtab td:nth-child(2){word-break:break-word}.ejtab{table-layout:fixed}.ejtab td,.ejtab th{padding:7px 3px;word-break:break-word}.codtab td.cods .cod{font-size:11.5px}.codtab td,.codtab th{padding:7px 4px}details .det{padding:0 6px 10px}
+.tabla tr.fam td{background:#F4FAFE;font-weight:600;color:var(--ink2);font-size:12px;padding:6px}.tabla td.cods{white-space:nowrap}.codtab{table-layout:fixed}.mentab{table-layout:fixed}.mentab th:nth-child(2){width:62px}.mentab th:nth-child(3){width:58px}.mentab td:first-child{word-break:break-word}.codtab th:nth-child(1){width:70px}.codtab th:nth-child(3){width:54px}.codtab td:nth-child(2){word-break:break-word}.ejtab{table-layout:fixed}.ejtab td,.ejtab th{padding:7px 3px;word-break:break-word}.codtab td.cods .cod{font-size:11.5px}.codtab td,.codtab th{padding:7px 4px}details .det{padding:0 6px 10px}
 .aprob textarea{width:100%;min-height:80px;border:1.5px solid var(--border);border-radius:12px;padding:10px;font:inherit;font-size:15px}
 .btn{min-height:46px;padding:0 18px;border:none;border-radius:12px;font:inherit;font-weight:600;font-size:15px;cursor:pointer}
 .btn.azul{background:var(--blue);color:#fff}.btn.verde{background:var(--ok);color:#fff}.btn.gris{background:#EEF2F6;color:var(--ink)}
@@ -241,13 +241,62 @@ def reporte_apps():
 <li>Cine Curto no tiene ninguna venta de apps en Soft Restaurant en los últimos 30 días. ¿No vende por apps, o no las está capturando?</li></ul></div>"""
     return pagina("apps", "Pedidos de apps: cómo capturarlos mejor sin gastar", "Rafael y Félix", "1", "2026-11-27", cuerpo)
 
+# ======================= REPORTE 4: MENU CON PRECIOS =======================
+def reporte_menu():
+    P = json.loads((DAT / "codigos_propuesta.json").read_text(encoding="utf-8"))
+    PR = json.loads((DAT / "precios_27nov.json").read_text(encoding="utf-8"))
+    F = P["sucursales"]; cinco = ["Montejano", "Hacienda", "Montecarlo", "Villas", "San Marcos"]
+    cdesc = {}
+    for x in P["curto"]:
+        if x["como"] == "Igual que en las sucursales": cdesc[x["nuevo"]] = x["cod"]
+    def precio(x):
+        ps = {s: PR.get(s, {}).get(x["cod"]) for s in cinco}
+        vals = {v for v in ps.values() if v is not None}
+        if not vals: return "—", ""
+        if len(vals) == 1:
+            v = vals.pop(); return (f"${v:,.0f}" if v else "$0"), ('<span class="tag t-cero">En $0</span>' if not v else "")
+        base = max(vals, key=lambda v: sum(1 for s in cinco if ps[s] == v))
+        dif = ", ".join(f"{s} ${ps[s]:,.0f}" for s in cinco if ps[s] is not None and ps[s] != base)
+        return f"${base:,.0f}", f'<span class="tag t-rep">Distinto: {E(dif)}</span>'
+    secciones = ""; total = 0; ceros = 0; dist = 0
+    for can in ("CAJA", "DIDI", "UBER", "RAPPI", "APPS"):
+        xs = [x for x in F if x["canal"] == can and x["fam"] in ("HAMB", "COMBO", "EXTRA", "BEBIDA", "BONELESS")]
+        if not xs: continue
+        filas = []
+        for fam in ("HAMB", "COMBO", "EXTRA", "BEBIDA", "BONELESS"):
+            fx_ = sorted([x for x in xs if x["fam"] == fam], key=lambda x: (x["nuevo"], x["cod"]))
+            if fx_: filas.append(f'<tr class="fam"><td colspan="3">{E(FAM_N[fam])}</td></tr>')
+            for x in fx_:
+                pr, nota = precio(x); total += 1; ceros += "En $0" in nota; dist += "Distinto" in nota
+                cc = cdesc.get(x["nuevo"]); pc = PR.get("Cine Curto", {}).get(cc) if cc else None
+                if pc is not None and f"${pc:,.0f}" != pr: nota += f'<span class="tag t-ort">Cine Curto ${pc:,.0f}</span>'
+                if x["repetido"]: nota += '<span class="tag t-rep">Repetido</span>'
+                if x["lineas"] == 0: nota += '<span class="tag t-cero">0 ventas</span>'
+                filas.append(f'<tr><td>{E(x["desc"])}<div class="nota cod">{E(x["nuevo"])}</div><div>{nota}</div></td><td class="n">{pr}</td><td class="n">{num(x["lineas"])}</td></tr>')
+        secciones += f'<details{" open" if can == "CAJA" else ""}><summary>{E(CAN_N[can])} · {len(xs)} productos</summary><div class="det"><div class="scroll"><table class="tabla mentab"><thead><tr><th>Producto y código nuevo</th><th style="text-align:right">Precio</th><th style="text-align:right">Ventas</th></tr></thead><tbody>{"".join(filas)}</tbody></table></div></div></details>'
+    nf = len(PR.get("Félix", {}))
+    cuerpo = f"""
+<div class="card"><p class="lead"><b>Este es el menú que hoy venden las 5 sucursales, con su precio.</b> Es el punto de partida para armar el menú desde cero en tu base: marca qué se queda, qué se quita y qué precio cambia.</p></div>
+<div class="kpis"><div class="kpi"><b>{total}</b><span>productos de venta (sin modificadores ni mermas)</span></div>
+<div class="kpi"><b style="color:var(--bad)">{dist}</b><span>con precio distinto entre sucursales</span></div>
+<div class="kpi"><b style="color:var(--warn)">{ceros}</b><span>en $0</span></div>
+<div class="kpi"><b>{nf}</b><span>productos tiene hoy tu base (sigue creciendo)</span></div></div>
+<div class="card"><h2>El menú, por canal</h2><p class="nota">Precio = el de las 5 sucursales normales. Si alguna cobra distinto, sale en rojo. «Cine Curto» en azul = cobra otro precio allá. Ventas = renglones vendidos en Montejano desde 2021. Abajo de cada producto va su código nuevo propuesto.</p>{secciones}</div>
+<div class="card"><h2>Cómo lo revisas</h2>
+<div class="paso"><div class="num">1</div><div>Revisa la caja primero: hamburguesas, combos, extras, bebidas y boneless.</div></div>
+<div class="paso"><div class="num">2</div><div>Si algo se quita o cambia de precio, escríbelo en los comentarios de abajo (ej. «quitar COMBO PAREJA repetido», «Titi JR $79»).</div></div>
+<div class="paso"><div class="num">3</div><div>Luego las apps. Los productos con 0 ventas son candidatos a quitarse.</div></div></div>
+<p class="nota">Precios leídos de las 7 cajas el 27 de noviembre de 2026 por la noche.</p>"""
+    return pagina("menu", "Menú completo con precios, para armar tu base", "Félix y Rafael", "1", "2026-11-27", cuerpo)
+
 REPORTES = [("diferencias", "Diferencias de cada sucursal contra la base de Félix", reporte_diferencias),
             ("codigos", "Códigos de productos: cómo están y cómo quedarían", reporte_codigos),
-            ("apps", "Pedidos de apps: cómo capturarlos mejor sin gastar", reporte_apps)]
+            ("apps", "Pedidos de apps: cómo capturarlos mejor sin gastar", reporte_apps),
+            ("menu", "Menú completo con precios, para armar tu base", reporte_menu)]
 if __name__ == "__main__":
     idx = []
     for rid, tit, fn in REPORTES:
         (OUT / f"{rid}.html").write_text(fn(), encoding="utf-8")
-        idx.append({"id": rid, "titulo": tit, "para": "Rafael y Félix", "fecha": "2026-11-27"})
+        idx.append({"id": rid, "titulo": tit, "para": "Félix y Rafael" if rid == "menu" else "Rafael y Félix", "fecha": "2026-11-27"})
     (BASE / "reportes.json").write_text(json.dumps(idx, ensure_ascii=False, indent=1), encoding="utf-8")
     print("ok:", [r["id"] for r in idx])
