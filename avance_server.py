@@ -96,7 +96,7 @@ LOGIN = """<!doctype html><html lang="es"><head><meta charset="utf-8">
 <meta property="og:description" content="Avance de Soft Restaurant en las 6 sucursales. Entra con tu clave.">
 <meta property="og:image" content="__OGBASE__/og.jpg"><meta property="og:image:width" content="1200"><meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image"><meta name="twitter:image" content="__OGBASE__/og.jpg">
-<link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" href="/favicon.png"><meta name="theme-color" content="#1C1614">
+<link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" href="/favicon.png"><meta name="theme-color" content="#1C1614">
 <meta name="apple-mobile-web-app-title" content="Titi Burger"><style>
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;display:flex;align-items:center;justify-content:center;
@@ -156,7 +156,14 @@ class H(http.server.SimpleHTTPRequestHandler):
         self.end_headers(); self.wfile.write(b)
     def do_GET(self):
         ruta0 = self.path.split("?")[0]
-        if ruta0 in ("/og.jpg", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png", "/favicon.png", "/favicon.ico", "/icon-512.png"):
+        if ruta0 == "/manifest.webmanifest":   # para que en Android (Samsung) se instale como app con su logo
+            b = json.dumps({"name": "Titi Burger · Avance", "short_name": "Titi Burger", "start_url": "/", "scope": "/", "display": "standalone",
+                            "background_color": "#EEF7FC", "theme_color": "#1C1614", "lang": "es-MX",
+                            "icons": [{"src": "/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable"},
+                                      {"src": "/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable"}]}, ensure_ascii=False).encode()
+            self.send_response(200); self.send_header("Content-Type", "application/manifest+json; charset=utf-8")
+            self.send_header("Content-Length", str(len(b))); self.end_headers(); self.wfile.write(b); return
+        if ruta0 in ("/og.jpg", "/apple-touch-icon.png", "/apple-touch-icon-precomposed.png", "/favicon.png", "/favicon.ico", "/icon-512.png", "/icon-192.png"):
             f = MARCA / {"/apple-touch-icon-precomposed.png": "apple-touch-icon.png", "/favicon.ico": "favicon.png"}.get(ruta0, ruta0.lstrip("/"))
             if f.exists():
                 b = f.read_bytes(); self.send_response(200)

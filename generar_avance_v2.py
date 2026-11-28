@@ -669,9 +669,9 @@ ring_big = ring(pct_plan_global, 128, 12, "var(--blue)", "var(--track)", "var(--
 html = f"""<!doctype html>
 <html lang="es"><head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Así va el proyecto — Titi Burger</title>
-<link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" href="/favicon.png"><meta name="theme-color" content="#EEF7FC"><meta name="apple-mobile-web-app-title" content="Titi Burger">
+<link rel="manifest" href="/manifest.webmanifest"><meta name="mobile-web-app-capable" content="yes"><link rel="apple-touch-icon" href="/apple-touch-icon.png"><link rel="icon" href="/favicon.png"><meta name="theme-color" content="#EEF7FC"><meta name="apple-mobile-web-app-title" content="Titi Burger">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1004,6 +1004,13 @@ html = f"""<!doctype html>
   .pv-dots i:nth-child(2) {{ animation-delay:.2s; }} .pv-dots i:nth-child(3) {{ animation-delay:.4s; }}
   @keyframes pvdot {{ 0%,60%,100% {{ opacity:.2; }} 30% {{ opacity:1; }} }}
   .pv-visto {{ align-self:flex-end; font-size:12px; color:var(--ink2); }}
+  .pv-head {{ flex:0 0 auto; display:flex; align-items:center; justify-content:space-between; gap:12px; padding:calc(10px + env(safe-area-inset-top)) 16px 10px; background:#fff; border-bottom:1px solid var(--border); }}
+  .pv-tit {{ display:flex; flex-direction:column; line-height:1.2; }}
+  .pv-tit b {{ font-size:18px; color:var(--ink); }}
+  .pv-solo {{ font-size:12px; color:var(--ink2); }}
+  .pv-x {{ flex:0 0 40px; width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:#fff; font-size:18px; color:var(--ink); cursor:pointer; }}
+  .pv-wrap {{ padding-top:10px; }}
+  .bitacora-header {{ padding-top:calc(20px + env(safe-area-inset-top)) !important; }}
 </style></head>
 <body>
 <div class="topbar"></div>
@@ -1061,7 +1068,7 @@ html = f"""<!doctype html>
 
 <button class="pv-fab" id="pv-fab" style="display:none" onclick="abrirPriv()" aria-label="Chat con Tito">💬 Tito<span class="pv-badge" id="pv-badge" style="display:none"></span></button>
 <div id="priv-overlay">
-  <div class="bitacora-header"><h2>Chat con Tito <small class="pv-solo">solo tú lo ves</small></h2><div class="cerrar-btn" onclick="cerrarPriv()">✕</div></div>
+  <div class="pv-head"><div class="pv-tit"><b>Chat con Tito</b><span class="pv-solo">Solo tú lo ves</span></div><button class="pv-x" onclick="cerrarPriv()" aria-label="Cerrar">✕</button></div>
   <div class="pv-wrap"><div id="pv-lista" class="pv-lista"></div></div>
   <div class="pv-comp">
     <div id="pv-adj" class="fo-adjs"></div>
